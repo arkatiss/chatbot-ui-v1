@@ -1,0 +1,148 @@
+<div class="row col-sm-12 p-0 m-0 pb-5">
+  <!-- <h4 class="font-14 fw-500  pr-3 pt-3 pb-3 pl-4 mb-0 primary">Modify / Delete Roles</h4> -->
+
+  <div class="row m-0 col-12 p-0">
+    <div class="col-4 p-0">
+      <h4 class="font-14 fw-500 pr-3 pt-3 pb-3 pl-4 mb-0 primary">
+        Modify / Delete Roles
+      </h4>
+    </div>
+    <div class="col-8">
+      <mat-form-field
+        appearance="outline"
+        class="font-11 col-sm-4 p-1 float-end"
+      >
+        <mat-label>Search </mat-label>
+        <input
+          type="text"
+          matInput
+          autocomplete="off"
+          placeholder="search"
+          (keyup)="filterDatatable($event)"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="col-sm-12 p-0 pt-1 mt-1">
+    <div class="row m-2 pl-1">
+      <!-- <ngx-datatable
+            *ngIf="rowData.length>0" #table style="height:300px;width: 100%;" class="material ml-0 mr-0"
+
+            [rows]="rowData"
+
+             [columns]="displayedColumns"
+             [columnMode]="'force'"
+
+             [headerHeight]="40" [footerHeight]="40" [scrollbarH]="true"
+             [limit]="9" [rowHeight]="40" [scrollbarV]="true"
+              #table >
+        <ngx-datatable-column name="S.No" [width]="5">
+          <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+            {{ rowIndex + 1 }}
+          </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column *ngFor="let column of displayedColumns; let i = index;"   name="{{column.name}}" prop="{{column.prop}}">
+          </ngx-datatable-column>
+
+
+          <ngx-datatable-column name="Action"  [sortable]="false" >
+            <ng-template let-value="value"    let-row="row"   ngx-datatable-cell-template>
+                <mat-icon class="pointer mr-2 font-18" title="edit"  (click)="editRoleData(openAddData,row)">
+                    edit
+                  </mat-icon>
+
+
+                  <mat-icon class="danger pointer ml-2 delete" (click)="deleteRoleData(row.id)" title="Delete">
+                    delete_sweep
+                  </mat-icon>
+            </ng-template>
+          </ngx-datatable-column>
+            </ngx-datatable> -->
+      <div class="col-sm-12">
+        <ag-grid-angular
+          #agGrid
+          class="ag-theme-balham mt-3"
+          [rowData]="rowData"
+          [columnDefs]="columnDefs"
+          style="
+            width: 100%;
+            height: calc(100vh - 275px);
+            border: 1px solid #bdc3c7;
+          "
+          [defaultColDef]="defaultColDef"
+          [modules]="modules"
+          [groupMultiAutoColumn]="true"
+          [sideBar]="sidebar"
+          [animateRows]="true"
+          [pagination]="true"
+          [paginationAutoPageSize]="true"
+          (gridReady)="onGridReady($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          (cellClicked)="cellClicked($event, openAddData)"
+        >
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #openAddData>
+  <div class="row col-sm-12 p-0 m-0 pb-3">
+    <h4 class="font-14 fw-500 pr-3 pt-3 pb-3 pl-4 mb-0 primary">Update Role</h4>
+    <div class="col-sm-12 p-0 pt-1 mt-1">
+      <div class="row m-0 pl-1">
+        <div class="col-sm-4">
+          <form>
+            <mat-form-field
+              appearance="outline"
+              class="font-11 col-sm-12 p-1"
+              appearance="outline"
+              *ngIf="userNames.length > 0"
+            >
+              <mat-label>Select User</mat-label>
+              <input
+                type="text"
+                matInput
+                [formControl]="userNameControl"
+                [matAutocomplete]="auto"
+              />
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                [displayWith]="displayFn"
+                class="securityUser"
+              >
+                <mat-option
+                  *ngFor="let option of filteredOptions | async"
+                  [value]="option.name"
+                  (onSelectionChange)="updateMySelection(option)"
+                >
+                  {{ option.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+        </div>
+        <div class="col-sm-4">
+          <mat-form-field appearance="outline" class="font-11 col-sm-12 p-1">
+            <mat-label>Assign Role</mat-label>
+            <mat-select [(ngModel)]="roleName" name="role">
+              <mat-option *ngFor="let role of Roles" [value]="role.value"
+                >{{ role.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-2 mt-2">
+          <button
+            type="submit"
+            mat-raised-button
+            class="text-info md font-13"
+            (click)="updateRole()"
+          >
+            Update
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

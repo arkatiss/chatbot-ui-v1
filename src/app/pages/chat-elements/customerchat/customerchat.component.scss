@@ -1,0 +1,21 @@
+.line {
+    width: 100%; 
+    text-align: center; 
+    border-bottom: 1px solid #d8d8d5; 
+    background: linear-gradient(to right, transparent, #818078, transparent);
+    line-height: 0.05em;
+    margin-top:7px;
+  } 
+  
+  .line .lne { 
+     background:#f1f1f1; 
+     color: #818078;
+  }
+
+// .agentHeight {
+//    height: calc(100vh - 365px);
+//    overflow-y: hidden;
+// }
+// .agentHeight :hover{
+//    overflow-y: auto;
+// }

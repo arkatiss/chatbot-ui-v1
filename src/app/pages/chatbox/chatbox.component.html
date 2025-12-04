@@ -1,0 +1,711 @@
+<div class="row col-sm-12 p-0 m-0">
+  <div class="totalforms">
+    <!-- *ngIf="claimformval" -->
+    <div class="row p-0 m-0" *ngIf="showForm === 'claims' || 'claim form'">
+      <div class="col-sm-12 p-2">
+        <h4 class="pl-1">Claim Form</h4>
+        <form
+          [formGroup]="claimform"
+          (ngSubmit)="onSubmit('claimform')"
+          class="row col-12"
+        >
+          <div class="row col-3">
+            <mat-form-field appearance="outline" class="font-11">
+              <mat-label>Org</mat-label>
+              <mat-select formControlName="cswg">
+                <mat-option value="cswg">Cswg</mat-option>
+                <mat-option value="grocers">Groceres</mat-option>
+                <mat-option value="awi">AWI</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="row col-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Invoice Number</mat-label>
+              <input
+                matInput
+                placeholder="Enter Invoice Number"
+                formControlName="inv_no"
+              />
+            </mat-form-field>
+          </div>
+          <!--<div class="row col-3">
+            <mat-form-field appearance="outline" class="font-11">
+              <mat-label>Claim No</mat-label>
+              <input matInput placeholder="Claim No" formControlName="auto_gen">
+            </mat-form-field>
+          </div>-->
+
+          <div class="row col-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Claim Value</mat-label>
+              <input
+                matInput
+                placeholder="Enter Claim Value"
+                formControlName="clm_val"
+              />
+            </mat-form-field>
+          </div>
+          <div class="row col-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Description</mat-label>
+              <textarea
+                matInput
+                placeholder="Enter Description"
+                formControlName="query"
+              ></textarea>
+              <!-- <input type="textarea" matInput placeholder="Query" formControlName="query"> -->
+            </mat-form-field>
+          </div>
+
+          <div class="col-3 mt-1">
+            <button mat-raised-button class="text-info font-12" type="submit">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- *ngIf="salesorder" -->
+    <div class="row p-0 m-0" *ngIf="showForm === 'sales order'">
+      <h4 class="pl-3">Sales Order</h4>
+      <form
+        [formGroup]="salesform"
+        (ngSubmit)="onSubmit('salesform')"
+        class="row col-sm-12 p-0 m-0"
+      >
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline" class="font-11">
+            <mat-label>Ref No</mat-label>
+            <input
+              matInput
+              placeholder="Enter Reference Number"
+              formControlName="ref_no"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline" class="font-11">
+            <mat-label>Po No</mat-label>
+            <input
+              matInput
+              placeholder="Enter Po Number"
+              formControlName="po_no"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4">
+          <mat-form-field appearance="outline" class="font-11">
+            <mat-label>Select Item</mat-label>
+            <mat-select formControlName="sel_item">
+              <mat-option hidden>Select</mat-option>
+              <mat-option
+                *ngFor="let a of sales_items"
+                value="{{ a.item_name }}"
+                >{{ a.item_name }} -- {{ a.item_price }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <i
+            class="fal fa-plus-circle pl-3"
+            mat-button
+            [matMenuTriggerFor]="afterMenus"
+          ></i>
+        </div>
+
+        <div class="col-sm-2 mt-1">
+          <button mat-raised-button class="text-info font-12" type="submit">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- *ngIf="purchaseorder" -->
+    <div class="row p-0 m-0" *ngIf="showForm === 'new item submission'">
+      <h4 class="pl-3">New Item Submission</h4>
+      <form
+        [formGroup]="purchaseform"
+        (ngSubmit)="onSubmit('purchaseform')"
+        class="row col-sm-12 p-0 m-0"
+      >
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline" class="font-11">
+            <mat-label>Quotation No</mat-label>
+            <input
+              matInput
+              placeholder="Enter Item Name"
+              formControlName="quot_no"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline" class="font-11">
+            <mat-label>Item Code</mat-label>
+            <input
+              matInput
+              placeholder="Enter Item Code"
+              formControlName="item_code"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4">
+          <mat-form-field appearance="outline" class="font-11">
+            <mat-label>Select Item</mat-label>
+            <mat-select formControlName="pur_item">
+              <mat-option hidden>Select</mat-option>
+              <mat-option
+                *ngFor="let a of purch_items"
+                value="{{ a.item_name_pur }}"
+                >{{ a.item_name_pur }} -- {{ a.item_price_pur }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <i
+            class="fal fa-plus-circle pl-3"
+            mat-button
+            [matMenuTriggerFor]="afterMenus"
+          ></i>
+        </div>
+
+        <div class="col-sm-2 mt-1">
+          <button mat-raised-button class="text-info font-12" type="submit">
+            Submit
+          </button>
+          <!-- <button mat-raised-button type="submit" color="primary">Submit</button> -->
+        </div>
+      </form>
+    </div>
+    <!-- *ngIf="general_enquiry" -->
+    <div class="row p-0 m-0" *ngIf="showForm === 'general enquiry'">
+      <h4 class="pl-3">General Enquiry</h4>
+      <div class="col-sm-12 p-2 ge">
+        <form
+          [formGroup]="genenquiryform"
+          (ngSubmit)="onSubmit('genenquiryform')"
+          class="row col-sm-12 p-0 m-0"
+        >
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Email Id</mat-label>
+              <input
+                matInput
+                placeholder="Enter Email Id"
+                formControlName="email_id"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Enquiry</mat-label>
+              <input
+                matInput
+                placeholder="Enter Enquiry"
+                formControlName="enquiry"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Priority</mat-label>
+              <mat-select formControlName="priority">
+                <mat-option value="low">Low</mat-option>
+                <mat-option value="medium">Medium</mat-option>
+                <mat-option value="high">High</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12 mt-1">
+            <button
+              mat-raised-button
+              class="text-info font-12 ml-3"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row p-0 m-0" *ngIf="showForm === 'enquiry' || 'enquiry form'">
+      <h4 class="pl-3">Enquiry Form</h4>
+      <div class="col-sm-12 p-2 ge">
+        <form
+          [formGroup]="enquiryform"
+          (ngSubmit)="onSubmit('enquiryform')"
+          class="row col-sm-12 p-0 m-0"
+        >
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Customer Number</mat-label>
+              <input
+                matInput
+                placeholder="Enter Customer Number"
+                formControlName="cust_no"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Email Id</mat-label>
+              <input
+                matInput
+                placeholder="Enter Email Id"
+                formControlName="email_id"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Contact Number</mat-label>
+              <input
+                matInput
+                placeholder="Contact Number"
+                formControlName="cntc_no"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Description</mat-label>
+              <textarea
+                matInput
+                placeholder="Enter Description"
+                formControlName="query"
+              ></textarea>
+              <!-- <input type="textarea" matInput placeholder="Query" formControlName="query"> -->
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12 mt-1">
+            <button
+              mat-raised-button
+              class="text-info font-12 ml-3"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- *ngIf="damage_form" -->
+    <div class="row p-0 m-0" *ngIf="showForm === 'damage form'">
+      <h4 class="pl-3">Damage Form</h4>
+      <div class="col-sm-12 p-2 ge">
+        <form
+          [formGroup]="damageform"
+          (ngSubmit)="onSubmit('damageform')"
+          class="row col-sm-12 p-0 m-0"
+        >
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Item ID</mat-label>
+              <input
+                matInput
+                placeholder="Enter Item ID"
+                formControlName="damageitem_id"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Item Name</mat-label>
+              <input
+                matInput
+                placeholder="Enter Item Name"
+                formControlName="damageitem_name"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Enter Description</mat-label>
+              <textarea
+                matInput
+                placeholder="Enter Description"
+                formControlName="damage_description"
+              ></textarea>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12 mt-1">
+            <button
+              mat-raised-button
+              class="text-info font-12 ml-3"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- *ngIf="returnorder_form" -->
+    <div class="row p-0 m-0" *ngIf="showForm === 'return order form'">
+      <h4 class="pl-3">Return Order Form</h4>
+      <div class="col-sm-12 p-2 ge">
+        <form
+          [formGroup]="returnorderform"
+          (ngSubmit)="onSubmit('returnorderform')"
+          class="row col-sm-12 p-0 m-0"
+        >
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Item ID</mat-label>
+              <input
+                matInput
+                placeholder="Enter Item ID"
+                formControlName="returnitem_id"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Item Name</mat-label>
+              <input
+                matInput
+                placeholder="Enter Item Name"
+                formControlName="returnitem_name"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Reason</mat-label>
+              <textarea
+                matInput
+                placeholder="Enter Reason"
+                formControlName="Reason"
+              ></textarea>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12 mt-1">
+            <button
+              mat-raised-button
+              class="text-info font-12 ml-3"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- *ngIf="deals_ui_form" -->
+    <div class="row p-0 m-0" *ngIf="showForm === 'deals ui form'">
+      <h4 class="pl-3">Deals UI Form</h4>
+      <div class="col-sm-12 p-2 ge">
+        <form
+          [formGroup]="dealsuiform"
+          (ngSubmit)="onSubmit('dealsuiform')"
+          class="row col-sm-12 p-0 m-0"
+        >
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>User ID</mat-label>
+              <input matInput placeholder="User ID" formControlName="userid" />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>First Name</mat-label>
+              <input
+                matInput
+                placeholder="Enter First Name"
+                formControlName="first_name"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Last Name</mat-label>
+              <input
+                matInput
+                placeholder="Enter Last Name"
+                formControlName="last_name"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Phone</mat-label>
+              <input
+                matInput
+                placeholder="Enter Phone Number"
+                formControlName="phone"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Url Trying To Access</mat-label>
+              <input
+                matInput
+                placeholder="Url Trying To Access"
+                formControlName="url"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Vendor / Broker For Vendor Portal</mat-label>
+              <input
+                matInput
+                placeholder="Vendor / Broker For Vendor Portal"
+                formControlName="vendor_broker"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-3">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Description</mat-label>
+              <textarea
+                matInput
+                placeholder="Enter Description"
+                formControlName="description"
+              ></textarea>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12 mt-1">
+            <button
+              mat-raised-button
+              class="text-info font-12 ml-3"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- *ngIf="vendorbillback" -->
+    <div class="row p-0 m-0" *ngIf="showForm === 'vendor billback form'">
+      <h4 class="pl-3">Vendor Billback Form</h4>
+      <div class="col-sm-12 p-2 belowdiv">
+        <form
+          [formGroup]="vendorbackForm"
+          (ngSubmit)="onSubmit('vendorbackForm')"
+          class="row col-sm-12 p-0 m-0"
+        >
+          <div class="col-sm-12">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Name</mat-label>
+              <input matInput placeholder="Enter Name" formControlName="name" />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12 mt-1">
+            <button
+              mat-raised-button
+              class="text-info font-12 ml-3 float-right"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- *ngIf="payboxform" -->
+    <div class="row p-0 m-0" *ngIf="showForm === 'paybox form'">
+      <h4 class="pl-3">PayBox Form</h4>
+      <div class="col-sm-12 p-2 belowdiv">
+        <form
+          [formGroup]="payboxForm"
+          (ngSubmit)="onSubmit('payboxForm')"
+          class="row col-sm-12 p-0 m-0"
+        >
+          <div class="col-sm-12">
+            <mat-form-field appearance="outline" class="font-11 col-12">
+              <mat-label>Name</mat-label>
+              <input matInput placeholder="Enter Name" formControlName="name" />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12 mt-1">
+            <button
+              mat-raised-button
+              class="text-info font-12 ml-3 float-right"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- *ngIf="vendor_form" -->
+  <div class="row p-0 m-0" *ngIf="showForm === 'vendor form'">
+    <h4 class="pl-3">Vendor Form</h4>
+    <div class="col-sm-12 p-2 ge">
+      <form
+        [formGroup]="vendorform"
+        (ngSubmit)="onSubmit('vendorform')"
+        class="row col-sm-12 p-0 m-0"
+      >
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline" class="font-11 col-12">
+            <mat-label>Vendor Name</mat-label>
+            <input
+              matInput
+              placeholder="Enter Vendor Name"
+              formControlName="vendor_name"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline" class="font-11 col-12">
+            <mat-label>Vendor Point of Contact</mat-label>
+            <input
+              matInput
+              placeholder="Vendor Point of Contact"
+              formControlName="vendor_point_contact"
+            />
+            <!-- <textarea matInput placeholder="Vendor Point of Contact" formControlName="vendor_point_contact"></textarea> -->
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline" class="font-11 col-12">
+            <mat-label>Merchandiser Point of Contact</mat-label>
+            <input
+              matInput
+              placeholder="Enter"
+              formControlName="merchantdiser_contact"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12 mt-1">
+          <button
+            mat-raised-button
+            class="text-info font-12 ml-3"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-sm-3 pt-2">
+    <mat-menu #afterMenus="matMenu" xPosition="after">
+      <span
+        mat-menu-item
+        [disableRipple]="true"
+        (click)="$event.stopPropagation()"
+        class="saveMenuItem"
+      >
+        <div class="row p-0">
+          <div class="col-sm-12 pt-2">
+            <form [formGroup]="purcchsubform" (ngSubmit)="addItem_pur()">
+              <div class="col-sm-4">
+                <mat-form-field appearance="outline" class="font-10">
+                  <mat-label>Item Name</mat-label>
+                  <input
+                    matInput
+                    placeholder="Enter Item"
+                    formControlName="item_name_pur"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-sm-4">
+                <mat-form-field appearance="outline" class="font-10">
+                  <mat-label>Item Price</mat-label>
+                  <input
+                    matInput
+                    placeholder="Enter Price"
+                    formControlName="item_price_pur"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-sm-4">
+                <mat-form-field appearance="outline" class="font-10">
+                  <mat-label>Item Quantity</mat-label>
+                  <input
+                    matInput
+                    placeholder="Enter Quantity"
+                    formControlName="item_price_qun"
+                  />
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-12">
+                <button
+                  mat-raised-button
+                  class="text-info font-12 float-right"
+                  type="submit"
+                >
+                  Add
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </span>
+    </mat-menu>
+  </div>
+  <!-- *ngIf="callbackform" -->
+  <div class="row p-0 m-0 data-card" *ngIf="showForm === 'callbackform'">
+    <h4 class="pl-3">Callback Form</h4>
+    <div class="col-sm-12 p-2 belowdiv">
+      <form
+        [formGroup]="callbackForm"
+        (ngSubmit)="onSubmit('callbackform')"
+        class="row col-sm-12 p-0 m-0"
+      >
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline" class="font-11 col-12">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Enter Name" formControlName="name" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline" class="font-11 col-12">
+            <mat-label>Phone number</mat-label>
+            <input
+              matInput
+              placeholder="Phone number"
+              formControlName="phn_nbr"
+            />
+            <!-- <textarea matInput placeholder="Vendor Point of Contact" formControlName="vendor_point_contact"></textarea> -->
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline" class="font-11 col-12">
+            <mat-label>Email id</mat-label>
+            <input matInput placeholder="Email id" formControlName="email_id" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline" class="font-11 col-12">
+            <mat-label>Issue</mat-label>
+            <input matInput placeholder="Issue" formControlName="issue" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline" class="font-11 col-12">
+            <mat-label>Time for Callback</mat-label>
+            <input
+              matInput
+              placeholder="Time for Callback"
+              formControlName="tym_callback"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12 mt-1">
+          <button
+            mat-raised-button
+            class="text-info font-12 ml-3"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- npm install --save intbot/ng2-pdfjs-viewer#master -->

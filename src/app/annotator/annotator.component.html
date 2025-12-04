@@ -1,0 +1,266 @@
+<div class="row m-0 p-3">
+  <div class="col-sm-12 p-0" *ngIf="annotateFileData === undefined">
+    <div class="row m-0 d-flex justify-content-center">
+      <label class="file-label">
+        <form [formGroup]="form">
+          <input
+            class="file-input"
+            type="file"
+            #fileInput
+            name="textfile"
+            (change)="onChange($event)"
+            accept=".txt"
+          /><span class="file-cta"
+            ><span class="file-icon"
+              ><svg
+                class="svg-inline--fa fa-file-alt fa-w-12"
+                aria-hidden="true"
+                focusable="false"
+                data-prefix="fas"
+                data-icon="file-alt"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 384 512"
+              >
+                <path
+                  class=""
+                  fill="currentColor"
+                  d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm64 236c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12v8zm0-64c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12v8zm0-72v8c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm96-114.1v6.1H256V0h6.1c6.4 0 12.5 2.5 17 7l97.9 98c4.5 4.5 7 10.6 7 16.9z"
+                ></path></svg></span
+            ><span class="file-label">
+              Select file to start annotating
+            </span></span
+          >
+        </form>
+      </label>
+    </div>
+    <div class="row m-0 d-flex justify-content-center mt-4">
+      <div class="col-sm-12 text-center">
+        <p class="note">Rules for uploading file for Annotation</p>
+      </div>
+      <div class="col-sm-6 listborder">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <i class="fas fa-circle font-8 pr-2 doticon"></i> Type of file will
+            be document text(.txt)
+          </li>
+          <li class="list-group-item">
+            <i class="fas fa-circle font-8 pr-2 doticon"></i> First line shoud
+            be the name of Intent and name of Intent should be same as DataViz
+            name <br />(e.g. Intent:Sales )
+          </li>
+          <li class="list-group-item">
+            <i class="fas fa-circle font-8 pr-2 doticon"></i> Second line should
+            be the response (e.g. response:data)
+          </li>
+          <li class="list-group-item">
+            <i class="fas fa-circle font-8 pr-2 doticon"></i> Third line should
+            be default NER <b>If need</b> (e.g. default_ner:AR_SHIP_DATE)
+          </li>
+          <li class="list-group-item">
+            <i class="fas fa-circle font-8 pr-2 doticon"></i> Fourth line should
+            be utterances (e.g. "sales for chain 00052")
+          </li>
+          <li class="list-group-item">
+            <i class="fas fa-circle font-8 pr-2 doticon"></i> Each utterance
+            shall be written in the next line
+          </li>
+          <li class="list-group-item">
+            <i class="fas fa-circle font-8 pr-2 doticon"></i> Don't use special
+            characters (",","/" or "-") to seperate two utterances.
+          </li>
+          <li class="list-group-item">
+            <i class="fas fa-circle font-8 pr-2 doticon"></i> Example
+            <a class="pointer" (click)="downloadFile()">Click Here</a> To
+            Download
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row m-0 p-0 col-sm-12">
+    <div class="col-12 p-0" *ngIf="annotateFileData !== undefined">
+      <div class="panel">
+        <div class="panel-heading">
+          <div class="field is-grouped is-grouped-multiline">
+            <!-- <div class="col-sm-2 p-0">
+              <form [formGroup]="annotatorGroup" *ngIf="this.domainsData !== undefined && this.domainsData.length !== 0 && !tagging">
+
+                            <input type="text" class="input is-inline" formControlName="domain" [matAutocomplete]="auto" placeholder="SEARCH DOMAIN" #box (keyup)="checkValue(box)" *ngIf="showTagText">
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" class="securityUser"
+                                (optionSelected)="onDomain($event.option.value)" >
+                                <mat-option *ngFor="let data of domains | async; let idx = index" [value]="data">
+                                    {{data }}
+                                </mat-option>
+                            </mat-autocomplete>
+
+                          <input type="text"  formControlName="domain" class="input is-inline" placeholder="ENTER DOMAIN" autocomplete="off" #box (keyup)="checkValue(box)" *ngIf="!showTagText">
+
+              </form>
+              </div> -->
+            <!-- <div class="col-sm-1 pl-0">
+             <div *ngIf="this.domainsData !== undefined && this.domainsData.length !== 0 && !tagging">
+              <mat-icon class="pointer font-20 mt-2 addCircle" title="New Domain" (click)="showInp()" *ngIf="showTagText">
+                add_circle_outline
+              </mat-icon>
+              <i class="fal fa-times pointer font-20 mt-2 addCircle" title="Cancel" (click)="showInp()" *ngIf="!showTagText"></i>
+             </div>
+
+           </div> -->
+            <div class="col-sm-2 p-0">
+              <p class="control p-0">
+                <input
+                  type="text"
+                  [(ngModel)]="annotate"
+                  class="input is-inline"
+                  (ngModelChange)="annotate = $event.toUpperCase()"
+                  placeholder="NER TAG"
+                  style="text-transform: uppercase"
+                  (keyup.enter)="addNewAnnotation()"
+                />
+              </p>
+            </div>
+            <div class="col-sm-1 pl-0">
+              <button
+                type="button"
+                mat-raised-button
+                class="text-info addsaveBtn md font-13"
+                title="Add"
+                (click)="addNewAnnotation()"
+              >
+                Add
+              </button>
+              <!-- <button type="button" class="button is-add is-outlined" (click)="addNewAnnotation()">Add</button> -->
+            </div>
+
+            <div class="col-sm-3">
+              <!-- <p class="domain" *ngIf="intent !== undefined">Intent : {{intent}}</p> -->
+            </div>
+            <div class="mt-2 col-sm-3" [@simpleFadeAnimation]="'in'">
+              <mat-progress-bar
+                mode="determinate"
+                class="tagprogress"
+                [value]="progress"
+              ></mat-progress-bar>
+              <p class="tagging mt-2 mb-0">
+                Tagging
+                <span class="small float-right tagging">
+                  Progress {{ fileLength }} of
+                  {{ this.fileContent.length }}</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row m-0 p-2">
+          <!-- <div class="col-sm-12" *ngIf="tagging">
+            <span class="domain">
+             DOMAIN : {{domain}}
+            </span>
+           </div> -->
+          <div class="col-sm-12 mt-2" *ngIf="intent !== undefined">
+            <span class="domain">INTENT : {{ intent }}</span>
+          </div>
+          <div class="col-sm-12 mt-2" *ngIf="uploadResponse !== undefined">
+            <span class="domain">Response : {{ this.uploadResponse }}</span>
+          </div>
+          <div class="col-sm-12 mt-4" *ngIf="tags.length !== 0">
+            <span class="domain">TAGS</span>
+          </div>
+          <div
+            class="tags is-medium has-addons col-sm-12 pt-3"
+            *ngIf="tags.length !== 0"
+          >
+            <div class="btn-group mr-3 mb-2" *ngFor="let a of tags">
+              <button
+                type="button"
+                class="btn tagbutton"
+                (click)="addAnnotation(a, '#0069d9')"
+              >
+                {{ a }}
+                <span class="badge" (click)="removeAnnotation(a)" title="remove"
+                  ><i class="fas fa-times-circle removetag"></i
+                ></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="panel-block row m-0 p-2">
+          <!-- <div class="col-sm-12">
+            <span class="domain" >UTTERANCES</span>
+          </div> -->
+          <div class="col-sm-12 mt-3">
+            <span class="utterance">UTTERANCES : </span>
+            <ngx-annotate-text
+              [(annotations)]="annotations"
+              class="annotateText"
+              [removable]="true"
+              [text]="annotateFileData"
+              annotationClass="my-annotation"
+              #annotateText
+            >
+            </ngx-annotate-text>
+          </div>
+        </div>
+
+        <div class="panel-block mt-2">
+          <div class="field is-grouped pl-1 ml-3">
+            <p class="control">
+              <!-- <button class="button is-danger is-outlined annotateBtn" (click)="resetAnnotation()"> Reset </button> -->
+
+              <button
+                type="button"
+                mat-raised-button
+                class="text-info saveBtn md font-13"
+                title="Reset"
+                (click)="resetAnnotation()"
+              >
+                Reset
+              </button>
+            </p>
+            <!-- {{this.fileContent.length}}
+            {{templength}} -->
+            <!-- 10.5
+           12747
+           8742
+
+           12 months
+
+           21489  -->
+
+            <p
+              class="control"
+              *ngIf="annotationsData.length < fileContent.length - 1"
+            >
+              <button
+                type="button"
+                mat-raised-button
+                class="text-info saveBtn md font-13"
+                title="Next"
+                (click)="saveAnnotateData()"
+              >
+                Next
+              </button>
+              <!-- <button class="button is-next is-outlined annotateBtn" (click)="saveAnnotateData()">Next</button> -->
+            </p>
+            <p class="control">
+              <button
+                type="button"
+                mat-raised-button
+                class="text-info saveBtn md font-13"
+                title="Submit"
+                (click)="submitAnnotateData()"
+              >
+                Submit
+              </button>
+              <!-- <button class="button is-submit is-outlined annotateBtn" title="Submit" [href]="downloadJsonHref"
+                download="download.json" (click)="downloadJson()">Submit</button> -->
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

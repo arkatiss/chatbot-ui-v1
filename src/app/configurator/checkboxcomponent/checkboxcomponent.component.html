@@ -1,0 +1,4 @@
+<mat-checkbox class="mr-2" (click)="$event.stopPropagation()"
+(change)="$event ? selection.toggle(params.data) : null;selectIntent(params.data,$event,params.node.rowIndex)"
+[checked]="selection.isSelected(params.data)">
+</mat-checkbox>

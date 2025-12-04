@@ -1,0 +1,73 @@
+<div>
+  <ngx-spinner
+    bdColor="rgba(51,51,51,0.2)"
+    size="default"
+    color="#199ad6"
+    type="ball-spin-clockwise"
+    [fullScreen]="false"
+  >
+    <button type="button" mat-raised-button class="mt-4" (click)="cancel()">
+      Cancel
+    </button>
+  </ngx-spinner>
+  <!-- <h4 class="font-14 fw-500  pl-2 pr-3 pt-3 pb-3 primary">Domain view</h4> -->
+
+  <div class="row m-0 col-12 p-0">
+    <div class="col-4 p-0">
+      <h4 class="font-14 fw-500 pr-3 pt-3 pb-3 pl-4 mb-0 primary">
+        Domain view
+      </h4>
+    </div>
+    <div class="col-8">
+      <mat-form-field
+        appearance="outline"
+        class="font-11 col-sm-4 p-1 float-end"
+      >
+        <mat-label>Search </mat-label>
+        <input
+          type="text"
+          matInput
+          autocomplete="off"
+          (keyup)="filterDatatable($event)"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- <ngx-datatable
+    *ngIf="rowData.length>0" #table style="height:300px;width: 100%;" class="material ml-0 mr-0"
+
+    [rows]="rowData"
+
+     [columns]="displayedColumns"
+     [columnMode]="'force'"
+
+     [headerHeight]="40" [footerHeight]="40" [scrollbarH]="true"
+     [limit]="9" [rowHeight]="40" [scrollbarV]="true"
+      #table >
+<ngx-datatable-column name="S.No" [width]="5">
+  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+    {{ rowIndex + 1 }}
+  </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column *ngFor="let column of displayedColumns; let i = index;"   name="{{column.name}}" prop="{{column.prop}}">
+  </ngx-datatable-column>
+    </ngx-datatable> -->
+  <div class="col-sm-12">
+    <ag-grid-angular
+      #agGrid
+      class="ag-theme-balham mt-3 customgridheight"
+      [rowData]="rowData"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [groupMultiAutoColumn]="true"
+      [sideBar]="sidebar"
+      [animateRows]="true"
+      [pagination]="true"
+      [paginationAutoPageSize]="true"
+      (gridReady)="onGridReady($event)"
+      [autoGroupColumnDef]="autoGroupColumnDef"
+    >
+    </ag-grid-angular>
+  </div>
+</div>

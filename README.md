@@ -1,6 +1,20 @@
-# CdeskV17NSD3
+# Chatbot
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.6.
+
+## Installation Instructions
+
+Before installing project dependencies, ensure you are using **Node.js v20.14.0**.
+
+If you are using **nvm**, you can switch to the correct version with:
+
+```bash
+nvm install 20.14.0
+nvm use 20.14.0
+
+Once the correct Node version is active, install the project dependencies with:
+
+npm install --legacy-peer-deps
 
 ## Development server
 
@@ -25,3 +39,4 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```

@@ -1,0 +1,672 @@
+<div class="row col-sm-12 p-0 m-0 pb-5">
+  <h4 class="font-14 fw-500 pr-3 pt-3 pb-3 pl-3 mb-0 primary">
+    Create Infoset
+  </h4>
+  <div class="col-sm-12 p-0 pt-1 mt-1">
+    <form [formGroup]="infosetform">
+      <div class="row m-0 pl-1">
+        <div class="col-sm-2">
+          <!-- <mat-form-field appearance="outline" class="font-11 col-sm-12 p-1">
+            <mat-label>Select Domain</mat-label>
+            <mat-select formControlName="domain_name" (selectionChange)="selectDomainForInfoset($event.value);">
+              <mat-option *ngFor="let d of domainDetails" [value]="d.domain">{{d.domain}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+          <mat-form-field
+            appearance="outline"
+            class="font-11 col-sm-12 p-1"
+            *ngIf="domainDetails.length > 0"
+          >
+            <mat-label>Select Domain</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="domain_name"
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="displayFn"
+              class="securityUser"
+            >
+              <mat-option
+                *ngFor="let option of filteredDomainOptions | async"
+                [value]="option.domain"
+                (click)="selectDomainForInfoset(option.domain)"
+              >
+                {{ option.domain }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-2">
+          <!-- <mat-form-field appearance="outline" class="font-11 col-sm-12 p-1">
+            <mat-label>Select Sub Domain</mat-label>
+            <mat-select formControlName="sub_domain"
+              (selectionChange)="changeSubDomainForInfoset();">
+              <mat-option *ngFor="let sd of  subDomainDetails" [value]="sd">{{sd}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+          <mat-form-field
+            appearance="outline"
+            class="font-11 col-sm-12 p-1"
+            *ngIf="subDomainDetails.length === 0"
+          >
+            <mat-label>Select Sub Domain</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="sub_domain"
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="displayFn"
+              class="securityUser"
+            >
+              <mat-option
+                *ngFor="let option of filteredSubDomainOptions | async"
+                [value]="option"
+                (onSelectionChange)="changeSubDomainForInfoset(option)"
+              >
+                {{ option }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <mat-form-field
+            appearance="outline"
+            class="font-11 col-sm-12 p-1"
+            *ngIf="subDomainDetails.length > 0"
+          >
+            <mat-label>Select Sub Domain</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="sub_domain"
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="displayFn"
+              class="securityUser"
+            >
+              <mat-option
+                *ngFor="let option of filteredSubDomainOptions | async"
+                [value]="option"
+                (onSelectionChange)="changeSubDomainForInfoset(option)"
+              >
+                {{ option }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-2">
+          <mat-form-field
+            appearance="outline"
+            class="font-11 col-sm-12 p-1"
+            *ngIf="infosets.length > 0 && shownewInfoset"
+          >
+            <mat-label>Select Infoset</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="infosetControl"
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="displayFn"
+              class="securityUser"
+            >
+              <mat-option
+                *ngFor="let option of filteredInfosetOptions | async"
+                [value]="option.fileName"
+                (onSelectionChange)="
+                  changeInfosetForTable(option.fileName, option)
+                "
+              >
+                {{ option.fileName }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="font-11 col-sm-12 p-1"
+            *ngIf="infosets.length === 0 && shownewInfoset"
+          >
+            <mat-label>Select Infoset</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="infosetControl"
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="displayFn"
+              class="securityUser"
+            >
+              <mat-option
+                *ngFor="let option of filteredInfosetOptions | async"
+                [value]="option.fileName"
+                (onSelectionChange)="
+                  changeInfosetForTable(option.fileName, option)
+                "
+              >
+                {{ option.fileName }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="font-11 col-sm-12 p-1"
+            *ngIf="!shownewInfoset"
+          >
+            <mat-label>Enter Infoset</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="infosetControl"
+              autocomplete="off"
+            />
+          </mat-form-field>
+        </div>
+        <!-- *ngIf = "addbuttonshow" -->
+        <mat-icon
+          class="pointer ml-4 font-22 mt-3 pt-1"
+          title="Add"
+          (click)="addnewInfoset()"
+          *ngIf="shownewInfoset"
+        >
+          add_circle_outline
+        </mat-icon>
+        <mat-icon
+          class="pointer ml-4 font-22 mt-3 pt-1"
+          title="Add"
+          (click)="showFormDiv()"
+          *ngIf="!shownewInfoset"
+        >
+          done
+        </mat-icon>
+        <mat-icon
+          class="pointer ml-4 font-22 mt-3 pt-1"
+          title="close"
+          (click)="addnewInfoset()"
+          *ngIf="!shownewInfoset"
+        >
+          highlight_off
+        </mat-icon>
+        <!-- <mat-icon class="pointer ml-4 font-22 pt-3" title="Add" (click)="AddNewData()" >
+          add_circle_outline
+        </mat-icon> -->
+
+        <mat-slide-toggle
+          class="headertoggle mt-3 pt-1 ml-4 col-sm-2"
+          formControlName="securityFlag"
+          (change)="changeSecurity($event)"
+        >
+          Public
+        </mat-slide-toggle>
+      </div>
+    </form>
+    <form
+      [formGroup]="addForm"
+      class="belowdiv"
+      (ngSubmit)="addNewHierachyData(addForm.value, masterDataType)"
+      novalidate
+      *ngIf="showForm"
+    >
+      <div class="row pl-2 pt-2">
+        <div class="col-sm-3">
+          <input type="text" formControlName="uniqueId" hidden />
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Category</mat-label>
+            <mat-select
+              formControlName="category"
+              (selectionChange)="selectCategory($event.value)"
+            >
+              <mat-option [value]="cat.field" *ngFor="let cat of categories">{{
+                cat.name
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Attribute Type</mat-label>
+            <mat-select
+              formControlName="attr_type"
+              (selectionChange)="selectAttribute($event.value)"
+            >
+              <mat-option [value]="a.field" *ngFor="let a of attrValues">{{
+                a.op_type
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+          <mat-form-field
+            class="example-full-width"
+            appearance="outline"
+            *ngIf="showtd2"
+          >
+            <mat-label>Attribute Name</mat-label>
+            <input
+              matInput
+              placeholder="Attribute Name"
+              formControlName="attr_name"
+            />
+          </mat-form-field>
+          <mat-form-field
+            class="example-full-width"
+            appearance="outline"
+            *ngIf="showtd"
+          >
+            <mat-label>Attribute Name</mat-label>
+            <mat-select formControlName="attr_name">
+              <mat-option [value]="a.field" *ngFor="let a of tdtpes">{{
+                a.op_type
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-3">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Operation Type</mat-label>
+            <mat-select
+              formControlName="operation_type"
+              (selectionChange)="selectOperation($event.value, openConnectors)"
+            >
+              <mat-option [value]="a.field" *ngFor="let a of operationTypes">{{
+                a.op_type
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3" *ngIf="duration">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Attribute Reference</mat-label>
+            <input
+              matInput
+              placeholder="Attribute Reference"
+              formControlName="attr_ref"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3" *ngIf="oplink">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>{{ oplinktext }}</mat-label>
+            <input
+              matInput
+              placeholder="{{ oplinktext }}"
+              formControlName="oper_link"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3" *ngIf="showfile">
+          <input type="file" class="pt-2" formControlName="oper_link" />
+        </div>
+        <div class="col-sm-3" *ngIf="opinput">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Operation Input</mat-label>
+            <input
+              matInput
+              placeholder="Operation Input"
+              formControlName="oper_output"
+            />
+            <mat-icon
+              matSuffix
+              color="primary"
+              class="pointer"
+              [popover]="popTemplate"
+              [outsideClick]="true"
+              placement="bottom"
+              >info</mat-icon
+            >
+          </mat-form-field>
+        </div>
+
+        <ng-template #popTemplate> Date Column Name </ng-template>
+
+        <div class="col-sm-3" *ngIf="opvalue">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Operation Value</mat-label>
+            <input
+              matInput
+              placeholder="Operation Value"
+              formControlName="oper_value"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <input
+              type="text"
+              rows="5"
+              matInput
+              formControlName="description"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <button
+          type="submit"
+          mat-raised-button
+          class="text-info md float-right mt-5 font-13"
+        >
+          {{ submitText }}
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="col-sm-12 p-0 pt-1 mt-5 pl-2 pr-2">
+    <h4
+      class="font-14 fw-500 p-1 mb-0 primary"
+      *ngIf="masterDetails.length > 0"
+    >
+      Master Data
+    </h4>
+    <ngx-datatable
+      *ngIf="masterDetails.length > 0"
+      #table
+      style="height: 300px"
+      class="material ml-0 mr-0"
+      [rows]="masterDetails"
+      [columnMode]="'force'"
+      [headerHeight]="40"
+      [footerHeight]="40"
+      [scrollbarH]="true"
+      [limit]="9"
+      [rowHeight]="40"
+      [scrollbarV]="true"
+    >
+      <ngx-datatable-column name="S.No" [width]="5">
+        <ng-template
+          let-row="row"
+          let-rowIndex="rowIndex"
+          ngx-datatable-cell-template
+        >
+          {{ rowIndex + 1 }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        prop="attr_name"
+        name="Attribute Name"
+        [flexGrow]="1"
+      >
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.attr_name }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        prop="operation_type"
+        name="Operation Type"
+        [flexGrow]="1"
+      >
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.operation_type }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        prop="oper_value"
+        name="Operation Value"
+        [flexGrow]="1"
+      >
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.oper_value }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column
+        prop="description"
+        name="Description"
+        [flexGrow]="1"
+      >
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.description }}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="Actions">
+        <ng-template
+          let-row="row"
+          let-rowIndex="rowIndex"
+          ngx-datatable-cell-template
+        >
+          <mat-icon
+            class="pointer mr-4 font-18"
+            title="edit"
+            (click)="editData(row)"
+          >
+            edit
+          </mat-icon>
+          <mat-checkbox
+            class="example-margin"
+            (change)="drop($event, row, rowIndex)"
+          ></mat-checkbox>
+
+          <mat-icon
+            class="danger pointer ml-4 delete"
+            (click)="deleteHierachyData(row, 'delete')"
+            title="Delete"
+          >
+            delete_sweep
+          </mat-icon>
+        </ng-template>
+      </ngx-datatable-column>
+      <!-- <ngx-datatable-column>
+<ng-template ngx-datatable-header-template>
+
+</ng-template>
+</ngx-datatable-column> -->
+    </ngx-datatable>
+  </div>
+  <div class="mt-5 col-sm-12" *ngIf="parentItem.childs.length > 0">
+    <h4 class="font-14 fw-500 mb-0 primary pl-4">Master Hierarchy</h4>
+    <list-item
+      [item]="parentItem"
+      [connectedDropListsIds]="connectedDropListsIds"
+      cdkDropList
+      [cdkDropListData]="parentItem"
+      (itemDrop)="onDragDrop($event)"
+    >
+    </list-item>
+  </div>
+  <div class="col-sm-12" *ngIf="parentItem.childs.length > 0">
+    <button
+      type="button"
+      mat-raised-button
+      class="text-info md float-right m-1"
+      (click)="showPreview(openPreviewPopup)"
+    >
+      Preview
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      class="text-info md float-right m-1"
+      (click)="ClearData()"
+    >
+      Clear
+    </button>
+  </div>
+</div>
+<ng-template #openConnectors>
+  <div class="modal-header p-2">
+    <h3 class="font-14 primary">Build Your Query</h3>
+    <button
+      type="button"
+      class="close float-right pr-3"
+      aria-label="Close"
+      (click)="closedialog()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-3">
+    <div class="row m-0 p-0 col-sm-12">
+      <div class="col-sm-6 p-0 m-0">
+        <mat-form-field
+          appearance="outline"
+          class="font-11 col-sm-12 example-full-width"
+        >
+          <mat-label>Connectors</mat-label>
+          <mat-select [(ngModel)]="connector">
+            <mat-option *ngFor="let a of connectorlist" value="{{ a.name }}">
+              {{ a.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6 p-0 m-0">
+        <mat-form-field
+          appearance="outline"
+          class="font-11 col-sm-12 example-full-width"
+        >
+          <mat-label>Query</mat-label>
+          <textarea
+            matInput
+            placeholder="Enter Command"
+            [(ngModel)]="query"
+          ></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer p-2 mt-2 row">
+    <button
+      type="button"
+      mat-raised-button
+      class="text-info md float-right font-13"
+      (click)="addQry()"
+    >
+      submit
+    </button>
+  </div>
+</ng-template>
+<ng-template #openPreviewPopup>
+  <div class="modal-header p-2">
+    <h6 class="primary font-14">Preview Json Tree</h6>
+    <button
+      type="button"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+      (click)="closePopup()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-0" *ngFor="let dtls of previewDtls">
+    <div class="col-sm-12 p-2">
+      <div class="row m-0 pt-2 p-1">
+        <mat-accordion class="col-sm-8">
+          <div *ngIf="dtls.childs.length > 0">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title class="font-14 p-1">
+                  {{ dtls.attr_name }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-accordion *ngFor="let subdtls1 of dtls.childs">
+                <div *ngIf="subdtls1.childs.length > 0">
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title class="font-14 p-1">
+                        {{ subdtls1.attr_name }}
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-accordion *ngFor="let subdtls2 of subdtls1.childs">
+                      <div *ngIf="subdtls2.childs.length > 0">
+                        <mat-expansion-panel>
+                          <mat-expansion-panel-header>
+                            <mat-panel-title class="font-14 p-1">
+                              {{ subdtls2.attr_name }}
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          <mat-accordion
+                            *ngFor="let subdtls3 of subdtls2.childs"
+                          >
+                            <div *ngIf="subdtls3.childs.length > 0">
+                              <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                  <mat-panel-title class="font-14 p-1">
+                                    {{ subdtls2.attr_name }}
+                                  </mat-panel-title>
+                                </mat-expansion-panel-header>
+                              </mat-expansion-panel>
+                            </div>
+                            <div *ngIf="subdtls3.childs.length == 0">
+                              <mat-list role="list">
+                                <mat-list-item role="listitem p-1">
+                                  {{ subdtls3.attr_name }}
+                                </mat-list-item>
+                              </mat-list>
+                            </div>
+                          </mat-accordion>
+                        </mat-expansion-panel>
+                      </div>
+
+                      <div *ngIf="subdtls2.childs.length == 0">
+                        <mat-list role="list">
+                          <mat-list-item role="listitem p-1">
+                            {{ subdtls2.attr_name }}
+                          </mat-list-item>
+                        </mat-list>
+                      </div>
+                    </mat-accordion>
+                  </mat-expansion-panel>
+                </div>
+                <div *ngIf="subdtls1.childs.length == 0">
+                  <mat-list role="list">
+                    <mat-list-item role="listitem p-1">
+                      {{ subdtls1.attr_name }}
+                    </mat-list-item>
+                  </mat-list>
+                </div>
+              </mat-accordion>
+            </mat-expansion-panel>
+          </div>
+          <div *ngIf="dtls.childs.length == 0">
+            <mat-list role="list">
+              <mat-list-item role="listitem p-1">
+                {{ dtls.attr_name }}
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer p-0">
+    <!-- <button *ngIf="!saveJsonFile" type="button" mat-raised-button class="text-info md float-right previewBtn m-1" (click)="toggleSaveDiv()">Save</button> -->
+    <div class="row m-0">
+      <mat-form-field class="col-sm-8 mt-0 font-12">
+        <input
+          matInput
+          placeholder=""
+          autocomplete="off"
+          [(ngModel)]="jsonfilenameData"
+          readonly
+        />
+      </mat-form-field>
+      <!-- <span class="material-icons col-sm-1 mt-3 mr-2 primary" (click)="saveJson(jsonfilename.value)">
+      save
+      </span> -->
+      <button
+        type="button"
+        mat-raised-button
+        class="text-info md float-right previewBtn col-sm-2 m-2 font-13"
+        (click)="saveJson()"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</ng-template>

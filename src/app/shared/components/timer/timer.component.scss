@@ -1,0 +1,39 @@
+.delete-dialog-title {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 133.69%;
+    text-align: center;
+    color: #000000;
+    opacity: 0.95;
+  }
+  
+  
+  
+  .delete-dialog-btn {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 19px;
+    color: #D92337;
+  }
+  
+  .delete-dialog-btn:hover {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 19px;
+    color: #D92337;
+    background-color: #f8d1d5;
+    border-color: #f8d1d5;
+  }
+  .delete-dialog-btn:focus {
+    outline: 0 !important;
+    box-shadow:  none !important;
+  }
+  
+  .cs-red {
+    color: #D92337;
+  }

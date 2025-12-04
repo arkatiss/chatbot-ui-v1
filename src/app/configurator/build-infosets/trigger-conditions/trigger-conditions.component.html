@@ -1,0 +1,142 @@
+<div class="container-fluid mt-4">
+  <div class="card">
+    <div class="card-body">
+      <!-- New User Configuration -->
+      <h2 class="mb-4 fw-bold">New User Configuration</h2>
+      <p class="text-muted mb-3">
+        New user is a website visitor landing on your website for the first
+        time.
+      </p>
+
+      <div class="mb-4 d-flex flex-column">
+        <label class="form-label"
+          >What should the chatbot do when a new user lands on your
+          website?</label
+        >
+        <p-dropdown
+          [options]="newUserActions"
+          [(ngModel)]="newUserAction"
+          optionLabel="label"
+          optionValue="value"
+          [style]="{ width: '100%', 'max-width': '300px' }"
+          placeholder="Select action"
+        >
+        </p-dropdown>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"
+          >When do you want this action to be triggered?</label
+        >
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <p-dropdown
+            [options]="triggerOptions"
+            [(ngModel)]="newUserTrigger"
+            optionLabel="label"
+            optionValue="value"
+            [style]="{ width: '150px' }"
+            placeholder="Select trigger"
+          >
+          </p-dropdown>
+
+          <span class="mx-2">after</span>
+
+          <p-inputNumber
+            [(ngModel)]="newUserDelay"
+            [min]="1"
+            [max]="600"
+            [style]="{ width: '100px' }"
+            [inputStyle]="{ width: '100px' }"
+          >
+          </p-inputNumber>
+
+          <span class="mx-2">seconds popup should be displayed</span>
+        </div>
+        <small class="text-muted"
+          >(seconds should be in the range of 1-600)</small
+        >
+      </div>
+
+      <hr class="my-4" />
+
+      <!-- Returning User Configuration -->
+      <h2 class="mb-4 fw-bold">Returning User Configuration</h2>
+      <p class="text-muted mb-3">
+        A returning user is a website visitor who lands on your website again
+        after a certain period of time
+      </p>
+
+      <div class="mb-4">
+        <label class="form-label"
+          >Returning visitor is one who has visited website in the last</label
+        >
+        <div class="d-flex align-items-center gap-2">
+          <p-inputNumber
+            [(ngModel)]="returningUserDays"
+            [min]="1"
+            [max]="180"
+            [style]="{ width: '100px' }"
+            [inputStyle]="{ width: '100px' }"
+          >
+          </p-inputNumber>
+          <span>days</span>
+          <small class="text-muted ms-2"
+            >(Days should be in the range of 1-180)</small
+          >
+        </div>
+      </div>
+
+      <div class="mb-4 d-flex flex-column">
+        <label class="form-label"
+          >What should the chatbot do when a returning user lands on your
+          website?</label
+        >
+        <p-dropdown
+          [options]="returningUserActions"
+          [(ngModel)]="returningUserAction"
+          optionLabel="label"
+          optionValue="value"
+          [style]="{ width: '100%', 'max-width': '300px' }"
+          placeholder="Select action"
+        >
+        </p-dropdown>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label"
+          >When do you want this action to be triggered?</label
+        >
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <p-dropdown
+            [options]="triggerOptions"
+            [(ngModel)]="returningUserTrigger"
+            optionLabel="label"
+            optionValue="value"
+            [style]="{ width: '150px' }"
+            placeholder="Select trigger"
+          >
+          </p-dropdown>
+
+          <span class="mx-2">after</span>
+
+          <p-inputNumber
+            [(ngModel)]="returningUserDelay"
+            [min]="1"
+            [max]="600"
+            [style]="{ width: '100px' }"
+            [inputStyle]="{ width: '100px' }"
+          >
+          </p-inputNumber>
+
+          <span class="mx-2">seconds popup should be displayed</span>
+        </div>
+        <small class="text-muted"
+          >(seconds should be in the range of 1-600)</small
+        >
+      </div>
+      <button class="btn btn-lg btn-danger px-4" (click)="applyChanges()">
+        Apply Changes
+      </button>
+    </div>
+  </div>
+</div>

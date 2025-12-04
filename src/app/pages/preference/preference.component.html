@@ -1,0 +1,192 @@
+
+  <mat-tab-group class="col-12 row m-0 p-0">
+    <mat-tab label="Org Setup"> 
+     
+      <form [formGroup]="Form"  class="row col-12 p-3 m-0">
+        <div class="col-sm-2">
+          <mat-form-field appearance="outline" class="font-11 col-sm-12 p-0">
+            <mat-label>Organization</mat-label>
+            <!-- <input matInput placeholder="organization" > -->
+            <mat-select formControlName="organization" name="organization">
+              <mat-option *ngFor="let d of organizations" [value]="d.val">{{d.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+         </div>
+         <div class="col-sm-2">
+          <mat-form-field appearance="outline" class="font-11 col-sm-12 p-0">
+            <mat-label>Departments</mat-label>
+            <mat-select  formControlName="infydomain"  (selectionChange)="selectDomainForInfoset($event.value);">
+              <mat-option *ngFor="let d of domainDetails" [value]="d.domain">{{d.domain}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-2">
+          <mat-form-field appearance="outline" class="font-11 col-sm-12 p-0">
+            <mat-label>Select Sub Departments</mat-label>
+            <mat-select  formControlName="subinfydomain">
+              <mat-option *ngFor="let sd of  subDomainDetails" [value]="sd">{{sd}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+         <div class="col-sm-2">
+          <mat-form-field appearance="outline" class="font-11 col-sm-12 p-0">
+            <mat-label>Designation</mat-label>
+            <input matInput placeholder="designation" formControlName="designation">
+  
+          </mat-form-field>
+         </div>
+         <div class="col-sm-2">
+          <mat-form-field appearance="outline" class="font-11 col-sm-12 p-0">
+            <mat-label>Chains</mat-label>
+            <mat-select  formControlName="chainnbr" (selectionChange)="selectStoreNbr($event.value);">
+              <mat-option *ngFor="let sd of  chainData" [value]="sd">{{sd}}
+              </mat-option>
+            </mat-select>
+  
+          </mat-form-field>
+         </div>
+         <div class="col-sm-2">
+          <mat-form-field appearance="outline" class="font-11 col-sm-12 p-0">
+            <mat-label>Store Number</mat-label>
+            <mat-select  formControlName="storenbr" >
+              <mat-option *ngFor="let sd of  storeData" [value]="sd">{{sd}}
+              </mat-option>
+            </mat-select>
+  
+          </mat-form-field>
+         </div>
+       <!--- <div class="row col-3">
+          <mat-form-field  appearance="outline" class="font-11">
+            <mat-label>Region</mat-label>
+            <mat-select formControlName="region">
+              <mat-option *ngFor="let a of regions" value="{{a.val}}">{{a.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+         </div>
+           <div class="row col-3">
+            <mat-form-field appearance="outline" class="p-2" class="font-11"> 
+           <mat-label>Chain</mat-label>
+           <mat-select [(ngModel)]="chainCol" formControlName="chain_nbr" multiple  (selectionChange)="ChainSelection('chain_nbr',$event.value)">
+           <mat-option *ngFor="let chain of chainData2" value={{chain.CHAIN_NBR}}  >{{chain.CHAIN_NBR}}&nbsp;&nbsp;--&nbsp;&nbsp;{{chain.CHAIN_NAME}} </mat-option>
+           </mat-select>
+         </mat-form-field>
+           </div>
+           <div class="row col-3" >
+            <mat-form-field class="p-2" appearance="outline" class="font-11">
+           <mat-label>Store Group</mat-label>
+           <mat-select formControlName="store_group_nbr" multiple (selectionChange)="storeGroupSelection('STORE_GROUP_NBR',$event.value)">
+             <mat-option *ngFor="let storegroup of storegroupData" value={{storegroup.STORE_GROUP_NBR}}>{{storegroup.STORE_GROUP_NBR}}&nbsp;&nbsp;--&nbsp;&nbsp;{{storegroup.STORE_GROUP_NAME}}</mat-option>
+           </mat-select>
+         </mat-form-field>
+           </div>
+           <div class="row col-3" >
+            <mat-form-field class="p-2" appearance="outline" class="font-11">
+           <mat-label>Store</mat-label>
+           <mat-select formControlName="store_nbr" multiple (selectionChange)="storeSelection('STORE_NBR',$event.value)">
+             <mat-option *ngFor="let store of storeData" value={{store.STORE_NBR}}>{{store.STORE_NBR}}&nbsp;&nbsp;--&nbsp;&nbsp;{{store.STORE_NAME}}</mat-option>
+           </mat-select>
+         </mat-form-field>
+           </div>-->
+            
+          
+           <div class="col-12 mt-1">
+            <!-- <button mat-raised-button color="primary" cl (click)='moveToSelectedTab("Bot setup")'> Next</button> -->
+            <button mat-raised-button tabindex="-1" type="button" 
+             (click)='moveToSelectedTab("Personal Setup");dataSubmit()' class="float-right text-info md  font-13">Save & Next</button>
+           </div>  
+  
+           </form>
+         
+    </mat-tab>
+    
+    <mat-tab label="Personal Setup">
+     
+        <form [formGroup]="personalForm"  class="row col-sm-12 m-0 p-3">
+         
+            <mat-form-field appearance="outline" class="font-11 col-sm-2">
+              <mat-label>Name</mat-label>
+              <input matInput placeholder="Name" formControlName="name">
+    
+            </mat-form-field>
+         
+
+           
+            <mat-form-field appearance="outline" class="font-11 col-sm-2">
+              <mat-label>Email</mat-label>
+              <input matInput placeholder="Email" formControlName="email">
+    
+            </mat-form-field>
+         
+       
+            <mat-form-field appearance="outline" class="font-11 col-sm-2">
+              <mat-label>Phone no</mat-label>
+              <input matInput placeholder="Phone no" formControlName="phn">
+    
+            </mat-form-field>
+          
+          
+            <mat-form-field appearance="outline" class="font-11 col-sm-2">
+              <mat-label>RC ID</mat-label>
+              <input matInput placeholder="RC ID" formControlName="rc_id">
+    
+            </mat-form-field>
+
+
+               
+           <div class="col-sm-12 mt-1">
+           
+           
+            <button mat-raised-button tabindex="-1" type="button" class="float-right text-info md  font-13"
+           (click)='moveToSelectedTab("Bot Setup");dataSubmit()' >Save & Next</button>
+            <button mat-raised-button tabindex="-1" type="button" class="mr-2 float-right text-info md  font-13"
+             (click)='moveToSelectedTab("Org Setup")'>Previous</button>
+
+  
+
+          </div>
+        </form>
+      
+     </mat-tab>
+     <mat-tab label="Bot Setup">
+    
+        <form [formGroup]="botsetupForm"  class="row col-sm-12 p-3 m-0">
+          
+          
+        <div class="col-sm-3" >
+          <mat-form-field   appearance="outline" class="font-11 col-sm-12 p-0">
+         <mat-label>Retention Period</mat-label>
+         <mat-select formControlName="retention_period">
+           <mat-option  *ngFor="let a of retentions" value="{{a.val}}">{{a.name}}</mat-option>
+           <!-- <mat-option value="6months">6 months</mat-option>
+           <mat-option value="9months">9 months</mat-option>
+           <mat-option value="12months">12 months</mat-option> -->
+         </mat-select>
+       </mat-form-field>
+      
+         </div>
+         <div class="col-sm-3" >
+          <mat-form-field   appearance="outline" class="font-11 col-sm-12 p-0">
+         <mat-label>Private chat only</mat-label>
+         <mat-select formControlName="private_chat_only">
+           <mat-option *ngFor="let a of privatechats" value={{a.val}}>{{a.name}}</mat-option>
+          </mat-select>
+       </mat-form-field>
+      
+         </div>
+         </form>
+     
+       <div class="col-sm-12">
+        <button mat-raised-button  class="float-right text-info md  font-13" type="submit" (click)="dataSubmit()">Submit</button>
+        <button mat-raised-button tabindex="-1" type="button" class="float-right mr-2 text-info md  font-13"
+         (click)='moveToSelectedTab("Personal Setup")'>Previous</button>
+       
+       </div>
+     </mat-tab>
+  </mat-tab-group>
+
+
+
+

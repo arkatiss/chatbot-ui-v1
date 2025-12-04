@@ -1,0 +1,26 @@
+<div class="row m-0 col-12 p-0">
+  <div class="col-4 p-0">
+    <h4 class="font-14 fw-500 pr-3 pt-3 pb-3 pl-4 mb-0 primary">
+      Configurations
+    </h4>
+  </div>
+  <div class="col-8 p-0" *ngIf="showUpdate">
+    <button
+      type="button"
+      mat-raised-button
+      class="primary md float-right mt-3 mr-3"
+      (click)="updateConfiguration()"
+    >
+      Update
+    </button>
+  </div>
+</div>
+<div class="col-sm-12 p-0 mt-4 pl-2" style="height: 600px">
+  <json-editor
+    #editor
+    [options]="editorOptions"
+    [data]="configData"
+    (change)="changeConfigData($event)"
+  >
+  </json-editor>
+</div>

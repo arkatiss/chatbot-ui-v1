@@ -1,0 +1,89 @@
+
+.card {
+  border: 0;
+  border-radius: 0px;
+  margin-bottom: 30px;
+  -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.03);
+  -webkit-transition: .5s;
+  transition: .5s;
+  // overflow-y: auto !important;
+  // height: calc(100vh - 138px);
+  // background-color: white;
+
+}
+.chatcard{
+  border: none;
+  border-radius: 8px;
+  
+  // height: calc(100vh - 138px);
+  background-color: white;
+  height: calc(100vh - 100px);
+}
+.bodycard {
+  border: none;
+  border-radius: 8px;
+ 
+  // height: calc(100vh - 138px);
+  //background-color: white;
+ // overflow: auto !important;
+  
+}
+.bodyChartscard {
+  border: none;
+  border-radius: 8px;
+  height: calc(100vh - 75px);
+  // height: calc(100vh - 138px);
+  //background-color: white;
+  overflow: scroll !important;
+}
+.chatWidth{
+  width: 25%;
+}
+.dashBoardWidth{
+  width: 75%;
+  overflow-y: auto;
+  height: calc(100vh - 100px);
+}
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  .chatWidth{
+      width: 30% !important;
+  }
+  .dashBoardWidth{
+    width: 70% !important;
+    overflow-y: auto;
+    height: calc(100vh - 100px);
+  }
+}
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) {
+  .chatWidth{
+    width: 30% !important;
+}
+.dashBoardWidth{
+  width: 70% !important;
+  overflow-y: auto;
+  height: calc(100vh - 100px);
+}
+}
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) { 
+  .chatWidth{
+  width: 40% !important;
+}
+.dashBoardWidth{
+width: 60% !important;
+overflow-y: auto;
+height: calc(100vh - 100px);
+} }
+mat-sidenav-container {
+  position: fixed !important;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  min-width: 100%;
+}

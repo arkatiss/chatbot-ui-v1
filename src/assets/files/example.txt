@@ -1,0 +1,8 @@
+intent:sales
+if need response:navigate otherwise by default response will be data
+if need default_ner:AR_SHIP_DATE
+sales for meat for star
+sales for produce for stop&shop
+sales for grocery for star
+sales for dairy for military
+sales for general merchandise for olean

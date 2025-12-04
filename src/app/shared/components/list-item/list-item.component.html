@@ -1,0 +1,69 @@
+<div class="col-sm-12 p-0 m-0">
+  <div
+    cdkDropList
+    class="item-dropzone parent col-sm-10"
+    [id]="parentItemId"
+    [cdkDropListData]="parentItem"
+    [cdkDropListConnectedTo]="allDropListsIds"
+    (cdkDropListDropped)="onDragDrop($event)"
+  >
+    <div
+      cdkDrag
+      [id]="item.uniqueId"
+      [cdkDragData]="item"
+      [cdkDragDisabled]="dragDisabled"
+    >
+      <div
+        title="Drag this item with children"
+        class="item-drag-handle"
+        cdkDragHandle
+      >
+        {{ item.attr_name }}
+        <i *ngIf="!dragDisabled" class="material-icons"> drag_indicator </i>
+        <!-- <i *ngIf="!dragDisabled"
+                class="material-icons" (click)="getParentId(parentItemId,item.uId)">
+                add
+            </i> -->
+      </div>
+      <div class="item-drag-preview" *cdkDragPreview>
+        {{ item.attr_name }} with {{ item.childs.length }} child item(s)
+      </div>
+    </div>
+    <ul
+      cdkDropList
+      class="item-dropzone"
+      [id]="item.uniqueId"
+      [cdkDropListConnectedTo]="connectedDropListsIds"
+      [cdkDropListData]="item"
+      (cdkDropListDropped)="onDragDrop($event)"
+    >
+      <li *ngFor="let subItem of item.childs; let idx = index">
+        <list-item
+          [item]="subItem"
+          [parentItem]="item"
+          [connectedDropListsIds]="allDropListsIds"
+          (itemDrop)="onDragDrop($event)"
+        >
+        </list-item>
+      </li>
+    </ul>
+
+    <!-- <ul cdkDropList
+        class="item-dropzone"
+        [id]="item.uniqueId"
+        [cdkDropListConnectedTo]="connectedDropListsIds"
+        [cdkDropListData]="item"
+        (cdkDropListDropped)="onDragDrop($event)">
+        <li *ngFor="let subItem of item.childs;let idx = index;">
+            <list-item [item]="subItem"
+                [parentItem]="item"
+                [connectedDropListsIds]="allDropListsIds"
+                (itemDrop)="onDragDrop($event)">
+            </list-item>
+        </li>
+    </ul> -->
+  </div>
+</div>
+<!-- /dplui/save/copy/yaml
+    server_ip,path,file,json_format,pyro_port,token
+-->

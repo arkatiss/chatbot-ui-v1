@@ -1,0 +1,231 @@
+<div class="col-sm-12 p-0 m-0">
+  <div *ngIf="showTemplate === 'grid'">
+    <div class="col-sm-12 p-0">
+      <div class="header-info row p-0 m-0 pl-2">
+        <div class="col-sm-9 pt-3">
+          <!-- <input class="search-txtfilter" type="text" placeholder="Table search" autocomplete="off"
+            (keyup)="onFilterViz($event.target.value)"> -->
+          <span class="keyword-name">{{ inputKeyword | titlecase }}</span>
+
+          <span
+            *ngIf="
+              this.entity !== undefined &&
+              this.entity !== null &&
+              this.entity !== ''
+            "
+          >
+            <mat-slide-toggle
+              class="headertoggle ml-5"
+              (change)="changeLocation($event)"
+              [checked]="checked"
+              *ngIf="showLocationToggle && locationCoordinates[0].distance < 5"
+            >
+              <span class="poppins">Filter Data By Location</span>
+            </mat-slide-toggle>
+          </span>
+          .
+        </div>
+        <div class="col-sm-3 mt-2 p-0">
+          <i
+            class="fas fa-cogs pointer bot-green float-right pt-2 mr-2 font-20"
+            matTooltip="Diagonstics"
+            (click)="openDiagonstics(Diagonstics)"
+          ></i>
+          <mat-icon
+            class="font-20 float-right mt-2 mr-2 pointer"
+            (click)="copyClipBoard()"
+            matTooltip="copy link"
+          >
+            assignment
+          </mat-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 p-0 mt-3 data-card">
+      <div class="col-sm-12 pl-2 pt-3">
+        <div class="searchfilter col-sm-3">
+          <input
+            class="search-txtfilter"
+            [(ngModel)]="tableSearch"
+            type="text"
+            placeholder="Table search"
+            autocomplete="off"
+            (keyup)="onFilterViz($event)"
+          />
+        </div>
+      </div>
+
+      <div class="col-sm-12 p-0">
+        <ag-grid-angular
+          #agGrid
+          class="ag-theme-balham mt-3"
+          [rowData]="rowData"
+          [columnDefs]="columnDefs"
+          style="
+            width: 100%;
+            height: calc(100vh - 236px);
+            border: 1px solid #bdc3c7;
+          "
+          [defaultColDef]="defaultColDef"
+          [modules]="modules"
+          [groupMultiAutoColumn]="true"
+          [pivotPanelShow]="pivotPanelShow"
+          [sideBar]="sidebar"
+          [animateRows]="true"
+          [pagination]="true"
+          [paginationAutoPageSize]="true"
+          (gridReady)="onGridReady($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [rowGroupPanelShow]="rowGroupPanelShow"
+          [getContextMenuItems]="getContextMenuItems"
+          [enableRangeSelection]="true"
+          [enableCharts]="true"
+          (chartCreated)="onChartCreated($event)"
+          (chartRangeSelectionChanged)="onChartRangeSelectionChanged($event)"
+          [aggFuncs]="aggFuncs"
+          [suppressAggFuncInHeader]="true"
+          (chartOptionsChanged)="onChartOptionsChanged($event)"
+          (chartDestroyed)="onChartDestroyed($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [groupIncludeFooter]="footer"
+          [groupIncludeTotalFooter]="footer"
+        >
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+
+  <mat-horizontal-stepper
+    [linear]="isLinear"
+    #stepper
+    *ngIf="showTemplate === 'stepper'"
+  >
+    <ng-template matStepperIcon="edit">
+      <mat-icon>bubble_chart</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="home">
+      <mat-icon>home</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="form">
+      <mat-icon>format_align_center</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="last">
+      <mat-icon>done_all</mat-icon>
+    </ng-template>
+
+    <mat-step label="Submitted Form" state="home">
+      <div class="row m-0 p-0 mt-3">
+        <div class="col-sm-4" *ngFor="let a of this.finalFields; let i = index">
+          <mat-form-field class="p-1 col-sm-10">
+            <mat-label>{{ a.name | titlecase }} </mat-label>
+            <input
+              type="text"
+              matInput
+              autocomplete="off"
+              [disabled]="true"
+              [(ngModel)]="a.value"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div>
+        <button mat-button matStepperNext>Continue</button>
+      </div>
+    </mat-step>
+
+    <mat-step label="AI" state="form">
+      <table>
+        <tr>
+          <th class="small text-muted pr-2" scope="row">Claim Percentage</th>
+          <td>{{ claimPercentage }}</td>
+        </tr>
+        <tr>
+          <th class="small text-muted pr-2" scope="row">Claim Status</th>
+          <td>{{ claimStatus }}</td>
+        </tr>
+        <tr>
+          <th class="small text-muted pr-2" scope="row">Claim Type</th>
+          <td>{{ claimType }}</td>
+        </tr>
+      </table>
+
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </mat-step>
+
+    <mat-step label="Status" state="last">
+      <table>
+        <tr *ngIf="createdOn">
+          <th class="small text-muted pr-2" scope="row">Created on</th>
+          <td>{{ createdOn }}</td>
+        </tr>
+        <tr *ngIf="createdBy">
+          <th class="small text-muted pr-2" scope="row">Created by</th>
+          <td>{{ createdBy }}</td>
+        </tr>
+        <tr *ngIf="modifiedOn">
+          <th class="small text-muted pr-2" scope="row">Modified on</th>
+          <td>{{ modifiedOn }}</td>
+        </tr>
+        <tr *ngIf="modifiedBy">
+          <th class="small text-muted pr-2" scope="row">Modified by</th>
+          <td>{{ modifiedBy }}</td>
+        </tr>
+        <tr>
+          <th class="small text-muted pr-2" scope="row">Status</th>
+          <td>{{ status }}</td>
+        </tr>
+      </table>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+  <ng-template #Diagonstics>
+    <div class="row m-0">
+      <div class="col-sm-12 p-0">
+        <p class="pl-2 pr-2 pt-2 m-0 float-left">
+          <span class="font-14 fw-500 blue">Info</span>
+          <!-- <i class="fas fa-copy primary pl-3 pointer font-20" (click)="copyjson(userinput)"  title="Copy"></i> -->
+        </p>
+        <i
+          class="fas fa-times p-2 float-right ml-2 font-20 pointer"
+          title="Cancel"
+          (click)="close()"
+        ></i>
+        <a
+          [href]="downloadJson"
+          (click)="downloadjson()"
+          download="download.json"
+        >
+          <i
+            class="fas fa-file-download p-2 float-right success pl-5 pointer font-20"
+            title="Download"
+          ></i>
+        </a>
+      </div>
+    </div>
+    <hr class="mb-0 mt-2" />
+    <div class="col-sm-12 p-0 mb-0" style="overflow: auto; height: 399px">
+      <pre class="font-12 mb-0 pl-2 pr-2" #userinput>{{ jsonData | json }}</pre>
+    </div>
+  </ng-template>
+
+  <div class="col-12" *ngIf="showTemplate === 'tiles'">
+    <div *ngFor="let a of invvalues">
+      <div class="row m-3 p-3">
+        <h2>
+          {{ a.key[0] }}
+        </h2>
+        &nbsp;&nbsp;&nbsp;
+        <h2 *ngIf="a.value !== 'undefined' || a.value !== ''">
+          {{ a.value[0] }}
+        </h2>
+        <h2 *ngIf="a.value == 'undefined' || a.value == ''">0</h2>
+      </div>
+      <div lass="row m-0 p-1"></div>
+    </div>
+  </div>
+</div>

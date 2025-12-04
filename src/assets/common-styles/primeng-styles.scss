@@ -1,0 +1,193 @@
+// .p-inputtext {
+//   padding: 10px !important;
+// }
+
+// .p-dropdown {
+//   width: 100% !important;
+//   padding: 2px !important;
+// }
+
+.p-multiselect {
+  width: 100% !important;
+}
+
+// .p-autocomplete {
+//   display: inline-flex;
+//   position: relative;
+//   width: 100% !important;
+//   /* flex-wrap: nowrap; */
+//   flex-direction: column;
+// }
+
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
+  border-color: 1px solid #d3222a; //#3ea3ec; !important;
+  background: #d3222a; //#3ea3ec; !important;
+  color: #ffffff;
+}
+
+.p-checkbox .p-checkbox-box.p-highlight {
+  border-color: 1px solid #d3222a; //#3ea3ec; !important;
+  background: #d3222a; //#3ea3ec; !important;
+}
+
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
+  border-color: 1px solid #d3222a; //#3ea3ec; !important;
+}
+.p-checkbox .p-checkbox-box.p-highlight {
+  border-color: #d3222a; //#3ea3ec; !important;
+}
+
+.p-dropdown {
+  background: #ffffff;
+  border: 1px solid #adadadd4; // #adadad; //#3ea3ec;80;
+  // border: 1px solid #d3222a; //#3ea3ec;80;
+  border-radius: 6px;
+  // height: 40px !important;
+  height: auto !important;
+  width: 100% !important;
+}
+
+.p-inputtext {
+  font-family: "Inter" !important;
+  font-feature-settings: var(--font-feature-settings, normal);
+  font-size: 1.4rem !important; //14px
+  padding: 0.55rem 0.75rem !important;
+  border-radius: 6px;
+  outline: none;
+  // border: 1px solid #d3222a; //#3ea3ec;80;
+}
+
+.p-inputmask {
+  width: 100% !important;
+}
+
+.p-component {
+  font-family: "Inter" !important ;
+  font-size: 1.5rem !important;
+  // border: 1px solid #d3222a; //#3ea3ec;80;
+  // border-radius: 6px;
+  // width: 100% !important;
+}
+
+.viewRepoCompare {
+  .p-component {
+    font-family: "Inter" !important;
+    font-size: 1.2rem !important;
+    border-radius: 2rem !important;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+  }
+
+  .p-selectbutton .p-button.p-highlight {
+    background: #d3222a; //#3ea3ec; !important;
+    // border-color: none !important;
+    color: #ffffff;
+    border: 1px solid #d3222a;
+  }
+}
+
+.product-department .p-dropdown {
+  width: 98% !important;
+  font-size: 1rem; // 10px;
+  border-radius: 8px !important;
+  border: 1px solid rgba(58, 53, 65, 0.8705882353) !important;
+  margin-left: 0px !important;
+}
+
+// .p-dropdown-items-wrapper > ol,
+// ul {
+//   padding-left: 0px !important;
+//   margin-bottom: 0px !important;
+// }
+
+.build-entities-section .p-dropdown {
+  width: 23.3rem !important; //223, 210px
+
+  @media (min-width: 768px) and (max-width: 992px) {
+    width: 100% !important;
+  }
+}
+.connectors-dropdown .p-dropdown {
+  width: 23.3rem !important; //223, 210px
+
+  @media (min-width: 768px) and (max-width: 992px) {
+    width: 100% !important;
+  }
+}
+.sql-assistant .p-dropdown {
+  width: 18rem !important;
+}
+
+// .p-button {
+//   background: #d3222a; //#3ea3ec;;
+//   border: 1px solid #d3222a; //#3ea3ec;80;
+// }
+
+.p-float-label label {
+  position: absolute;
+  pointer-events: none;
+  top: 34% !important;
+}
+
+.p-float-label input:focus ~ label,
+.p-float-label input.p-filled ~ label,
+.p-float-label textarea:focus ~ label,
+.p-float-label textarea.p-filled ~ label,
+.p-float-label .p-inputwrapper-focus ~ label,
+.p-float-label .p-inputwrapper-filled ~ label {
+  top: -1.2rem !important;
+  font-size: 1.4rem !important; // 14px !important;
+}
+
+.fetch-info-section .p-dropdown {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  // border: 1px solid #d3222a; //#3ea3ec;80;
+  border-radius: 6px;
+  // height: 40px !important;
+  height: auto !important;
+  width: 23rem !important; //230
+  //   width: 100% !important;
+}
+
+.toast-btn .p-button {
+  color: #ffffff;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 14px;
+  outline-color: transparent;
+}
+
+.form-control {
+  font-size: 1.4rem !important;
+}
+
+.p-radiobutton .p-radiobutton-box.p-highlight {
+  border-color: #d3222a !important;
+  background: #d3222a !important;
+}
+.p-radiobutton .p-radiobutton-box:not(.p-disabled):not(.p-highlight):hover {
+  border-color: #d3222a !important;
+}
+
+.p-icon {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+
+.p-checkbox {
+  width: 16px !important;
+  height: 16px !important;
+}
+.p-checkbox .p-checkbox-box {
+  border: 2px solid #d1d5db;
+  background: #ffffff;
+  width: 16px !important;
+  height: 16px !important;
+  color: #4b5563;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
+  outline-color: transparent;
+}

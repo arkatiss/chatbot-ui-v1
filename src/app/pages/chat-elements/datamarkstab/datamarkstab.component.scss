@@ -1,0 +1,32 @@
+.abc:hover {
+    color: black;
+  }
+  .abc {
+    color: #929292;
+  }
+  .datamarksheight {
+    height: calc(100vh - 168px);
+    overflow-y: hidden;
+  }
+  .datamarksheight:hover {
+    overflow-y: auto;
+  }
+  ::ng-deep.mat-expansion-panel-spacing {
+    margin: 0px 0 !important;
+  }
+  p.datamarkcontent {
+    // padding: 3%;
+    // line-height: initial;
+   // border: 1px solid red;
+    // font-size: 11px;
+
+    padding: 2%;
+    line-height: initial;
+    font-size: 13px;
+    font-family: 'Poppins';
+}
+.mat-expansion-panel-header {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+  }

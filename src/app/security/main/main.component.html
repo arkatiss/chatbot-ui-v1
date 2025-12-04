@@ -1,0 +1,79 @@
+<div class="col-sm-12 pb-3 p-0" *ngIf="hideDashBoard === true">
+
+  <app-mainheader ></app-mainheader>
+
+</div>
+<app-timer></app-timer>
+<div class="row m-0 p-0" >
+    
+        <div class="col-sm-2 pl-3 pr-0 p-0" *ngIf="hideDashBoard === true">
+            <div class="card sidenav">
+                <mat-accordion class="example-headers-align">
+                    <mat-expansion-panel class="m-0" >
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Roles
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p class="subheaders"  mat-button
+                        routerLinkActive="active-list-item" routerLink="/security/createrole">Create</p>
+                        <p class="subheaders" mat-button
+                        routerLinkActive="active-list-item" routerLink="/security/viewrole">View</p>
+    
+    
+    
+                    </mat-expansion-panel>
+                    <!-- <mat-expansion-panel class="m-0" >
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                App Viz 
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p class="subheaders" mat-button
+                        routerLinkActive="active-list-item" routerLink="/security/apps">Apps</p>
+                        <p class="subheaders" mat-button
+                        routerLinkActive="active-list-item" routerLink="/security/viewvizroles">Roles</p>
+    
+    
+    
+                    </mat-expansion-panel> -->
+                    <mat-expansion-panel class="m-0">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Support Group
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p class="subheaders"  mat-button
+                        routerLinkActive="active-list-item" routerLink="/security/createsupport">Create</p>
+                        <p class="subheaders"  mat-button
+                        routerLinkActive="active-list-item" routerLink="/security/viewsupport">View</p>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel class="m-0">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                               Domain Mapping
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p class="subheaders" mat-button
+                        routerLinkActive="active-list-item" routerLink="/security/createmaping">Create</p>
+                        <p class="subheaders"  mat-button
+                        routerLinkActive="active-list-item" routerLink="/security/viewmaping" >
+                            View</p>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                </div>
+        
+        </div>
+
+        <div  [ngClass]="hideDashBoard===false ? 'col-sm-12 p-0' : 'col-sm-10 p-0 pl-3 pr-3'">
+
+            <ngx-spinner bdColor="rgba(51,51,51,0.2)" size="default" color="#09f" type="ball-spin-clockwise"
+            [fullScreen]="false">
+            <button type="button" mat-raised-button class="mt-4" (click)="cancel()"> Cancel </button>
+          </ngx-spinner>
+          <div class="card p-1" [ngClass]="hideDashBoard===false ? 'mainhidebodycard' : 'mainbodycard'">
+            <router-outlet></router-outlet>
+              </div>
+           
+        </div>
+</div>

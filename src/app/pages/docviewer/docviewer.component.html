@@ -1,0 +1,24 @@
+<!-- <div class="dashboardbg" >
+    <div class="col-sm-12 pt-3" *ngIf="showdocument">
+        <mat-card class="mat-card mat-focus-indicator p-2 primary">View Document
+    </mat-card>
+</div> -->
+<div class="row col-sm-12 p-0 m-0">
+<div class="col-sm-12" *ngIf="showdocument">
+    <!-- <div class="p-1  logoBgcolor">
+        View Document
+      </div> -->
+</div>
+
+<div class="col-sm-12 m-0 p-0 "  style="height: calc(100vh - 150px);">
+    <ng2-pdfjs-viewer   #inlinePdfViewer  viewerId="inline"  [openFile]="false" [viewBookmark]="false"
+        [showSpinner]="true" [print]="true" [fullScreen]="true" [find]="true" >
+    </ng2-pdfjs-viewer>
+    <div class="col-sm-12 m-0 p-0" *ngIf="showurl">
+        <iframe width="100%" id="iframe"  style="height: calc(100vh - 108px);" frameBorder="0" allow="microphone" allowFullScreen="true" [src]="externalUrl | safe ">
+        </iframe>
+      </div>
+  </div>
+
+
+</div>

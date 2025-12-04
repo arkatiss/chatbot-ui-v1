@@ -1,0 +1,356 @@
+<div class="container-fluid p-4">
+  <div class="row">
+    <!-- Left Panel - Configuration -->
+    <div class="col-lg-6">
+      <h2 class="mb-4">Customize Your Bot</h2>
+
+      <!-- Widget Icon -->
+      <div class="mb-4 row">
+        <label class="form-label fw-bold col-md-2 col-sm-12">Widget Icon</label>
+        <label class="upload-box d-block col-md-10 col-sm-12">
+          <i class="pi pi-image"></i>
+          <span class="ms-2">Upload Image</span>
+          <input
+            type="file"
+            accept="image/*"
+            (change)="onFileSelect($event, 'widgetIcon')"
+            hidden
+          />
+        </label>
+        <img
+          *ngIf="config.widgetIcon"
+          [src]="config.widgetIcon"
+          class="preview-img mt-2"
+          alt="Widget Icon"
+        />
+      </div>
+
+      <!-- Header Logo -->
+      <div class="mb-4 row">
+        <label class="form-label fw-bold col-md-2 col-sm-12">Header Logo</label>
+        <label class="upload-box d-block col-md-10 col-sm-12">
+          <i class="pi pi-image"></i>
+          <span class="ms-2">Upload Image</span>
+          <input
+            type="file"
+            accept="image/*"
+            (change)="onFileSelect($event, 'headerLogo')"
+            hidden
+          />
+        </label>
+        <img
+          *ngIf="config.headerLogo"
+          [src]="config.headerLogo"
+          class="preview-img mt-2"
+          alt="Header Logo"
+        />
+      </div>
+
+      <!-- Bot Icon -->
+      <div class="mb-4 row">
+        <label class="form-label fw-bold col-md-2 col-sm-12">Bot Icon</label>
+        <label class="upload-box d-block col-md-10 col-sm-12">
+          <i class="pi pi-image"></i>
+          <span class="ms-2">Upload Image</span>
+          <input
+            type="file"
+            accept="image/*"
+            (change)="onFileSelect($event, 'botIcon')"
+            hidden
+          />
+        </label>
+        <img
+          *ngIf="config.botIcon"
+          [src]="config.botIcon"
+          class="preview-img mt-2"
+          alt="Bot Icon"
+        />
+      </div>
+
+      <div class="row">
+        <!-- Header Text -->
+        <div class="col-md-6 mb-4">
+          <label class="form-label fw-bold">Header Text</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="config.headerText"
+            placeholder="ARKATISS DESK"
+          />
+        </div>
+
+        <!-- Hint Text -->
+        <div class="col-md-6 mb-4">
+          <label class="form-label fw-bold">Hint Text</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="config.hintText"
+            placeholder="Send a message"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Accent Color -->
+        <div class="col-md-6 mb-4">
+          <label class="form-label fw-bold">Accent Color</label>
+          <!-- <div class="d-flex align-items-center">
+            <input
+              type="text"
+              class="form-control me-2"
+              [(ngModel)]="config.accentColor"
+            />
+            <p-colorPicker [(ngModel)]="config.accentColor"></p-colorPicker>
+          </div> -->
+          <div class="d-flex input-group">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="config.accentColor"
+              placeholder="#000000"
+              style="border-right: none"
+            />
+            <span class="input-group-text p-0" style="background: white">
+              <p-colorPicker
+                [(ngModel)]="config.accentColor"
+                [ngStyle]="{
+                  border: 'none',
+                  width: '40px',
+                  background: 'white'
+                }"
+              ></p-colorPicker>
+            </span>
+          </div>
+        </div>
+
+        <!-- Font Color -->
+        <div class="col-md-6 mb-4">
+          <label class="form-label fw-bold">Font Color</label>
+          <!-- <div class="d-flex align-items-center">
+            <input
+              type="text"
+              class="form-control me-2"
+              [(ngModel)]="config.fontColor"
+            />
+            <p-colorPicker [(ngModel)]="config.fontColor"></p-colorPicker>
+          </div> -->
+          <div class="d-flex input-group">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="config.fontColor"
+              placeholder="#000000"
+              style="border-right: none"
+            />
+            <span class="input-group-text p-0" style="background: white">
+              <p-colorPicker
+                [(ngModel)]="config.fontColor"
+                [ngStyle]="{
+                  border: 'none',
+                  width: '40px',
+                  background: 'white'
+                }"
+              ></p-colorPicker>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Custom CSS -->
+        <div class="col-md-6 mb-4">
+          <label class="form-label fw-bold">Custom Style Sheet (CSS)</label>
+          <textarea
+            class="form-control"
+            rows="5"
+            [(ngModel)]="config.customCSS"
+            placeholder="Enter custom CSS here..."
+          ></textarea>
+        </div>
+
+        <!-- Chat Position -->
+        <div class="col-md-6 mb-4">
+          <label class="form-label fw-bold">Chat Interface Position</label>
+          <div class="d-flex gap-3">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="position"
+                id="posLeft"
+                value="left"
+                [checked]="config.chatPosition === 'left'"
+                (change)="togglePosition('left')"
+              />
+              <label class="form-check-label" for="posLeft">Left</label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="position"
+                id="posRight"
+                value="right"
+                [checked]="config.chatPosition === 'right'"
+                (change)="togglePosition('right')"
+              />
+              <label class="form-check-label" for="posRight">Right</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Apply Button -->
+      <button class="btn btn-lg btn-danger px-4" (click)="applyChanges()">
+        Apply Changes
+      </button>
+    </div>
+
+    <!-- Right Panel - Preview -->
+    <div class="col-lg-6">
+      <div class="preview-header mb-3">
+        <div class="preview-bg">
+          <button
+            class="btn btn-lg"
+            [class.btn-danger]="activeTab === 'web'"
+            [class.btn-outline-danger]="activeTab !== 'web'"
+            (click)="setTab('web')"
+          >
+            Web
+          </button>
+          <button
+            class="btn btn-lg ms-2"
+            [class.btn-danger]="activeTab === 'mobile'"
+            [class.btn-outline-danger]="activeTab !== 'mobile'"
+            (click)="setTab('mobile')"
+          >
+            Mobile
+          </button>
+        </div>
+      </div>
+
+      <!-- Preview Container -->
+      <div
+        class="preview-container"
+        [class.mobile-view]="activeTab === 'mobile'"
+      >
+        <div
+          class="chat-widget"
+          [style.right]="config.chatPosition === 'right' ? '20px' : 'auto'"
+          [style.left]="config.chatPosition === 'left' ? '20px' : 'auto'"
+        >
+          <!-- Chat Header -->
+          <div class="chat-header" [style.background-color]="'#fffff'">
+            <div class="d-flex align-items-center">
+              <div
+                class="header-icon"
+                [style.background-color]="config.accentColor"
+              >
+                <img
+                  *ngIf="config.headerLogo"
+                  [src]="config.headerLogo"
+                  alt="Bot"
+                />
+                <i *ngIf="!config.headerLogo" class="pi pi-comments"></i>
+              </div>
+              <span class="header-title">{{ config.headerText }}</span>
+            </div>
+            <div class="header-actions">
+              <i class="pi pi-minus" [style.color]="config.accentColor"></i>
+              <i
+                class="pi pi-times ms-4"
+                [style.color]="config.accentColor"
+              ></i>
+            </div>
+          </div>
+
+          <!-- Chat Body -->
+          <div class="chat-body">
+            <!-- Bot Message -->
+            <div class="message-row bot-message">
+              <div
+                class="message-icon"
+                [style.background-color]="config.accentColor"
+              >
+                <img *ngIf="config.botIcon" [src]="config.botIcon" alt="Bot" />
+                <i
+                  *ngIf="!config.botIcon"
+                  class="pi pi-comments"
+                  [style.color]="config.fontColor"
+                ></i>
+              </div>
+              <div class="message-bubble">
+                <div class="message-text">Hi there! 👋 How can I Help You</div>
+              </div>
+            </div>
+
+            <!-- User Message -->
+            <div class="message-row user-message">
+              <div
+                class="message-bubble"
+                [style.background-color]="config.accentColor"
+              >
+                <div class="message-text" [style.color]="config.fontColor">
+                  Hi, I need Some Tips on Daily Works
+                </div>
+              </div>
+              <div class="message-avatar">
+                <i class="pi pi-user"></i>
+              </div>
+            </div>
+
+            <!-- Bot Response -->
+            <div class="message-row bot-message">
+              <div
+                class="message-icon"
+                [style.background-color]="config.accentColor"
+              >
+                <img *ngIf="config.botIcon" [src]="config.botIcon" alt="Bot" />
+                <i
+                  *ngIf="!config.botIcon"
+                  class="pi pi-comments"
+                  [style.color]="config.fontColor"
+                ></i>
+              </div>
+              <div class="message-bubble">
+                <div class="message-text">
+                  Nice, Check Tips Below<br />
+                  1.Lorem Ipsum is simply dummy text<br />
+                  2.Lorem Ipsum is simply dummy text
+                </div>
+              </div>
+            </div>
+
+            <!-- User Thank You -->
+            <div class="message-row user-message">
+              <div
+                class="message-bubble"
+                [style.background-color]="config.accentColor"
+              >
+                <div class="message-text" [style.color]="config.fontColor">
+                  Thank You
+                </div>
+              </div>
+              <div class="message-avatar">
+                <i class="pi pi-user"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Input -->
+          <div class="chat-footer">
+            <input
+              type="text"
+              class="chat-input"
+              [placeholder]="config.hintText"
+            />
+            <div class="chat-actions">
+              <i class="pi pi-smile"></i>
+              <i class="pi pi-paperclip ms-2"></i>
+              <i class="pi pi-send ms-2" [style.color]="config.accentColor"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

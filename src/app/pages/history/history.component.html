@@ -1,0 +1,131 @@
+
+  <div class="row col-sm-12 p-0 m-0" >
+   
+  
+    <div  class="col-sm-12 p-0 m-0">
+    
+      <div  class="row m-0 p-0">
+        <div  class="col-sm-12 m-0 p-0">
+          <div class="col-sm-12">
+
+            <div class="p-1  logoBgcolor">
+              Chat History
+            </div>
+          </div>
+          <div class="row p-0 mb-2 mt-2 col-sm-12 m-0 ">
+            <div class="col-3 mt-2 mb-2" *ngFor="let a of historyMainData">
+              <div class="card p-2 pointer datacard" (click)="getMonthData(a.fullvalue,a.month);" [matMenuTriggerFor]="showdates">
+                <p class="datamarks font-12 mb-0 p-1"> {{a.fullvalue | date:'MMM  y'}}
+                  <span class="float-right font-18"><i class="fad fa-calendar-alt"></i></span>
+                </p>
+              </div>
+            </div>
+      
+          </div>
+          <mat-menu #showdates="matMenu" xPosition="before">
+            <ul class="p-0 mb-0">
+              <li class="body">
+                <div class="slimScrollDiv">
+                  <ul class="menu pl-0 hislist">
+                    <li *ngFor="let a of allHistoryData">
+                      <a href="javascript:void(0);" class=" waves-effect waves-block">
+                        <div class="menu-info" (click)="openHistory(a)">
+                          <h4>{{a}}</h4>
+                         
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+  
+          </mat-menu>
+                <mat-toolbar class="chathistoryToolbar mat-toolbar" style="height:40px;background-color: white;" *ngIf="historydiv">
+                  <div class="row m-0 " style="width:100%">
+                  <span class="font-14 col-10 p-0 mt-1 "></span>
+                  <span class="example-spacer col-2 p-0 ">
+                   
+                      <i class="far fa-search-plus font-18 text-infoo pl-2 pr-2 pointer" title="close search" (click)="drawers.toggle();openclose('open')" *ngIf="open"></i>
+                      <i class="far fa-search-minus font-18 text-infoo pl-2 pr-2 pointer" title="open search" (click)="drawers.toggle();openclose('close')" *ngIf="close"></i>
+                  <i class="far fa-star font-18 text-infoo pl-2 pr-2 pointer" title="starred messages"></i>
+                    <i class="fal fa-file-export font-18 text-infoo pl-2 pr-2 pointer" title="export chat" (click)="export();"></i>
+                    <i class="fal fa-bookmark font-18 text-infoo pl-2 pr-2 pointer" title="bookmark chat"></i>
+                </span>
+                </div>
+                </mat-toolbar>
+              
+       
+        </div>
+      </div>
+ 
+    </div>
+  
+    <mat-sidenav-container class="example-container" style="width: 100%;">
+      <mat-sidenav  mode="side" opened #drawers position="end" style="width:35%;" >
+        <div class="col-12">
+         
+          <!-- <span class="font-14 p-2 primary">Chat search</span> -->
+          <mat-form-field class="font-14 col-sm-12 " >
+            <mat-label>Search message</mat-label>
+            <input type="text" matInput [(ngModel)]="searchString" autocomplete="off" (ngModelChange)="onTextChange($event)">
+            <mat-icon matSuffix class="pointer" (click)="searchHistory()">search</mat-icon>
+          </mat-form-field>
+      
+          <!-- <button mat-raised-button class="primary m-1 font-12 float-right"> Submit</button> -->
+         
+         
+        </div>
+      </mat-sidenav>
+     
+     
+      <div class="row col-sm-12 p-0 m-0" #content id="pdfSink" *ngIf="historydiv">
+        <div class="col-12 p-0 chathistorydiv" style="overflow: auto;height: calc(100vh - 280px);background-color: white;">
+            <div id="chat-content" *ngFor="let b of historyData | filter:searchText">
+              <h4 class="line" >
+                <span class="lne" *ngFor="let c of b.name ">{{c.htime}} </span>
+               </h4>
+              <div *ngFor="let a of b.data ">
+                <div class="media media-chat input p-0" *ngIf="a.input!==undefined && a.input!==''">
+                  <p class="textFirst2 pointer mr-2" *ngIf="agentShortName !== undefined">{{agentShortName.charAt(0) |
+                    titlecase}} </p>
+                  <div class="media-body m-0">
+                    <p class="bot-input ">{{a.input}}
+                      &nbsp;&nbsp;<sub class="subtime2"><small class="bot-input-time" *ngIf="a.inptimestamp!==undefined">
+                          {{a.inptimestamp}}</small></sub>
+                          <i style="cursor: pointer;" [matMenuTriggerFor]="menu" class="fa fa-ellipsis-v icn pt-1"></i>
+                    </p>
+                    <mat-menu #menu="matMenu">
+                      <button mat-menu-item>Star message</button>
+                      <button mat-menu-item>Delete message</button>
+                    </mat-menu>
+                  </div>
+                </div>
+                <div class="media media-chat output  row m-0">
+                  <img src="{{imgurl}}int3030.png" class="img-fluid" [ngStyle]="{'height':imgHeight}"  *ngIf="a.output!==undefined && a.output!==''">
+                  <div class="media-body  row m-0 p-0" *ngIf="a.output!==undefined && a.output!==''">
+                    <p class="bot-response"  >{{a.output}}
+                      &nbsp;<sub class="subtime2"><small class="bot-input-time">
+                          {{a.outtimestamp }} </small></sub>
+                    </p>            
+                  </div>
+                  </div>
+              </div>
+            </div>
+       
+        </div>
+        
+      </div>
+    </mat-sidenav-container>
+  
+  </div>
+<ng-template #diagnosticsPopup>
+  <div  class="col-sm-12 m-0 p-0">
+    <p  class="font-14 fw-500 pt-2 pl-2 primary">Chat Bot Diagnostics 
+      <i class="fas fa-times  font-16 float-right" (click)="dialog.closeAll()"></i>
+    </p>
+  </div>
+  <div class="col-sm-12 p-0 mb-0" style="overflow: auto; height: 399px;" >
+    <pre class="font-12 mb-0 pl-2 pr-2" #userinput >{{diagnosticsData | json }}</pre>
+</div>
+</ng-template>

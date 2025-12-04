@@ -1,0 +1,521 @@
+<div class="col-sm-12 p-0" *ngIf="hidedashboard">
+  <!-- <div class="col-sm-12 px-1 py-2">
+    <div class="row m-0">
+      <div class="col-sm-3">
+        <p class="mb-0 logoBgcolor">
+          Dashboard
+        </p>
+      </div>
+
+      <div class="col-sm-9" *ngIf="showdiagnostics">
+        <i class="fas fa-cogs pointer bot-green float-right pt-2 pr-3 font-20" matTooltip="Diagonstics"
+                  (click)="openDiagonstics(Diagonstics)"></i>
+      </div>
+    </div>
+
+  </div> -->
+  <ng-template #Diagonstics>
+    <div class="row m-0">
+      <div class="col-sm-12 p-0">
+        <p class="pl-2 pr-2 pt-2 m-0 float-start">
+          <span class="font-14 fw-500 blue">Info</span>
+          <!-- <i class="fas fa-copy primary pl-3 pointer font-20" (click)="copyjson(userinput)"  title="Copy"></i> -->
+        </p>
+        <i
+          class="fas fa-times p-2 float-end ml-2 font-20 pointer"
+          title="Cancel"
+          (click)="close()"
+        ></i>
+        <a
+          [href]="downloadJson"
+          (click)="downloadjson()"
+          download="download.json"
+        >
+          <i
+            class="fas fa-file-download p-2 float-end success pl-5 pointer font-20"
+            title="Download"
+          ></i>
+        </a>
+      </div>
+    </div>
+    <hr class="mb-0 mt-2" />
+    <div class="col-sm-12 p-0 mb-0" style="overflow: auto; height: 399px">
+      <pre class="font-12 mb-0 pl-2 pr-2" #userinput>{{ jsonData | json }}</pre>
+    </div>
+  </ng-template>
+  <div class="row m-0" *ngIf="showNavigateUrlLink === false">
+    <div class="row col-sm-12 p-0 pb-2 m-0">
+      <!-- <div class="col-sm-12 col-md-6 col-lg-5 pl-0 pr-2 pb-0 pb-2 ng-star-inserted pl-3 ytr">
+        <div class="row m-0">
+          <div class="col-6 pl-0 pr-2 pb-0 pb-2" *ngFor="let a of cardsData[0]['nameVal'];let idx = index;">
+            <div class="grid1 dashboard-card d-flex flex-column align-items-center justify-content-center" >
+              <div class="grid-body1 text-center">
+                <div class="profile-img img-rounded  no-avatar component-flat mx-auto mb-4"
+                  [ngStyle]="{'background': cardsData[0]['color'][idx]}">
+                  <i [ngClass]="cardsData[0]['icon'][idx]" style="color: white;"></i>
+                </div>
+                <h2 class="font-weight-medium">
+                  <span class="animated-count"
+                    [ngStyle]="{'color': cardsData[0]['color'][idx]}">{{cardsData[0]['percentageVal'][idx]}}</span><span
+                    *ngIf="cardsData[0]['nameVal'][idx] !== 'Total Users'"
+                    [ngStyle]="{'color': cardsData[0]['color'][idx]}">%</span>
+                </h2><small class="text-gray cardText d-block mt-3 "
+                  [ngStyle]="{'color': cardsData[0]['color'][idx]}">{{cardsData[0]['nameVal'][idx]}}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div class="col-sm-12 col-md-6 col-lg-6 pl-0 pr-2">
+        <div
+          class="col-sm-12 p-0 dashboard-card"
+          *ngIf="piechart"
+          style="height: 100%"
+        >
+          <p class="mb-0 px-3 py-2 dashboard-card-header">Top Queries</p>
+          <div class="col-sm-12 p-0">
+            <apx-chart
+              [series]="PiechartOptions.series1"
+              [chart]="PiechartOptions.chart"
+              [labels]="PiechartOptions.labels"
+              [responsive]="PiechartOptions.responsive"
+            ></apx-chart>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-6 pl-0 pr-0">
+        <div class="col-sm-12 p-0 dashboard-card" *ngIf="colChart">
+          <p class="mb-0 px-3 py-2 dashboard-card-header">Failed Queries</p>
+          <div class="col-sm-12 p-0">
+            <apx-chart
+              [series]="ColumnChartOptions.series"
+              [chart]="ColumnChartOptions.chart"
+              [dataLabels]="ColumnChartOptions.dataLabels"
+              [plotOptions]="ColumnChartOptions.plotOptions"
+              [legend]="ColumnChartOptions.legend"
+              [fill]="ColumnChartOptions.fill"
+              [stroke]="ColumnChartOptions.stroke"
+              [tooltip]="ColumnChartOptions.tooltip"
+              [xaxis]="ColumnChartOptions.xaxis"
+            ></apx-chart>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="col-sm-12 col-md-12 col-lg-3 pl-2 pr-0" *ngIf="showdatacards">
+        <div class="row m-0">
+        <div class="col-sm-4 col-md-4 col-lg-12 col-xs-4 pl-0 mb-3" *ngFor="let a of datacards[0]['cardName'];let idx = index;">
+          <div class="card p-2 pointer datacard" [ngStyle]="{'background': datacards[0]['bgcolor'][idx]}"
+            (click)="dataMove(datacards[0]['cardName'][idx])">
+            <p class="datamarks font-12 mb-0 p-1" *ngIf="datacards[0]['cardName'][idx] !== undefined">
+              {{datacards[0]['cardName'][idx] | removeUnderscore | titlecase}}
+              <span class="float-right font-20"> {{datacards[0]['cardVal'][idx]}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    </div>
+    <div class="row col-sm-12 p-0 pb-2 m-0">
+      <div class="col-sm-12 col-md-4 col-lg-4 pl-0 pr-2">
+        <div class="col-sm-12 p-0 dashboard-card" *ngIf="gaugeUserChart">
+          <p class="mb-0 px-3 py-2 dashboard-card-header">Users</p>
+          <div class="col-sm-12 p-0">
+            <apx-chart
+              [series]="GuageUserChartTreeOptions.series"
+              [chart]="GuageUserChartTreeOptions.chart"
+              [plotOptions]="GuageUserChartTreeOptions.plotOptions"
+              [labels]="GuageUserChartTreeOptions.labels"
+              [legend]="GuageUserChartTreeOptions.legend"
+              [colors]="GuageUserChartTreeOptions.colors"
+              [responsive]="GuageUserChartTreeOptions.responsive"
+            ></apx-chart>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-12 col-md-4 col-lg-4 pl-0 pr-0">
+        <div class="col-sm-12 p-0 dashboard-card" *ngIf="gaugeChart">
+          <p class="mb-0 px-3 py-2 dashboard-card-header">Agents</p>
+          <div class="col-sm-12 p-0">
+            <apx-chart
+              [series]="GuageChartTreeOptions.series"
+              [chart]="GuageChartTreeOptions.chart"
+              [plotOptions]="GuageChartTreeOptions.plotOptions"
+              [labels]="GuageChartTreeOptions.labels"
+              [legend]="GuageChartTreeOptions.legend"
+              [colors]="GuageChartTreeOptions.colors"
+              [responsive]="GuageChartTreeOptions.responsive"
+            ></apx-chart>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4 col-lg-4 pl-2 pr-0">
+        <div class="col-sm-12 p-0 dashboard-card" *ngIf="gaugeChart">
+          <p class="mb-0 px-3 py-2 dashboard-card-header">Agent Analytics</p>
+          <div class="col-sm-12 p-0">
+            <mat-accordion
+              displayMode="flat"
+              multi
+              class="mat-table"
+              style="
+                overflow: auto;
+                height: 393px;
+                border-bottom-right-radius: 8px;
+                border-bottom-left-radius: 8px;
+              "
+            >
+              <section matSort class="mat-elevation-z2 mat-header-row">
+                <span class="mat-header-cell" mat-sort-header="name">Name</span>
+                <span class="mat-header-cell" mat-sort-header="status"
+                  >Status</span
+                >
+                <span class="mat-header-cell" mat-sort-header="agent_count"
+                  >Count</span
+                >
+              </section>
+
+              <mat-expansion-panel *ngFor="let item of agentAnalyticsList">
+                <mat-expansion-panel-header class="mat-row">
+                  <span class="mat-cell">{{ item.name }}</span>
+                  <span class="mat-cell">{{ item.status }}</span>
+                  <span class="mat-cell">{{ item.agent_count }}</span>
+                </mat-expansion-panel-header>
+                <mat-list role="list">
+                  <mat-list-item
+                    role="listitem"
+                    *ngFor="let list of item.agents_interacted_list"
+                    >{{ list }}</mat-list-item
+                  >
+                </mat-list>
+                <!-- <div *ngFor="let list of item.agents_interacted_list">{{list}}</div> -->
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 pl-0 pr-0 pt-2 row m-0 gridheight">
+      <div class="col-sm-6 pl-0">
+        <p class="mb-0 logoBgcolor pl-3 font-16 pt-3">
+          {{ this.preferenceOfUser | titlecase }}
+        </p>
+      </div>
+
+      <!-- <iframe width="100%" height="500" allow="microphone" [src]="localUrl">
+    </iframe> -->
+      <div class="col-sm-6">
+        <mat-form-field class="font-12 pr-2 pl-2 float-end">
+          <mat-label>Search</mat-label>
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="tableSearch"
+            (keyup)="onFilterGrid($event)"
+            autocomplete="off"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="col-sm-12 px-2">
+        <ag-grid-angular
+          #agGrid
+          class="ag-theme-balham aggridheight"
+          [rowData]="rowData"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="defaultColDef"
+          [modules]="modules"
+          [groupMultiAutoColumn]="true"
+          [pivotPanelShow]="pivotPanelShow"
+          [sideBar]="sidebar"
+          [animateRows]="true"
+          [pagination]="true"
+          [paginationAutoPageSize]="true"
+          (gridReady)="onGridReady($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [rowGroupPanelShow]="rowGroupPanelShow"
+          [getContextMenuItems]="getContextMenuItems"
+          [enableRangeSelection]="true"
+          [enableCharts]="true"
+          (chartCreated)="onChartCreated($event)"
+          (chartRangeSelectionChanged)="onChartRangeSelectionChanged($event)"
+          [aggFuncs]="aggFuncs"
+          [suppressAggFuncInHeader]="true"
+          (chartOptionsChanged)="onChartOptionsChanged($event)"
+          (chartDestroyed)="onChartDestroyed($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [groupIncludeFooter]="footer"
+          [groupIncludeTotalFooter]="footer"
+        >
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-sm-12"
+    style="background: white; height: calc(100vh - 100px)"
+    *ngIf="showNavigateUrlLink === true"
+  >
+    <div class="row m-0">
+      <div class="col-sm-12">
+        <p class="mb-0 px-1 py-2 navigateLink pt-4">
+          Welcome to C&S Virtual Assistant. To Setup Your
+          Preferences&nbsp;&nbsp;<span
+            class="link"
+            (click)="navigateToPrefrences()"
+            >click here</span
+          >
+        </p>
+      </div>
+      <div class="col-sm-6 px-2 mt-5 row m-0">
+        <div class="col-sm-6">
+          <p class="mb-0 logoBgcolor pt-3 pl-3 font-16">Sales for last week</p>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field class="font-12 pr-2 pl-2 float-end">
+            <mat-label>Search</mat-label>
+            <input
+              matInput
+              type="text"
+              (keyup)="onsalesFilterGrid($event)"
+              autocomplete="off"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-sm-6 px-2 mt-5 row m-0">
+        <div class="col-sm-6">
+          <p class="mb-0 logoBgcolor pt-3 pl-3 font-16">
+            Servicel Level for last week
+          </p>
+        </div>
+        <div>
+          <mat-form-field class="font-12 pr-2 pl-2 float-end">
+            <mat-label>Search</mat-label>
+            <input
+              matInput
+              type="text"
+              (keyup)="onserviceFilterGrid($event)"
+              autocomplete="off"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-sm-6 px-2 pt-4">
+        <ag-grid-angular
+          #agGrid
+          class="ag-theme-balham"
+          [rowData]="salesrowData"
+          [columnDefs]="salescolumnDefs"
+          style="
+            width: 100%;
+            height: calc(100vh - 280px);
+            border: 1px solid #bdc3c7;
+          "
+          [defaultColDef]="salesdefaultColDef"
+          [modules]="modules"
+          [groupMultiAutoColumn]="true"
+          [pivotPanelShow]="pivotPanelShow"
+          [sideBar]="sidebar"
+          [animateRows]="true"
+          [pagination]="true"
+          [paginationAutoPageSize]="true"
+          (gridReady)="onsalesGridReady($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [rowGroupPanelShow]="rowGroupPanelShow"
+          [getContextMenuItems]="getContextMenuItems"
+          [enableRangeSelection]="true"
+          [enableCharts]="true"
+          (chartCreated)="onChartCreated($event)"
+          (chartRangeSelectionChanged)="onChartRangeSelectionChanged($event)"
+          [aggFuncs]="aggFuncs"
+          [suppressAggFuncInHeader]="true"
+          (chartOptionsChanged)="onChartOptionsChanged($event)"
+          (chartDestroyed)="onChartDestroyed($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [groupIncludeFooter]="footer"
+          [groupIncludeTotalFooter]="footer"
+        >
+        </ag-grid-angular>
+      </div>
+      <div class="col-sm-6 px-2 pt-4">
+        <ag-grid-angular
+          #agGrid
+          class="ag-theme-balham"
+          [rowData]="servicerowData"
+          [columnDefs]="servicecolumnDefs"
+          style="
+            width: 100%;
+            height: calc(100vh - 280px);
+            border: 1px solid #bdc3c7;
+          "
+          [defaultColDef]="servicedefaultColDef"
+          [modules]="modules"
+          [groupMultiAutoColumn]="true"
+          [pivotPanelShow]="pivotPanelShow"
+          [sideBar]="sidebar"
+          [animateRows]="true"
+          [pagination]="true"
+          [paginationAutoPageSize]="true"
+          (gridReady)="onserviceGridReady($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [rowGroupPanelShow]="rowGroupPanelShow"
+          [getContextMenuItems]="getContextMenuItems"
+          [enableRangeSelection]="true"
+          [enableCharts]="true"
+          (chartCreated)="onChartCreated($event)"
+          (chartRangeSelectionChanged)="onChartRangeSelectionChanged($event)"
+          [aggFuncs]="aggFuncs"
+          [suppressAggFuncInHeader]="true"
+          (chartOptionsChanged)="onChartOptionsChanged($event)"
+          (chartDestroyed)="onChartDestroyed($event)"
+          (firstDataRendered)="onFirstDataRendered($event)"
+          [groupIncludeFooter]="footer"
+          [groupIncludeTotalFooter]="footer"
+        >
+        </ag-grid-angular>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div *ngIf="userRole === 'enduser'" class="col-sm-12 p-0 m-0 pt-1">
+
+
+
+
+
+
+<div class="col-sm-12 pl-3 pr-0 pt-2 row m-0" *ngIf="cardsVal">
+  <div class="col-sm-6 col-md-6 col-lg-6 pl-0 mb-3">
+    <div class="col-sm-12 px-3 dashboard-card" *ngIf="showemptytable">
+      <mat-card class="grid1 mat-card col-12 mt-1 p-0 usersscroll" >
+        <p class="p-3 font-16">
+          No users online click here to refresh <i class="fal fa-redo primary font-14 pl-2 pointer"
+            (click)="getActiveUsers()"></i>
+        </p>
+      </mat-card>
+    </div>
+
+    <div class="col-sm-12 p-0 dashboard-card " *ngIf="showusertable">
+      <p class="mb-0 px-3 py-2 dashboard-card-header">
+        Users
+      </p>
+      <div class="col-sm-12 p-0 table-responsive usersscroll">
+        <table class="table table-hover table-sm table-striped productSearch-table">
+          <thead>
+            <tr class="solid-header">
+              <td></td>
+              <td class="text-mute fw-500 opuser">User</td>
+              <td class="text-mute fw-500 opuser">Email</td>
+
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let a of this.chartObject.activeUsers">
+              <td class="pr-0 pl-4 pt-1">
+
+                <p class="dotactive" *ngIf="a.chatFlag === 0 && a.status ==='ACTIVE'"></p>
+                <p class="dotbusy" *ngIf="a.chatFlag === 1 && a.status ==='ACTIVE'"></p>
+                <p class="dotnotdisturb" *ngIf="a.chatFlag === 2 && a.status ==='ACTIVE'"></p>
+                <p class="dotinactive" *ngIf="a.status ==='INACTIVE'"></p>
+                <p class="dotaway" *ngIf="a.chatFlag === 3"></p>
+                <p class="textFirst2 pointer"> {{a.name.charAt(0) | titlecase}} </p>
+              </td>
+              <td class="pl-md-0 pointer pt-3 font-13" (click)="openChat(a)">
+                <small class="text-mute font-11" title="{{a.chatStatus}}">{{a.name | titlecase}}</small>
+              </td>
+              <td class="pt-3"><small class="font-11">{{a.email}}</small></td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-md-6 col-lg-6 pl-0 mb-3">
+    <div class="col-sm-12 p-0 dashboard-card " *ngIf="showusertable">
+      <p class="mb-0 px-3 py-2 dashboard-card-header">
+        Activity log
+      </p>
+      <div class="col-sm-12 p-0 table-responsive usersscroll">
+        <table class="table table-hover table-sm table-striped productSearch-table2">
+          <thead>
+            <tr class="solid-header">
+              <td></td>
+              <td class="text-mute fw-500 opuser">Activity</td>
+              <td class="text-mute fw-500 opuser">Time</td>
+            </tr>
+          </thead>
+          <tbody class="">
+
+            <tr>
+              <td class="pr-0 pl-4 pt-1 lineheight">
+
+              <td class="pl-md-0 pointer pt-1 font-13 lineheight"><small class="text-mute font-11">Shankar
+                </small>
+                <br>
+                <small class="pt-2">
+                  #Slack Analytics dashboard has been created
+                </small>
+              </td>
+              <td class="pt-3 lineheight"><small class="font-11">8 mins Ago</small></td>
+
+            </tr>
+            <tr>
+              <td class="pr-0 pl-4 pt-1 lineheight">
+
+              </td>
+              <td class="pl-md-0 pointer pt-1 font-13 lineheight"><small class="text-mute font-11">Nagarjuna
+                </small><br>
+                <small class="text-mute font-11 pt-2">Added new task: Slack home page </small>
+
+              </td>
+              <td class="pt-3 lineheight"><small class="font-11">4 Hours
+                  Ago</small>
+              </td>
+
+            </tr>
+
+            <tr>
+              <td class="pr-0 pl-4 pt-1 lineheight">
+
+              </td>
+              <td class="pl-md-0 pointer pt-1 font-13 lineheight">
+                <small class="text-mute font-11">Anvesh </small><br>
+                <small class="text-mute font-11 pt-2">Added new task: Slack home page </small>
+
+
+              </td>
+              <td class="pt-3 lineheight"><small class="font-11">4 Hours
+                  Ago</small></td>
+
+            </tr>
+            <tr>
+              <td class="pr-0 pl-4 pt-1 lineheight">
+
+              </td>
+              <td class="pl-md-0 pointer pt-1 font-13 lineheight">
+                <small class="text-mute font-11">Anvesh </small><br>
+                <small class="text-mute font-11 pt-2">Added new task: Slack home page </small>
+
+
+              </td>
+              <td class="pt-3 lineheight"><small class="font-11">4 Hours
+                  Ago</small></td>
+
+            </tr>
+          </tbody>
+        </table>
+        <a class="border-top px-3 py-2 d-block text-gray"><small class="font-weight-medium"><i
+          class="mdi mdi-chevron-down mr-2"></i>View All</small></a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+</div> -->
+</div>

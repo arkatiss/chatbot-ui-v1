@@ -1,0 +1,334 @@
+<div class="row col-sm-12 px-3 py-3 m-0 mat-card" style="border-radius: 10px">
+  <div class="col-sm-12" *ngIf="this.finalFields">
+    <div class="row m-0 p-0">
+      <div class="col-sm-12 p-0">
+        <div class="col-sm-12 p-0">
+          <div class="p-1 poppins font-16 fw-500 bot-warn">
+            {{ formName | titlecase }} Form
+          </div>
+        </div>
+      </div>
+    </div>
+    <ngx-spinner
+      bdColor="rgba(51,51,51,0.2)"
+      size="default"
+      color="#09f"
+      type="ball-spin-clockwise"
+      [fullScreen]="false"
+    >
+      <button type="button" mat-raised-button class="mt-4" (click)="cancel()">
+        Cancel
+      </button>
+    </ngx-spinner>
+    <!-- <div class="row m-0 p-0 mt-3">
+
+            <div class="col-sm-4" *ngFor="let a of this.finalFields;let i = index;">
+                <mat-form-field  class="p-1 col-sm-10" *ngIf="a.name === 'CHAIN' ">
+                    <mat-label *ngIf="a.display_name !== undefined && a.display_name !== null && a.display_name !== ''">{{a.display_name | titlecase}} </mat-label>
+                        <mat-label *ngIf="a.display_name === undefined || a.display_name === null || a.display_name === ''">{{a.name | titlecase}} </mat-label>
+                    <mat-select  [(ngModel)]="chainNbr" (selectionChange)="selectStoreNbr($event.value);">
+                        <mat-option *ngFor="let sd of  chainData" [value]="sd">{{sd}}
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+                <mat-form-field  class="p-1 col-sm-10" *ngIf="a.name === 'STORE' ">
+                    <mat-label *ngIf="a.display_name !== undefined && a.display_name !== null && a.display_name !== ''">{{a.display_name | titlecase}} </mat-label>
+                    <mat-label *ngIf="a.display_name === undefined || a.display_name === null || a.display_name === ''">{{a.name | titlecase}} </mat-label>
+                    <mat-select  [(ngModel)]="storeNbr" >
+                        <mat-option *ngFor="let sd of  storeData" [value]="sd">{{sd}}
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+
+                <mat-form-field  class="p-1 col-sm-10" *ngIf="a.name !== 'CHAIN' && a.name !== 'STORE' && a?.values?.length === 0 && a?.create !== undefined && a?.create !== null && a?.create === true">
+                    <mat-label *ngIf="a.display_name !== undefined && a.display_name !== null && a.display_name !== ''">{{a.display_name | titlecase}} </mat-label>
+                    <mat-label *ngIf="a.display_name === undefined || a.display_name === null || a.display_name === ''">{{a.name | titlecase}} </mat-label>
+                    <input type="text" matInput  autocomplete="off" [(ngModel)]="a.value">
+                </mat-form-field>
+                <mat-form-field  class="p-1 col-sm-10" *ngIf="a?.values?.length > 0 && a?.create !== undefined && a?.create !== null && a?.create === true">
+                    <mat-label *ngIf="a.display_name !== undefined && a.display_name !== null && a.display_name !== ''">{{a.display_name | titlecase}} </mat-label>
+                    <mat-label *ngIf="a.display_name === undefined || a.display_name === null || a.display_name === ''">{{a.name | titlecase}} </mat-label>
+                    <mat-select [(ngModel)]="a.value">
+                        <mat-option *ngFor="let b of a.values" [value]="b">
+                            {{b}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="a?.type === 'image' && a?.create === true && a?.create !== undefined && a?.create !== null">
+
+                    <label for="file-upload"  class="custom-file-upload dwnld-btn" *ngIf="a.display_name !== undefined && a.display_name !== null && a.display_name !== ''">
+                        {{a.display_name | titlecase}}
+
+                    </label>
+                    <label for="file-upload"  class="custom-file-upload dwnld-btn" *ngIf="a.display_name === undefined || a.display_name === null || a.display_name === ''">
+                        {{a.name | titlecase}}
+
+                    </label>
+
+                    <input accept="image/png, image/gif, image/jpeg ,image/jpg" id="file-upload" type="file" (change)="readURL($event.target.files,a.name)" />
+
+                  </div>
+            </div>
+        </div> -->
+    <div class="row m-0 p-0 mt-4">
+      <div class="col-sm-3 p-0" *ngFor="let a of finalFields; let i = index">
+        <p
+          class="mb-0 poppins font-13 fw-500 pl-1 form-label"
+          *ngIf="
+            a.display_name !== undefined &&
+            a.display_name !== null &&
+            a.display_name !== ''
+          "
+        >
+          {{ this.formatDisplayName(a.display_name) }}
+          <span
+            class="pl-1"
+            *ngIf="
+              a.required !== undefined &&
+              a.required !== null &&
+              a.required === true
+            "
+            style="color: red"
+          >
+            *</span
+          >
+        </p>
+        <p
+          class="mb-0 poppins font-13 fw-500 pl-1 form-label"
+          *ngIf="
+            a.display_name === undefined ||
+            a.display_name === null ||
+            a.display_name === ''
+          "
+        >
+          {{ this.formatDisplayName(a.name) }}
+          <span
+            class="pl-1"
+            *ngIf="
+              a.required !== undefined &&
+              a.required !== null &&
+              a.required === true
+            "
+            style="color: red"
+          >
+            *</span
+          >
+        </p>
+        <!-- app-viz-form -->
+        <mat-form-field
+          appearance="outline"
+          class="p-1 col-sm-10 font-12 app-viz-form"
+          *ngIf="
+            a?.values?.length === 0 &&
+            a?.type !== 'date' &&
+            a?.type !== 'image' &&
+            a?.create !== undefined &&
+            a?.create !== null &&
+            a?.create === true &&
+            a.type !== 'textarea' &&
+            a.type !== 'phone'
+          "
+        >
+          <input
+            [type]="a.type"
+            #input
+            [maxlength]="a.field_length"
+            (keyup)="changeValue(a.value, a.name)"
+            matInput
+            [(ngModel)]="a.value"
+            [value]="a.value"
+            placeholder="Enter here"
+            class="appviz-text pt-1"
+            autocomplete="off"
+          />
+          <mat-hint align="end" class="pr-1"
+            ><strong
+              >{{ input?.value?.length || 0 }}/ {{ a.field_length }}</strong
+            ></mat-hint
+          >
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          class="p-1 col-sm-10 font-12 app-viz-form"
+          *ngIf="
+            a?.values?.length === 0 &&
+            a?.type !== 'date' &&
+            a?.type !== 'image' &&
+            a?.create !== undefined &&
+            a?.create !== null &&
+            a?.create === true &&
+            a.type === 'textarea' &&
+            a.type !== 'phone'
+          "
+        >
+          <textarea
+            matInput
+            #input
+            [maxlength]="a.field_length"
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            (keyup)="changeValue(a.value, a.name)"
+            [(ngModel)]="a.value"
+            [value]="a.value"
+            placeholder="Enter here"
+            class="appviz-text pt-1"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+            autocomplete="off"
+          ></textarea>
+          <mat-hint align="end" class="pr-1"
+            ><strong
+              >{{ input?.value?.length || 0 }}/ {{ a.field_length }}</strong
+            ></mat-hint
+          >
+        </mat-form-field>
+        <div
+          style="width: 84% !important; padding-top: 10px"
+          class="cp-autocomplete"
+          *ngIf="
+            a?.values?.length > 0 &&
+            a?.type !== 'image' &&
+            a?.type !== 'pdf' &&
+            a?.create !== undefined &&
+            a?.create !== null &&
+            a?.create === true
+          "
+        >
+          <ng-autocomplete
+            [data]="a.values"
+            [searchKeyword]="a.value"
+            [(ngModel)]="a.value"
+            placeholder="select"
+            (selected)="selectEvent($event, a.name)"
+            (inputChanged)="onChangeSearch($event)"
+            (inputFocused)="onFocused($event)"
+            [itemTemplate]="itemTemplate"
+            [notFoundTemplate]="notFoundTemplate"
+          >
+          </ng-autocomplete>
+          <ng-template #itemTemplate let-item>
+            <a [innerHTML]="item"></a>
+          </ng-template>
+
+          <ng-template #notFoundTemplate let-notFound>
+            <div [innerHTML]="notFound"></div>
+          </ng-template>
+        </div>
+
+        <mat-form-field
+          appearance="fill"
+          class="p-1 col-sm-10 font-12"
+          *ngIf="
+            a?.type === 'date' &&
+            a?.type !== 'image' &&
+            a?.create !== undefined &&
+            a?.create !== null &&
+            a?.create === true
+          "
+        >
+          <mat-label>{{ a.value }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [(ngModel)]="a.value"
+            [value]="a.value"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          class="app-viz-form p-1 col-sm-10 font-12"
+          *ngIf="
+            a?.values?.length === 0 &&
+            a?.type !== 'date' &&
+            a?.type !== 'image' &&
+            a?.create !== undefined &&
+            a?.create !== null &&
+            a?.create === true &&
+            a.type !== 'textarea' &&
+            a.type === 'phone'
+          "
+        >
+          <input
+            [type]="'text'"
+            (keypress)="onKeyDown($event)"
+            matInput
+            [(ngModel)]="a.value"
+            [value]="a.value"
+            placeholder="Enter here"
+            class="appviz-text pt-1"
+            autocomplete="off"
+          />
+        </mat-form-field>
+
+        <div
+          *ngIf="
+            a?.type === 'image' &&
+            a?.create === true &&
+            a?.create !== undefined &&
+            a?.create !== null
+          "
+        >
+          <label
+            for="file-upload"
+            class="custom-file-upload dwnld-btn"
+            *ngIf="
+              a.display_name !== undefined &&
+              a.display_name !== null &&
+              a.display_name !== ''
+            "
+          >
+            {{ a.display_name.replaceAll("_", " ") }}
+          </label>
+          <label
+            for="file-upload"
+            class="custom-file-upload dwnld-btn"
+            *ngIf="
+              a.display_name === undefined ||
+              a.display_name === null ||
+              a.display_name === ''
+            "
+          >
+            {{ a.name.replaceAll("_", " ") }}
+          </label>
+
+          <input
+            accept="image/png, image/gif, image/jpeg ,image/jpg"
+            id="file-upload"
+            #fileInput
+            type="file"
+            (change)="readURL($event, a.name, 'create')"
+          />
+        </div>
+      </div>
+      <div class="col-sm-3 pl-3" *ngIf="uploadedLogo">
+        <img [src]="uploadedLogo" height="80" />
+      </div>
+    </div>
+
+    <div class="col-sm-12 mt-3">
+      <button
+        type="button"
+        mat-raised-button
+        class="bot-warn md font-14 float-right mt-2 mr-5"
+        (click)="submitClaims()"
+      >
+        Submit
+      </button>
+      <button
+        type="button"
+        mat-raised-button
+        class="bot-warn md font-14 float-right mt-2 mr-2"
+        (click)="clearData()"
+      >
+        Clear
+      </button>
+    </div>
+  </div>
+</div>

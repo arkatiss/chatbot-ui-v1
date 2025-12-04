@@ -1,0 +1,92 @@
+.profile-button-toggle-group.mat-button-toggle-standalone.mat-button-toggle-appearance-standard,
+.mat-button-toggle-group-appearance-standard {
+  background: #fff;
+  border: 2px solid #fff !important; // #f7f7f7;
+  box-sizing: border-box;
+  border-radius: 14px;
+  box-shadow: 0px 5px 32px rgba(0, 0, 0, 0.09);
+}
+
+.profile-button-toggle.mat-button-toggle-checked.mat-button-toggle-appearance-standard {
+  // background: #d3222a; //#3ea3ec; !important; // #b61b1f; // #f8f1f1f5;
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  border-radius: 22px;
+  color: #d3222a; // #f8f1f1f5; // #b61b1f;
+  border: 1px solid #d3222a;
+  // color:#ffaeb1;
+}
+
+.profile-button-toggle.mat-button-toggle-appearance-standard.mat-button-toggle-checked {
+  // color: var(--mat-standard-button-toggle-selected-state-text-color);
+  color: #d3222a !important;
+  background-color: #fff; // #e9e9e9;
+}
+
+.profile-button-toggle.mat-button-toggle-appearance-standard {
+  background: #fff;
+  margin: 4px;
+  height: 40px !important;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.01em;
+  color: #222;
+  font-family: "Inter";
+  font-size: 1.6rem; // 16px;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.profile-button-toggle-group.mat-button-toggle-group-appearance-standard
+  .mat-button-toggle
+  + .mat-button-toggle {
+  border-left: none !important;
+}
+
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  padding: 0 0.9rem !important;
+}
+
+// .mat-button-toggle-standalone.mat-button-toggle-appearance-standard,
+// .mat-button-toggle-group-appearance-standard {
+//   border-radius: 10px !important;
+// }
+
+// .mat-button-toggle-standalone.mat-button-toggle-appearance-standard
+//   .mat-pseudo-checkbox,
+// .mat-button-toggle-group-appearance-standard .mat-pseudo-checkbox {
+//   --mat-minimal-pseudo-checkbox-selected-checkmark-color: #ffffffd6 !important;
+// }
+.profile-button-toggle.mat-button-toggle-standalone.mat-button-toggle-appearance-standard
+  .mat-pseudo-checkbox,
+.mat-button-toggle-group-appearance-standard .mat-pseudo-checkbox {
+  --mat-minimal-pseudo-checkbox-selected-checkmark-color: #d3222a !important;
+}
+
+.mat-mdc-menu-panel.mat-mdc-menu-panel {
+  min-width: 112px;
+  max-width: 280px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  border-radius: 8px !important;
+}
+
+.mat-mdc-radio-button.mat-accent {
+  --mdc-radio-disabled-selected-icon-color: #d3222a; //#3ea3ec;;
+  --mdc-radio-disabled-unselected-icon-color: #000;
+  --mdc-radio-unselected-hover-icon-color: #d3222a; //#3ea3ec;;
+  --mdc-radio-unselected-icon-color: #d3222a; //#3ea3ec;;
+  --mdc-radio-unselected-pressed-icon-color: #d3222a; //#3ea3ec;;
+  --mdc-radio-selected-focus-icon-color: #d3222a; //#3ea3ec;;
+  --mdc-radio-selected-hover-icon-color: #d3222a; //#3ea3ec;;
+  --mdc-radio-selected-icon-color: #d3222a; //#3ea3ec;;
+  --mdc-radio-selected-pressed-icon-color: #d3222a; //#3ea3ec;;
+  --mat-radio-ripple-color: #d3222a; //#3ea3ec;;
+  --mat-radio-checked-ripple-color: #d3222a; //#3ea3ec;;
+  --mat-radio-disabled-label-color: #d3222a; //#3ea3ec;;
+}
+
+.mat-step-icon-state-edit {
+  background-color: #d3222a; //#3ea3ec; !important;
+}

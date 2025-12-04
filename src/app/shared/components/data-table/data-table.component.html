@@ -1,0 +1,698 @@
+<div class="container-fluid data-prime-table p-0">
+  <div class="row m-0">
+    <div class="col-12 form-card-left p-0">
+      <p-toast></p-toast>
+      <div class="row m-0 d-flex justify-content-between p-3">
+        <div
+          class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 mt-auto mb-auto d-flex align-items-center gap-3"
+        >
+          <span class="grid-title">{{
+            menuName.replaceAll("entityconfig/entityType", "entityType")
+              | titlecase
+          }}</span>
+          <ng-container *ngIf="menuName === 'Infosets'">
+            <div class="col-sm-2">
+              <!-- <label>Select Domain</label> -->
+              <p-dropdown
+                class="domain-class"
+                [options]="filteredDomainOptions"
+                appendTo="body"
+                [(ngModel)]="domain"
+                optionLabel="domain"
+                placeholder="Select Domain"
+                [filter]="true"
+                filterPlaceholder="Search..."
+                [showClear]="true"
+              >
+              </p-dropdown>
+            </div>
+
+            <div class="col-sm-2">
+              <!-- <label>Select Sub Domain</label> -->
+              <p-dropdown
+                class="domain-class"
+                [options]="domain?.sub_domain"
+                appendTo="body"
+                [(ngModel)]="subDomain"
+                (onChange)="changeSubDomain()"
+                placeholder="Select Sub Domain"
+                [filter]="true"
+                filterPlaceholder="Search..."
+                [showClear]="true"
+              >
+              </p-dropdown>
+            </div>
+          </ng-container>
+          <span *ngIf="menuName === 'SQL Assistant'">
+            <i
+              class="pi pi-refresh pointer"
+              style="color: #d3222a"
+              title="Refresh the Data"
+              (click)="refreshData()"
+            ></i>
+          </span>
+        </div>
+        <div
+          class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 p-0 d-flex justify-content-end"
+        >
+          <div class="d-flex gap-3">
+            <span class="p-input-icon-right search-inputbox">
+              <i class="pi pi-search"></i>
+              <input
+                type="text"
+                pInputText
+                placeholder="search"
+                class="input-text"
+                [(ngModel)]="searchTerm"
+                (input)="filterData()"
+              />
+            </span>
+            <!-- menuName === 'Repositories' || -->
+            <button
+              class="save-btn"
+              *ngIf="
+                (menuName === 'ui-controls' && !showForm) ||
+                menuName === 'dataAuth' ||
+                menuName === 'connectors' ||
+                menuName === 'preferences' ||
+                menuName === 'tenantConfig' ||
+                menuName === 'Entities' ||
+                menuName === 'entityconfig' ||
+                menuName === 'entityType' ||
+                menuName === 'entityName' ||
+                menuName === 'listMenu' ||
+                menuName === 'SQL Assistant' ||
+                menuName === 'menus' ||
+                menuName === 'userMapping'
+              "
+              (click)="addNewRecord()"
+            >
+              New
+            </button>
+            <button
+              class="save-btn"
+              *ngIf="menuName === 'Infosets'"
+              (click)="addNewRecord()"
+            >
+              Build Infosets
+            </button>
+            <button
+              class="save-btn"
+              *ngIf="menuName === 'Pop up Messages'"
+              (click)="addNewRecord()"
+            >
+              Add Message
+            </button>
+          </div>
+        </div>
+      </div>
+      <p-table
+        #dt1
+        [value]="filteredRowData"
+        [columns]="columns"
+        [paginator]="true"
+        [responsive]="true"
+        [resizableColumns]="true"
+        [(selection)]="selectedRows"
+        [rowHover]="true"
+        responsiveLayout="scroll"
+        sortMode="multiple"
+        [showCurrentPageReport]="true"
+        [reorderableColumns]="true"
+        editMode="row"
+        [scrollable]="true"
+        styleClass=" myTable "
+        [rows]="10"
+        [rowsPerPageOptions]="[10, 25, 50, 100]"
+        [globalFilterFields]="columns"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        (onRowExpand)="onRowExpand($event)"
+        (onRowCollapse)="onRowCollapse($event)"
+        dataKey="scenario_name"
+      >
+        <!-- <ng-template pTemplate="caption">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="p-input-icon-left ml-auto">
+              <input
+                pInputText
+                type="text"
+                (input)="dt1.filterGlobal($event, 'contains')"
+                placeholder="Search keyword"
+              />
+            </span>
+          </div>
+        </ng-template> -->
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <!-- <th style="width: 3rem">
+              <p-tableHeaderCheckbox
+                (click)="selectRow($event)"
+              ></p-tableHeaderCheckbox>
+            </th> -->
+            <th style="width: 2rem" *ngIf="screenName === 'SQL Assistant'"></th>
+            <th
+              *ngFor="let col of columns"
+              [pSortableColumn]="col.field"
+              pReorderableColumn
+              pResizableColumn
+            >
+              <span>
+                {{ col.header.replaceAll("_", " ") | titlecase }}
+              </span>
+
+              <p-sortIcon field="{{ col.field }}" class="d-sort">
+                <i class="pi-sort-down d-sort"></i>
+              </p-sortIcon>
+              <!-- <p-columnFilter
+                type="text"
+                [field]="col.field"
+                display="menu"
+              ></p-columnFilter> -->
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-rowData
+          let-columns="columns"
+          let-editing="editing"
+          let-ri="rowIndex"
+          let-expanded="expanded"
+        >
+          <tr [pEditableRow]="rowData" [pReorderableRow]="ri" class="pointer">
+            <!-- <td style="width: 3rem">
+              <p-tableCheckbox
+                [value]="rowData"
+                (click)="selectRow($event)"
+              ></p-tableCheckbox>
+            </td> -->
+            <td *ngIf="screenName === 'SQL Assistant'">
+              <p-button
+                type="button"
+                pRipple
+                [pRowToggler]="rowData"
+                [icon]="
+                  isRowExpanded(rowData)
+                    ? 'pi pi-chevron-down'
+                    : 'pi pi-chevron-right'
+                "
+              ></p-button>
+            </td>
+            <td
+              *ngFor="let col of columns"
+              title=" {{ rowData[col.field] }}"
+              (click)="editRowData(rowData, col, 'cell')"
+            >
+              <!-- {{ rowData[col.field] }} -->
+              <div
+                *ngIf="
+                  col.field !== 'image' &&
+                  col.field !== 'status' &&
+                  col.field !== 'active_status' &&
+                  col?.header !== 'Edit' &&
+                  col?.header !== 'Delete' &&
+                  col.field !== 'docName' &&
+                  col.field !== 'levels' &&
+                  col.field !== 'dateRange' &&
+                  col.field !== 'tenantActions' &&
+                  col.field !== 'menuMapping' &&
+                  col.field !== 'submenu'
+                "
+              >
+                {{ rowData[col.field] }}
+              </div>
+
+              <span *ngIf="col.field === 'tenantActions'">
+                <img
+                  *ngIf="!permissions.includes('')"
+                  (click)="
+                    permissions?.includes('edit') &&
+                      editRowData(rowData, col, 'edit')
+                  "
+                  class="img action pointer me-2"
+                  [src]="imagePath + 'edit.svg.svg'"
+                  [ngClass]="{
+                    disable:
+                      !permissions.includes('edit') === true ||
+                      rowData?.isSuperAdminRole
+                  }"
+                  [pTooltip]="
+                    !permissions.includes('edit')
+                      ? 'You don\'t have access to edit'
+                      : 'Edit'
+                  "
+                />
+              </span>
+              <span *ngIf="col.field === 'tenantActions'">
+                <img
+                  *ngIf="!permissions.includes('')"
+                  (click)="
+                    permissions?.includes('delete') && deleteRowData(rowData)
+                  "
+                  class="pointer ms-2"
+                  [src]="imagePath + 'delete-icon.svg'"
+                  [ngClass]="{
+                    disable:
+                      !permissions.includes('delete') === true ||
+                      rowData?.isSuperAdminRole
+                  }"
+                  [pTooltip]="
+                    !permissions.includes('delete')
+                      ? 'You don\'t have access to delete'
+                      : 'Delete'
+                  "
+                />
+              </span>
+
+              <span *ngIf="col.field === 'dateRange'">
+                {{ rowData[col.field] }} - Days
+              </span>
+
+              <span *ngIf="col.field === 'levels'">
+                <i
+                  class="pi pi-slack pointer"
+                  (click)="levelsData($event, op, rowData)"
+                  style="color: #d3222a; font-size: 1.6rem"
+                ></i>
+              </span>
+              <span *ngIf="col.field === 'submenu'">
+                <i
+                  class="pi pi-slack pointer"
+                  (click)="subMenu($event, opMenu, rowData)"
+                  style="color: #d3222a; font-size: 1.6rem"
+                ></i>
+              </span>
+              <span *ngIf="col.field === 'menuMapping'">
+                <i
+                  class="pi pi-slack pointer"
+                  (click)="userMapping($event, opUserMap, rowData)"
+                  style="color: #d3222a; font-size: 1.6rem"
+                ></i>
+              </span>
+
+              <span
+                (click)="linkClicked(rowData)"
+                *ngIf="col.field === 'docName'"
+                style="color: #d3222a"
+                class="d-flex align-items-center gap-3"
+              >
+                <img
+                  [src]="imgUrl + 'images/ERM/' + rowData.imgName + '.svg'"
+                  alt=""
+                  srcset=""
+                  width="24"
+                  height="24"
+                />
+                <span>{{ rowData[col.field] }}</span>
+              </span>
+              <div *ngIf="col.field === 'image'">
+                <img [src]="rowData.imageUrl" width="60" height="50" />
+              </div>
+
+              <div
+                *ngIf="
+                  this.screenName !== 'Infosets' &&
+                  this.screenName !== 'SQL Assistant' &&
+                  col.field === 'status'
+                "
+              >
+                <span *ngIf="rowData[col.field]; else disable">Enabled</span>
+                <ng-template #disable>Disabled</ng-template>
+              </div>
+              <div
+                *ngIf="
+                  this.screenName === 'SQL Assistant' && col.field === 'status'
+                "
+              >
+                <span *ngIf="rowData[col.field]; else disable">{{
+                  rowData[col.field]
+                }}</span>
+                <ng-template #disable>Disabled</ng-template>
+              </div>
+              <div
+                *ngIf="this.screenName === 'Infosets' && col.field === 'status'"
+              >
+                <span
+                  *ngIf="rowData[col.field]; else disable"
+                  class="published-class"
+                  >Published</span
+                >
+                <ng-template #disable
+                  ><span class="draft-class">Draft</span></ng-template
+                >
+              </div>
+              <div *ngIf="col.field === 'active_status'">
+                <p-inputSwitch
+                  [(ngModel)]="rowData[col.field]"
+                  *ngIf="
+                    rowData[col.field] === true || rowData[col.field] === false;
+                    else disable
+                  "
+                ></p-inputSwitch>
+                <ng-template #disable><span>Not Available</span></ng-template>
+              </div>
+              <span *ngIf="col?.header === 'Actions'">
+                <!-- <i class="fa-solid fa-pen-to-square pointer edit-icon" (click)="editRowData(rowData, col, 'edit')"></i>&nbsp;&nbsp; -->
+                <!-- <i class="fa-solid fa-trash-can pointer trash-icon" (click)="deleteRowData(rowData)"></i> -->
+                <ng-container *ngIf="selectiontgl === 'unstructuredRepos'">
+                  <img
+                    (click)="
+                      rowData?.extractionStatus === 'Pending'
+                        ? extractRecord(rowData)
+                        : ''
+                    "
+                    class="img action pointer me-3"
+                    [src]="
+                      imgUrl +
+                      (rowData?.extractionStatus === 'Pending'
+                        ? 'images/repository-imgs/build/Extract.svg'
+                        : 'images/repository-imgs/build/unextract.svg')
+                    "
+                    [title]="
+                      rowData?.extractionStatus === 'Pending'
+                        ? 'Extract'
+                        : 'Extracted'
+                    "
+                  />
+                </ng-container>
+
+                <img
+                  (click)="editRowData(rowData, col, 'edit')"
+                  class="img action pointer me-2"
+                  src="assets/images/repository-imgs/build/edit.svg.svg"
+                  title="Edit"
+                />
+                <img
+                  (click)="deleteRowData(rowData)"
+                  class="pointer"
+                  src="assets/images/repository-imgs/build/delete.svg"
+                />
+                <!-- <img
+                  [src]="imgUrl + 'images/authorization/edit.svg'"
+                  alt="edit-logo"
+                  width="20px"
+                  height="20px"
+                  class="pointer"
+                  (click)="editRowData(rowData, col, 'edit')"
+                />&nbsp;&nbsp; -->
+                <!-- <img
+                  [src]="imgUrl + 'images/authorization/delete.svg'"
+                  alt="delete-logo"
+                  width="20px"
+                  height="20px"
+                  class="pointer"
+                  (click)="deleteRowData(rowData)"
+                /> -->
+              </span>
+
+              <span *ngIf="col?.header === 'Edit'">
+                <i
+                  class="fa-solid fa-pen-to-square pointer edit-icon"
+                  (click)="contextEdit(rowData)"
+                ></i
+                >&nbsp;&nbsp;
+              </span>
+              <span *ngIf="col?.header === 'Delete'">
+                <i
+                  class="fa-solid fa-trash-can pointer trash-icon"
+                  (click)="deleteRowData(rowData)"
+                ></i>
+              </span>
+              <span *ngIf="col?.header === 'Enable/Disable'">
+                <i
+                  class="fa-regular fa-eye"
+                  style="color: #636363"
+                  title="Show"
+                ></i
+                >&nbsp;&nbsp;
+                <i
+                  class="fa-regular fa-eye-slash"
+                  style="color: #636363"
+                  title="Hide"
+                ></i>
+              </span>
+
+              <span *ngIf="col?.header === 'Run'">
+                <!-- <button
+                  class="btn btn-success"
+                  (click)="contextShowSaved(rowData)"
+                >
+                  Play
+                </button> -->
+                <i
+                  class="fa-solid fa-circle-play fa-2x"
+                  style="color: #d3222a"
+                  (click)="contextShowSaved(rowData)"
+                ></i>
+                <!-- <i
+                  class="fa-regular fa-circle-play fa-2x"
+                  style="color: #d3222a"
+                  (click)="contextShowSaved(rowData)"
+                ></i> -->
+              </span>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-rowData>
+          <tr>
+            <td colspan="12">
+              <div class="p-3 expansion-table">
+                <!-- If it's an SQL Block -->
+                <p-table
+                  *ngIf="isSQLBlock(rowData)"
+                  [value]="rowData.children"
+                  [dataKey]="rowData.scenario_name"
+                >
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>UUid</th>
+                      <th>Query</th>
+                      <th>Created at</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                      <!-- <th>columns</th> -->
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-childRow>
+                    <tr>
+                      <td title=" {{ childRow.uuid }}">{{ childRow.uuid }}</td>
+                      <td title=" {{ childRow.query }}">
+                        {{ childRow.query }}
+                      </td>
+                      <td title=" {{ childRow.created_at }}">
+                        {{ childRow.created_at }}
+                      </td>
+
+                      <td title=" {{ childRow.status }}">
+                        {{ childRow.status }}
+                      </td>
+                      <!-- <td>
+                        <ng-container *ngFor="let column of childRow.columns">
+                          <div>
+                            {{ column.column_name }}
+                            {{ column.alias ? "(" + column.alias + ")" : "" }}
+                          </div>
+                        </ng-container>
+                      </td> -->
+                      <td>
+                        <i
+                          class="fa-solid fa-pen-to-square pointer edit-icon me-2"
+                          (click)="childEditRowData(rowData, childRow)"
+                          title="Edit"
+                        ></i
+                        >&nbsp;&nbsp;
+
+                        <i
+                          class="fa-solid fa-trash-can pointer trash-icon"
+                          (click)="childDeleteRowData(rowData, childRow)"
+                          title="Delete"
+                        ></i>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+
+                <!-- If it's a Table Block -->
+                <p-table
+                  *ngIf="isTableBlock(rowData)"
+                  [value]="rowData.children"
+                  [dataKey]="rowData.scenario_name"
+                >
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>UUid</th>
+                      <th>TableName</th>
+                      <th>SchemaName</th>
+                      <th>Created at</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+
+                      <!-- <th>columns</th> -->
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-childRow>
+                    <tr>
+                      <td title=" {{ childRow.uuid }}">{{ childRow.uuid }}</td>
+                      <td title=" {{ childRow.table_name }}">
+                        {{ childRow.table_name }}
+                      </td>
+                      <td title=" {{ childRow.schema_name }}">
+                        {{ childRow.schema_name }}
+                      </td>
+                      <td title=" {{ childRow.created_at }}">
+                        {{ childRow.created_at }}
+                      </td>
+
+                      <td title=" {{ childRow.status }}">
+                        {{ childRow.status }}
+                      </td>
+                      <td>
+                        <i
+                          class="fa-solid fa-pen-to-square pointer edit-icon me-2"
+                          (click)="childEditRowData(rowData, childRow)"
+                          title="Edit"
+                        ></i
+                        >&nbsp;&nbsp;
+
+                        <i
+                          class="fa-solid fa-trash-can pointer trash-icon"
+                          (click)="childDeleteRowData(rowData, childRow)"
+                          title="Delete"
+                        ></i>
+                      </td>
+                      <!-- <td>
+                        <ng-container
+                          *ngIf="childRow.columns?.length > 0; else noColumns"
+                        >
+                          <ng-container *ngFor="let column of childRow.columns">
+                            <div>
+                              {{ column.column_name }}
+                              {{ column.alias ? "(" + column.alias + ")" : "" }}
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                        <ng-template #noColumns
+                          >No columns available</ng-template
+                        >
+                      </td> -->
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr style="height: calc(100vh - 410px); background-color: #fff">
+            <td [attr.colspan]="columns.length + 3">
+              <div
+                class="no-records col-sm-12 d-flex align-items-center justify-content-center"
+              >
+                No records found
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <button
+        *ngIf="menuName === 'Pop up Messages'"
+        class="btn btn-lg btn-danger px-4 m-4"
+      >
+        Apply Changes
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- <ngx-spinner
+  bdColor="rgba(51,51,51,0.2)"
+  size="default"
+  color="#d3222a"
+  type="ball-spin-clockwise"
+  [fullScreen]="false"
+> -->
+<!-- <button type="button" mat-raised-button class="mt-4 md submit-btn-bg" (click)="cancel()">
+  Cancel
+</button> -->
+<!-- </ngx-spinner> -->
+<p-overlayPanel #op>
+  <div class="overlay-header">
+    <span class="header-title">Context</span>
+    <button type="button" class="close-btn" (click)="op.hide()">✖</button>
+  </div>
+  <!-- <div class="context-card pt-4 pb-4" *ngIf="contextArr.length > 0">
+
+
+    <div
+      class="p-3"
+      *ngFor="let level of contextArr; let levelIdx = index"
+      style="border: 1px solid #ccc; border-radius: 8px; margin-bottom: 1rem"
+    >
+      <h5 class="ps-2">
+        Level: {{ level.levelType }} | Table: {{ level.tableName }}
+      </h5>
+
+      <div class="chip-container ps-2 pe-2 pt-2">
+        <div
+          class="chip"
+          *ngFor="let ctx of level.setContext; let ctxIdx = index"
+        >
+          {{ ctx.searchColumn }}: {{ ctx.searchValue }}
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <div class="p-2 mt-3">
+    <div class="context-card pt-4 pb-4" *ngIf="contextArr.length">
+      <div class="p-3" *ngFor="let group of contextArr">
+        <strong
+          >{{ toTitleCase(group.levelType) }} - {{ group.tableName }}</strong
+        >
+        <div *ngFor="let key of objectKeys(group.setContext)">
+          <div class="mb-4 mt-4">
+            <span class="fw-medium">{{ key }}:</span>
+            <span
+              *ngFor="let val of group.setContext[key]; let vi = index"
+              class="chip ms-3"
+            >
+              {{ val }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-overlayPanel>
+<p-overlayPanel #opMenu>
+  <div class="overlay-header">
+    <span class="header-title">Sub Menus</span>
+    <button type="button" class="close-btn" (click)="opMenu.hide()">✖</button>
+  </div>
+
+  <div class="p-2 mt-3">
+    <div class="context-card pt-4 pb-4" *ngIf="subMenuList.length">
+      <div class="p-3" *ngFor="let item of subMenuList">
+        <strong>{{ toTitleCase(item) }}</strong>
+      </div>
+    </div>
+  </div>
+</p-overlayPanel>
+<p-overlayPanel #opUserMap>
+  <div class="overlay-header">
+    <span class="header-title">User Mapping</span>
+    <button type="button" class="close-btn" (click)="opUserMap.hide()">
+      ✖
+    </button>
+  </div>
+
+  <div class="p-2 mt-3">
+    <div class="context-card pt-4 pb-4" *ngIf="userMapList.length">
+      <div class="p-3" *ngFor="let item of userMapList">
+        <strong>{{ toTitleCase(item.menuName) }} </strong>
+        <ul *ngFor="let list of item?.submenus" class="ms-3">
+          <li>{{ list }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</p-overlayPanel>

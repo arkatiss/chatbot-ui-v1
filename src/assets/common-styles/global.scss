@@ -1,0 +1,121 @@
+@import "./custom.scss";
+
+@mixin btn-new($white, $primaryColor) {
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Inter";
+  font-style: normal;
+  border: 1px solid !important;
+  padding: 0px 28px !important;
+  color: $white;
+  background-color: $primaryColor;
+  height: 46px;
+}
+
+@mixin border-btn($white, $primaryColor) {
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Inter";
+  font-style: normal;
+  border: 1px solid $primaryColor !important;
+  padding: 0px 28px !important;
+  color: $primaryColor;
+  background-color: $white;
+  height: 46px;
+}
+
+@mixin tag-title($black) {
+  font-family: Inter;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 25px;
+  text-align: left;
+  white-space: nowrap;
+  color: $black;
+}
+
+@mixin label-class($labelColor) {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+  color: $labelColor;
+}
+
+@mixin save-btn($primaryColor, $white) {
+  background-color: $primaryColor;
+  color: $white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid;
+  font-family: "Inter";
+  font-size: 16px;
+  font-weight: 600;
+}
+
+@mixin cancel-btn($black, $white) {
+  background-color: $white;
+  color: $black;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  font-family: "Inter";
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.new-btn {
+  @include btn-new($white, $primaryColor);
+}
+
+.title-tag {
+  @include tag-title($black);
+}
+
+.labelClass {
+  @include label-class($labelColor);
+}
+
+.save {
+  @include save-btn($primaryColor, $white);
+}
+
+.cancel {
+  @include cancel-btn($black, $white);
+}
+
+.btn-border {
+  @include border-btn($white, $primaryColor);
+}
+
+.f-12 {
+  font-size: 12px;
+}
+.f-14 {
+  font-size: 14px;
+}
+
+.f-22 {
+  font-size: 22px;
+}
+
+.f-32 {
+  font-size: 32px;
+}
+
+.f-42 {
+  font-size: 46px;
+}
+
+.trash-color {
+  color: #e14957;
+  font-weight: 500;
+}
+
+.edit-color {
+  color: #6e39cb;
+  font-weight: 500;
+}
