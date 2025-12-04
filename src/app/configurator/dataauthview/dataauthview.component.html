@@ -1,0 +1,91 @@
+<div>
+    <h4 class="font-14 fw-500  p-3 primary"> View</h4>
+    <ngx-datatable *ngIf="AdminDetails.length > 0" #table style="height:300px" class="material ml-0 mr-0"
+      [rows]="AdminDetails" [columnMode]="'force'" [headerHeight]="40" [footerHeight]="40" [scrollbarH]="true"
+      [limit]="9" [rowHeight]="40" [scrollbarV]="true">:
+      <ngx-datatable-column name="S.No" [width]="5">
+        <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+          {{ rowIndex + 1 }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column prop="auth_user_name" name="User Name" [flexGrow]="1">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.auth_user_name }}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column prop="auth_created_by" name="Created By" [flexGrow]="1">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.auth_created_by}}
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Actions">
+        <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+          <mat-icon class="pointer  font-18" title="edit" (click)="editAdminData(editAdminDataVal,row)">
+            edit
+          </mat-icon>
+          <mat-icon class="danger pointer ml-2  delete" (click)="adminDelete(row)" title="Delete">
+            delete_sweep
+          </mat-icon>
+
+         
+        </ng-template>
+      </ngx-datatable-column>
+      <!-- <ngx-datatable-column>
+        <ng-template ngx-datatable-header-template>
+          <mat-icon class="pointer ml-4 font-18" title="Add" (click)="AddNewData(openAddData)">
+            add_circle_outline
+          </mat-icon>
+        </ng-template>
+      </ngx-datatable-column> -->
+    </ngx-datatable>
+    <ng-template #editAdminDataVal>
+      <div class="modal-header p-2">
+        <h3 class="font-14 primary">Update</h3>
+        <button type="button" class="close float-right pr-3" aria-label="Close" (click)="closedialog()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-3">
+        <form [formGroup]="updateAdminForm" (ngSubmit)="updateAdmin()">
+        <div class="row m-0 p-0 col-sm-12">
+          <input type="text" hidden formControlName="auth_id">
+          <div class="col-sm-3 p-0 m-0" *ngFor="let head of chainsDataDynamicUpdate;let chidx = index;">
+            <mat-form-field appearance="outline" class="font-11 col-sm-12" *ngFor="let h of head | keyvalue;">
+              <mat-label>{{h.key}}</mat-label>
+              <mat-select formControlName="selectBoxes" multiple 
+                (selectionChange)="ChainSelectionUpdate($event.value,chidx,h.key)">
+                <mat-option *ngFor="let list of h.value"
+                  value={{list}}>{{list}} </mat-option>
+              </mat-select>
+
+            </mat-form-field>
+           
+          </div>
+        </div> 
+          <div class="modal-footer p-2 mt-2 row">
+            <button type="submit" mat-raised-button
+              class="text-info md float-right font-13">Update</button>
+          </div>
+
+        </form>
+<!-- <div *ngFor="let head of chainsDataDynamicUpdate;let chidx = index;">
+<mat-form-field appearance="outline" class="font-11 col-sm-12" *ngFor="let h of head | keyvalue;">
+<mat-label>{{h.key}}</mat-label>
+<mat-select [formControl]="toppings" multiple >
+  <mat-option  *ngFor="let list of h.value"
+    [value]=list>{{list}} </mat-option>
+</mat-select>
+
+</mat-form-field>
+</div> -->
+       
+        <!-- <mat-form-field>
+          <mat-select placeholder="Toppings" [formControl]="toppings"  multiple>
+            <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        
+      </div>
+
+    </ng-template>
+  </div>

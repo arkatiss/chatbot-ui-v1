@@ -1,0 +1,28 @@
+.server_list {
+    cursor: pointer;
+    padding: 1%;
+    max-width: 23%;
+}
+.data_flow_info_height {
+    height: 170px;
+    overflow: auto;
+}
+.info_heading_style {
+    font-size: 15px;
+    font-weight: 500;
+}
+.info_text_style {
+    font-size: 11px;
+}
+.bot-warn {
+    color: #d31e25;
+}
+textarea.mat-input-element.cdk-textarea-autosize {
+    resize: auto;
+    overflow: hidden;
+}
+.disableEdit {
+    background-color: #97929248;
+    cursor: not-allowed;
+    pointer-events: none;
+   }

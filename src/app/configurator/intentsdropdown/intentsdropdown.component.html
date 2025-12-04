@@ -1,0 +1,59 @@
+<div *ngIf="params.colDef.field === 'dropdownRender'">
+  <mat-form-field
+    appearance="outline"
+    class="font-9 p-0"
+    *ngIf="this.params.data.checked === false"
+  >
+    <mat-label>Intents</mat-label>
+    <input
+      type="text"
+      matInput
+      [formControl]="intent"
+      [matAutocomplete]="auto"
+      placeholder="search"
+    />
+    <mat-autocomplete #auto="matAutocomplete" class="securityUser">
+      <mat-option
+        *ngFor="let data of filteredIntents | async; let idx = index"
+        [value]="data.intent"
+        (onSelectionChange)="
+          onSelectionChange(data.intent, params.data, params.rowIndex, data)
+        "
+      >
+        {{ data.intent }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field
+    appearance="outline"
+    class="font-9 p-0 col-sm-10"
+    *ngIf="this.params.data.checked === true"
+  >
+    <mat-label>Intents</mat-label>
+    <input type="text" matInput readonly />
+    <mat-icon matSuffix>hide_source</mat-icon>
+  </mat-form-field>
+</div>
+<div *ngIf="params.colDef.field === 'checkRender'">
+  <mat-checkbox
+    class="mr-2"
+    (click)="$event.stopPropagation()"
+    (change)="
+      $event ? selection.toggle(params.data) : null;
+      selectIntent(params.data, $event, params.rowIndex, params)
+    "
+    [checked]="selection.isSelected(params.data)"
+  >
+  </mat-checkbox>
+</div>
+<div *ngIf="params.colDef.field === 'annotateRender'">
+  <i
+    class="fal fa-ballot-check font-18 pointer primary"
+    title="annotate"
+    (click)="navigateAnnotation(params.data)"
+    *ngIf="this.params.data.annotate === true"
+  ></i>
+</div>
+<div *ngIf="params.colDef.field === 'sno'">
+  {{ this.params.rowIndex + 1 }}
+</div>

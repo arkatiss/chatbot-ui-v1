@@ -1,0 +1,699 @@
+<div class="row col-sm-12 p-0 m-0 pb-5">
+  <div class="col-sm-12 p-0">
+    <div class="row m-0">
+      <div class="col-sm-12 m-0 p-0">
+        <p
+          class="font-14 fw-500 pt-2 mb-2 pl-1 blue float-left ml-3"
+          *ngIf="homemenu === 'true'"
+        >
+          Apps
+        </p>
+        <mat-icon
+          class="blue pointer mr-4 float-right font-24 mt-1"
+          title="Copy Link"
+          (click)="ShareLink(searchfilterString)"
+        >
+          assignment
+        </mat-icon>
+
+        <mat-icon
+          class="blue pointer mr-4 float-right font-24 mt-1"
+          title="Minimize"
+          (click)="MinimizeDiv('header')"
+          *ngIf="!minimizeHeader && homemenu === 'true'"
+        >
+          add</mat-icon
+        >
+        <mat-icon
+          class="blue pointer mr-4 float-right font-24 mt-1"
+          title="Minimize"
+          (click)="MinimizeDiv('header')"
+          *ngIf="minimizeHeader && homemenu === 'true'"
+        >
+          minimize</mat-icon
+        >
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 p-0" *ngIf="minimizeHeader">
+    <div class="col-sm-12 p-0 row m-0 pl-2">
+      <mat-card
+        class="mr-2 mt-2 mb-2 col-sm-2 col-md-2 server_list mat-card"
+        *ngFor="let a of appList"
+      >
+        <div class="row m-0">
+          <span
+            class="col-sm-8 p-0 mt-1 font-12 blue"
+            style="word-break: break-all"
+            >{{ a }}</span
+          >
+          <span class="col-sm-4 p-0">
+            <mat-icon
+              class="primary float-right mat-icon notranslate material-icons mat-icon-no-color pointer pl-2"
+              role="img"
+              title="Run"
+              aria-hidden="true"
+              (click)="runApp(a, 'run')"
+            >
+              play_circle_filled</mat-icon
+            >
+            <mat-icon
+              class="primary float-right mat-icon notranslate material-icons mat-icon-no-color pointer"
+              (click)="runApp(a, 'info')"
+              [popover]="popTemplate"
+              [outsideClick]="true"
+              containerclass="customClass"
+              placement="bottom"
+              role="img"
+              title="Info"
+              aria-hidden="true"
+              >info</mat-icon
+            >
+          </span>
+        </div>
+
+        <ng-template #popTemplate>
+          <div class="col-sm-12 p-0" style="width: 250px !important">
+            <p class="bot-warn text-center font-16 mb-0 poppins">Info</p>
+            <hr class="m-0" />
+            <div class="data_flow_info_height scrollbar-primary">
+              <div class="col-sm-12 p-0">
+                <p class="info_heading_style m-0 blue poppins">Connector :</p>
+                <p
+                  class="info_text_style poppins"
+                  *ngIf="
+                    this.connector !== undefined && this.connector !== null
+                  "
+                >
+                  {{ this.connector }}
+                </p>
+              </div>
+              <div class="col-sm-12 p-0">
+                <p class="info_heading_style m-0 blue poppins">Table Name :</p>
+                <p
+                  class="info_text_style break_word poppins"
+                  *ngIf="
+                    this.tableName !== undefined && this.tableName !== null
+                  "
+                >
+                  {{ this.tableName }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="col-sm-12 mt-4 p-0" *ngIf="showGrid">
+    <div class="row m-0 col-sm-12 p-0">
+      <div class="row m-0 col-sm-12 p-0" *ngIf="showGrid">
+        <div class="col-sm-11 p-0" *ngIf="minimizeGridHeader">
+          <p class="font-15 fw-500 pt-3 pl-1 blue float-left ml-1">
+            {{ sessionAppName }}
+          </p>
+          <mat-form-field class="col-sm-3 font-12 pr-2 pl-5 m-0 pt-1">
+            <mat-label>Filter string</mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5"
+              [(ngModel)]="searchfilterString"
+              autocomplete="off"
+            ></textarea>
+          </mat-form-field>
+
+          <button
+            type="button"
+            mat-raised-button
+            class="grey-btn-border mr-2 md"
+            (click)="searchByFilter()"
+          >
+            Apply
+          </button>
+
+          <button
+            type="button"
+            mat-raised-button
+            class="text-info md font-13 float-right mt-2 mr-2"
+            [matMenuTriggerFor]="notification"
+          >
+            Add
+          </button>
+
+          <button
+            type="button"
+            mat-raised-button
+            class="text-info md font-13 float-right mt-2 mr-3"
+            *ngIf="this.showUpdateBtn === true"
+            (click)="updateRow()"
+          >
+            save
+          </button>
+          <mat-form-field class="font-11 p-1 float-right mr-2">
+            <mat-label>Grid Search </mat-label>
+            <input
+              type="text"
+              matInput
+              autocomplete="off"
+              placeholder="Grid search"
+              (keyup)="filterDatatable($event)"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-{{ gridHeadCol }} float-right p-0">
+          <mat-icon
+            class="blue pointer mr-4 float-right font-24 mt-1"
+            title="Minimize"
+            (click)="MinimizeDiv('gridheader')"
+            *ngIf="!minimizeGridHeader"
+          >
+            add</mat-icon
+          >
+          <mat-icon
+            class="blue pointer mr-4 float-right font-24 mt-1"
+            title="Minimize"
+            (click)="MinimizeDiv('gridheader')"
+            *ngIf="minimizeGridHeader"
+          >
+            minimize</mat-icon
+          >
+        </div>
+        <div class="col-sm-12 pl-0 pr-0" *ngIf="minimizeGridHeader">
+          <!-- <div class="row m-0 col-sm-12 float-right p-0">
+                        <mat-icon class="blue pointer mr-4 float-right font-24 mt-1" title="Minimize" (click)="MinimizeDiv('grid')" *ngIf="!minimizeGrid"> add</mat-icon>
+                        <mat-icon class="blue pointer mr-4 float-right font-24 mt-1" title="Minimize" (click)="MinimizeDiv('grid')" *ngIf="minimizeGrid"> minimize</mat-icon>
+                    </div> -->
+
+          <ag-grid-angular
+            #agGrid
+            class="ag-theme-balham"
+            style="width: 100%; height: calc(100vh - 315px)"
+            (cellValueChanged)="onRowChanged($event)"
+            [rowData]="rowData"
+            [columnDefs]="columnDefs"
+            [defaultColDef]="defaultColDef"
+            [modules]="modules"
+            [groupMultiAutoColumn]="true"
+            [sideBar]="sidebar"
+            [animateRows]="true"
+            [pagination]="true"
+            [paginationAutoPageSize]="true"
+            (gridReady)="onGridReady($event)"
+            [autoGroupColumnDef]="autoGroupColumnDef"
+            [getContextMenuItems]="getContextMenuItems"
+            [enableRangeSelection]="enableRangeSelection"
+            [gridOptions]="openOrderGridOptions"
+            [rowGroupPanelShow]="rowGroupPanelShow"
+            (cellEditingStopped)="onCellEditingStopped($event)"
+            (rowEditingStarted)="onRowEditingStarted($event)"
+            (rowEditingStopped)="onRowEditingStopped($event)"
+            (cellEditingStarted)="onCellEditingStarted($event)"
+            [rowSelection]="rowSelection"
+            (selectionChanged)="onSelectionChanged($event)"
+          >
+          </ag-grid-angular>
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-menu #notification="matMenu" xPosition="before" class="store-Menu">
+    <mat-list class="store-action-menu mt-1">
+      <mat-list-item (click)="addNewRow()"> Add Row in Grid </mat-list-item>
+      <mat-list-item (click)="addrow(createForm)"> Add Row Data </mat-list-item>
+    </mat-list>
+  </mat-menu>
+
+  <!-- <div class="row m-0" *ngIf="showGrid">
+            <div class="col-sm-3 p-0" style="top: 40px;"  [ngClass]="imageArray?.length !== 0 ? 'col-sm-3 p-0' : ''" *ngIf="imageArray?.length !== 0">
+                <div class="col-sm-12" *ngFor="let a of imageArray;">
+                  <form [formGroup] = "uploadForm">
+                  <label for="upload">
+                      <img [src]="'data:image/jpg;base64,'+a.value" class="img-fluid dynamicImage"  alt="Image not found" (error)="setDefaultPic($event)" *ngIf="a.type === 'image'">
+                      <input type="file" #fileInput id="upload" hidden (change)="readURL($event.target.files)" accept =".jpg,.jpeg,.png,.PNG">
+                </label>
+              </form>
+                </div>
+
+            </div>
+          <div  style="top: 40px;"  [ngClass]="imageArray?.length !== 0 ? 'col-sm-9 p-0' : 'col-sm-12 p-0'">
+              <div class="row m-0 p-0">
+
+                  <div class="col-sm-4" *ngFor="let a of inputFields;let i = index;">
+                      <mat-form-field appearance="outline" class="p-1 col-sm-10" *ngIf="a?.name === this.pkey && a?.type !== 'image'">
+                          <mat-label>{{a.name}}(Primary Key) </mat-label>
+                          <input [type]="a.type" matInput [(ngModel)]="a.value" [value]="a.value" disabled autocomplete="off">
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" class="p-1 col-sm-10" *ngIf="a?.values?.length > 1 && a?.type !== 'image'">
+                          <mat-label>{{a.name}}</mat-label>
+                          <mat-select [(ngModel)]="a.value">
+                              <mat-option *ngFor="let b of a.values" [value]="b">
+                                  {{b}}
+                              </mat-option>
+                          </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="fill" class=" p-1 col-sm-10" *ngIf="a?.type ==='date' && a?.type !== 'image'">
+                          <mat-label>{{a.value}}</mat-label>
+                          <input matInput [matDatepicker]="picker" [(ngModel)]="a.value" [value]="a.value">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+
+                      <mat-form-field appearance="outline" class=" p-1 col-sm-10" *ngIf="a?.values?.length === 0 && a?.type !=='date' && a?.name !== this.pkey && a?.type !== 'image'">
+                          <mat-label>{{a.name}} </mat-label>
+                          <input [type]="a.type" matInput [(ngModel)]="a.value" [value]="a.value"  autocomplete="off">
+                      </mat-form-field>
+                  </div>
+              </div>
+
+              <div class="col-sm-12 mt-2" *ngIf="showGrid">
+                <div class="row m-0">
+                    <div class="col-sm-12">
+                        <div class="row m-0">
+                            <div class="col-sm-12">
+                                <div class="row m-0">
+                                    <div class="col-sm-12">
+                                        <div class="row m-0">
+                                            <div class="col-sm-12">
+                                                <div class="row m-0">
+                                                    <div class="col-sm-8">
+
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <button type="button" mat-raised-button class="text-info md font-13 float-right mt-2"
+                (click)="submitSingleData()">save</button>
+                <button type="button" mat-raised-button class="md font-13 text-info float-right mt-2 mr-2" (click)="clearData()"
+                >Clear</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            </div>
+
+        </div> -->
+
+  <!-- </div> -->
+</div>
+<button hidden (click)="openModal(openAddData)" id="modalID"></button>
+<button hidden (click)="enableUpdateBtn()" id="updateID"></button>
+<button hidden (click)="openEditForm(editForm)" id="editform"></button>
+<ng-template #createForm>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <p id="dialog-auto-name" class="modal-title blue pull-left">Add Row</p>
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="dialog.closeAll()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pr-0 pl-0">
+        <div class="row m-0 p-0">
+          <div class="col-sm-3" *ngFor="let a of createFields; let i = index">
+            <mat-form-field
+              appearance="outline"
+              class="p-1 col-sm-12 font-12"
+              *ngIf="
+                a?.values?.length > 0 &&
+                a?.type !== 'image' &&
+                a?.create !== undefined &&
+                a?.create !== null &&
+                a?.create === true
+              "
+            >
+              <mat-label>{{ a.name | titlecase }}</mat-label>
+              <mat-select [(ngModel)]="a.value">
+                <mat-option *ngFor="let b of a.values" [value]="b">
+                  {{ b }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field
+              appearance="fill"
+              class="p-1 col-sm-12 font-12"
+              *ngIf="
+                a?.type === 'date' &&
+                a?.type !== 'image' &&
+                a?.create !== undefined &&
+                a?.create !== null &&
+                a?.create === true
+              "
+            >
+              <mat-label>{{ a.value }}</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                [(ngModel)]="a.value"
+                [value]="a.value"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field
+              appearance="outline"
+              class="p-1 col-sm-12 font-12"
+              *ngIf="
+                a?.values?.length === 0 &&
+                a?.type !== 'date' &&
+                a?.name !== this.pkey &&
+                a?.type !== 'image' &&
+                a?.create !== undefined &&
+                a?.create !== null &&
+                a?.create === true
+              "
+            >
+              <mat-label>{{ a.name | titlecase }} </mat-label>
+              <input
+                [type]="a.type"
+                matInput
+                [(ngModel)]="a.value"
+                [value]="a.value"
+                autocomplete="off"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12 p-0 row m-0">
+            <div class="col-sm-12 px-4">
+              <button
+                mat-raised-button
+                class="grey-btn-border md float-right"
+                (click)="saveFormData('insert')"
+              >
+                Submit
+              </button>
+              <button
+                mat-raised-button
+                class="grey-btn-border md float-right mr-2"
+                (click)="dialog.closeAll()"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #editForm>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <p id="dialog-auto-name" class="modal-title blue pull-left">Edit Row</p>
+        <button
+          type="button"
+          class="close pull-right"
+          aria-label="Close"
+          (click)="dialog.closeAll()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pr-0 pl-0">
+        <div class="row m-0 p-0">
+          <div class="col-sm-3" *ngFor="let a of inputFields; let i = index">
+            <mat-form-field
+              appearance="outline"
+              class="p-1 col-sm-12 font-12"
+              *ngIf="
+                a?.values?.length > 0 &&
+                a?.type !== 'image' &&
+                a?.edit !== undefined &&
+                a?.edit !== null &&
+                a?.edit === true
+              "
+            >
+              <mat-label>{{ a.name | titlecase }}</mat-label>
+              <mat-select
+                [(ngModel)]="a.value"
+                [disabled]="
+                  a.edit === undefined || a.edit === false || a.edit === null
+                "
+              >
+                <mat-option *ngFor="let b of a.values" [value]="b">
+                  {{ b }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              class="p-1 col-sm-12 font-12"
+              *ngIf="
+                a?.values?.length === 0 &&
+                a?.type !== 'date' &&
+                a?.name !== this.pkey &&
+                a?.type !== 'image' &&
+                a?.edit === true &&
+                a?.edit !== undefined &&
+                a?.edit !== null
+              "
+            >
+              <mat-label>{{ a.name | titlecase }} </mat-label>
+              <input
+                [type]="a.type"
+                matInput
+                [(ngModel)]="a.value"
+                [value]="a.value"
+                [disabled]="
+                  a.edit === undefined || a.edit === false || a.edit === null
+                "
+                autocomplete="off"
+              />
+            </mat-form-field>
+
+            <mat-form-field
+              appearance="fill"
+              class="p-1 col-sm-12 font-12"
+              *ngIf="
+                a?.type === 'date' &&
+                a?.type !== 'image' &&
+                a?.edit === true &&
+                a?.edit !== undefined &&
+                a?.edit !== null
+              "
+            >
+              <mat-label>{{ a.value }}</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                [(ngModel)]="a.value"
+                [value]="a.value"
+                [disabled]="
+                  a.edit === undefined || a.edit === false || a.edit === null
+                "
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12 p-0 row m-0">
+            <div class="col-sm-12 px-4">
+              <button
+                mat-raised-button
+                class="grey-btn-border md float-right"
+                (click)="saveFormData('update')"
+              >
+                Update
+              </button>
+              <button
+                mat-raised-button
+                class="grey-btn-border md float-right mr-2"
+                (click)="dialog.closeAll()"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #openAddData>
+  <div
+    class="col-sm-12 p-0 row m-0 py-3"
+    style="
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 0.3rem;
+      outline: 0;
+    "
+  >
+    <div
+      class="row m-0 col-sm-12"
+      style="
+        border-bottom: 1px solid #dee2e6;
+        border-top-left-radius: calc(0.3rem - 1px);
+        border-top-right-radius: calc(0.3rem - 1px);
+      "
+    >
+      <span class="col-sm-9 pl-1 pt-3">
+        <p class="pl-1 poppins">
+          Update - <strong>{{ columnName }} - ({{ recordLength }})</strong>
+        </p>
+      </span>
+      <p class="col-sm-3">
+        <button
+          type="button"
+          class="close float-right mt-2"
+          aria-label="Close"
+          (click)="dialog.closeAll()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </p>
+    </div>
+    <div class="row m-0 col-sm-12 px-4">
+      <span class="col-sm-3 pl-0 pt-3 pr-0">
+        <p class="poppins">
+          Old value : <strong>{{ OldValue }}</strong>
+        </p>
+      </span>
+
+      <span class="col-sm-3 pl-1 pr-2 pt-1">
+        <!-- <mat-form-field class="col-sm-12 font-12 p-0" *ngIf="showTextBox === true">
+                    <mat-label>New Value</mat-label>
+                    <input matInput autocomplete="off" [formControl]="NewValue" >
+                </mat-form-field> -->
+
+        <mat-form-field class="col-sm-12 font-12 p-0">
+          <mat-label>New Value</mat-label>
+          <input
+            type="text"
+            matInput
+            [formControl]="NewValue"
+            [matAutocomplete]="auto"
+            autocomplete="cc-name"
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option
+              *ngFor="let state of filteredDbOptions | async"
+              [value]="state"
+            >
+              {{ state }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </span>
+    </div>
+    <div class="col-sm-12 px-4">
+      <ag-grid-angular
+        #agGrid
+        class="ag-theme-balham customgridheight"
+        [rowData]="arrjson"
+        [columnDefs]="displayedColumns"
+        [defaultColDef]="defaultColDef"
+        [modules]="modules"
+        [groupMultiAutoColumn]="true"
+        [animateRows]="true"
+        [pagination]="true"
+        [paginationAutoPageSize]="true"
+        (gridReady)="onGridReady($event)"
+        [autoGroupColumnDef]="autoGroupColumnDef"
+      >
+      </ag-grid-angular>
+    </div>
+
+    <div class="col-sm-12 p-0 mt-4 row m-0">
+      <div class="col-sm-12 px-4">
+        <button
+          mat-raised-button
+          class="grey-btn-border md float-right"
+          (click)="UpdateDatagridMultiple()"
+        >
+          Submit
+        </button>
+        <button
+          mat-raised-button
+          class="grey-btn-border md float-right mr-2"
+          (click)="dialog.closeAll()"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <p id="dialog-auto-name" class="modal-title blue pull-left">Update - {{columnName}} - ({{ recordLength }}) </p>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="dialog.closeAll()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row m-0">
+                <span class="col-sm-8 p-0 pt-3">
+                    <p>Old value : <strong>{{OldValue}}</strong> </p>
+                </span>
+
+                <span class="col-sm-4 pl-1 pr-2" >
+                    <mat-form-field class="col-sm-12 font-12 p-0" >
+                        <mat-label>New Value</mat-label>
+                        <input matInput autocomplete="off" [(ngModel)]="NewValue" >
+                    </mat-form-field>
+                </span>
+            </div>
+            <div class="table-responsive scrollbar-primary mat-elevation-z8"
+                style="height: calc(100vh - 410px);width: 100%;">
+                <table mat-table [dataSource]="arrjson" matSort class=" col-sm-12 table-hover">
+                    <ng-container [matColumnDef]="c" *ngFor="let c of displayedColumns">
+                        <th class="blue font-14" mat-header-cell *matHeaderCellDef mat-sort-header
+                            disableClear>{{c}}
+                        </th>
+                        <td class="font-12" mat-cell *matCellDef="let element">{{element[c]}}</td>
+                    </ng-container>
+
+                    <tr class="blue" mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                </table>
+
+                <ag-grid-angular #agGrid class="ag-theme-balham mt-3 customgridheight"  [rowData]="arrjson" [columnDefs]="displayedColumns"
+                [defaultColDef]="defaultColDef" [modules]="modules"
+               [groupMultiAutoColumn]="true"  [sideBar]="sidebar" [animateRows]="true"
+               [pagination]="true" [paginationAutoPageSize]="true" (gridReady)="onGridReady($event)"
+               [autoGroupColumnDef]="autoGroupColumnDef" [editType]="editType" [getContextMenuItems]="getContextMenuItems" [gridOptions]="openOrderGridOptions" >
+             </ag-grid-angular>
+            </div>
+            <br>
+            <div class="col-sm-12 p-0" >
+                <button mat-raised-button class="grey-btn-border md float-right" (click)="UpdateDatagridMultiple()">Submit</button>
+                <button mat-raised-button class="grey-btn-border md  float-right mr-2"
+                    (click)="dialog.closeAll()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div> -->
+</ng-template>

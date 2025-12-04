@@ -1,0 +1,86 @@
+<div class="container-fluid vh-100 mt-4 d-flex justify-content-center bg-light">
+  <div class="card p-4 w-100">
+    <h2 class="mb-4 fw-bold">General Settings</h2>
+    <form class="w-100">
+      <div class="form-check mb-3 fw-semibold">
+        <p-checkbox
+          label="Play sound when message is received or sent"
+          [(ngModel)]="settings.playSound"
+          binary="true"
+          name="playSound"
+        ></p-checkbox>
+      </div>
+
+      <div class="form-check mb-3 fw-semibold">
+        <p-checkbox
+          label="Remove branding from the chat widget"
+          [(ngModel)]="settings.removeBranding"
+          binary="true"
+          name="removeBranding"
+        ></p-checkbox>
+      </div>
+
+      <div class="form-check mb-3 fw-semibold">
+        <p-checkbox
+          label="Stop bouncing animation of the chat widget"
+          [(ngModel)]="settings.stopAnimation"
+          binary="true"
+          name="stopAnimation"
+        ></p-checkbox>
+      </div>
+
+      <div class="form-check mb-3 typingDelaySection">
+        <p-checkbox
+          class="mb-2 fw-semibold"
+          label="Typing delay"
+          [(ngModel)]="settings.typingDelay"
+          binary="true"
+          name="typingDelay"
+        ></p-checkbox>
+        <div *ngIf="settings.typingDelay" class="mt-2 ml-5">
+          <label class="text-secondary" style="font-size: 0.9em"
+            >How quickly do you want the chatbot to type the answer</label
+          >
+          <p-slider
+            [(ngModel)]="settings.delayValue"
+            [min]="1"
+            [max]="5"
+            styleClass="w-100 mt-2"
+            name="delayValue"
+          ></p-slider>
+          <div class="d-flex justify-content-between w-100 mt-1">
+            <small>Slow</small>
+            <small>Fast</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-check mb-3 fw-semibold">
+        <p-checkbox
+          label="Collect feedback when conversation ends"
+          [(ngModel)]="settings.collectFeedback"
+          binary="true"
+          name="collectFeedback"
+        ></p-checkbox>
+      </div>
+
+      <div
+        *ngIf="settings.collectFeedback"
+        class="mb-3 ml-7 typingDelaySection"
+      >
+        <span class="text-secondary" style="font-size: 0.9em">
+          The chat widget will prompt the visitor with a CSAT survey
+        </span>
+        <textarea
+          class="form-control mt-2"
+          rows="2"
+          [(ngModel)]="settings.feedbackQuestion"
+          name="feedbackQuestion"
+          placeholder="Overall, how would you rate your chat experience ?"
+        ></textarea>
+      </div>
+
+      <button class="btn btn-lg btn-danger px-4 ml-5">Apply Changes</button>
+    </form>
+  </div>
+</div>

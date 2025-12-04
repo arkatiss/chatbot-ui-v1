@@ -1,0 +1,23 @@
+<ul class="nav nav-pills nav-justified">
+    <li class="nav-item pointer" (click)="showSelectedTab('chat')">
+      <a class="nav-link" [ngClass]="{
+        'active':slecttabclass === 'chat'
+      }">Chat</a>
+    </li>
+    <li class="nav-item pointer" (click)="showSelectedTab('datamarks')">
+      <a class="nav-link" [ngClass]="{
+        'active':slecttabclass === 'datamarks'
+      }">Datamarks</a>
+    </li>
+    <!-- <li class="nav-item pointer" (click)="showSelectedTab('myview')">
+      <a class="nav-link" [ngClass]="{
+        'active':slecttabclass === 'myview'
+      }">My View</a>
+    </li> -->
+    <!-- {{userRole}} -->
+    <li class="nav-item pointer" (click)="showSelectedTab('agent')" *ngIf="showAGentTab">
+      <a class="nav-link" [ngClass]="{
+        'active':slecttabclass === 'agent'
+      }">Agent Chat</a>
+    </li>
+  </ul>

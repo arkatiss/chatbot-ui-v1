@@ -1,0 +1,19 @@
+<div class="col-sm-10 offset-sm-1 pl-2 pr-0 pt-1 brd"  *ngIf="buttons!== undefined">
+    <div class="row m-0 p-0 pb-1 ml-3">
+      <button mat-raised-button class="text-info m-1 btn btn-sm brdbtn font-13" (click)="onButtonSelect(b);"
+        *ngFor="let b of buttons">{{b | titlecase}}</button>
+    </div>
+  </div>
+  <div class="col-sm-10 offset-sm-1 pl-2 pr-0 pt-1 brd" *ngIf="supportButtons !== undefined"> 
+                <div class="row m-0 p-0 pb-1 pl-3">
+                  <button mat-raised-button class="text-info m-1 btn btn-sm brdbtn font-13" (click)="peerSendChat(b);"
+                    *ngFor="let b of supportButtons">{{b.key | titlecase}}</button>
+                </div>
+              </div>
+
+              <div class="col-sm-10 offset-sm-1 pl-2 pr-0 pt-1 brd" *ngIf="ratingsButton !== undefined"> 
+              <div class="row m-0 p-0 pb-1 pl-3" *ngIf="ratingsButton!== undefined">
+                <button mat-raised-button class="text-info m-1 btn btn-sm brdbtn font-13" (click)="ratingChatUser(b);" *ngFor="let b of ratingsButton">{{b.rating |
+                  titlecase}}</button>
+              </div>
+              </div>

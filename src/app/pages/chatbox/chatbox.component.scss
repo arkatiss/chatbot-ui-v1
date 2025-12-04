@@ -1,0 +1,106 @@
+.viewdata{
+    height: 600px;
+    width: 98%;
+}
+.scrollbar
+{
+	margin-left: 30px;
+	float: left;
+	
+	overflow-y: auto;
+	margin-bottom: 25px;
+}
+
+/*
+ *  STYLE 2
+ */
+
+#style-2::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar
+{
+	width: 5px;
+	background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #68d3ed;
+}
+.saveMenuItem {
+	min-height: 220px;
+}
+::ng-deep.mat-menu-item:hover:not([disabled]), .mat-menu-item.cdk-program-focused:not([disabled]), .mat-menu-item.cdk-keyboard-focused:not([disabled]), .mat-menu-item-highlighted:not([disabled]) {
+    background: white;
+}
+.totalforms {
+    margin-top: 4% !important;
+}
+.ge{
+	margin-left: -2%;
+}
+.gen{
+	margin-left: 1%;
+}
+.belowdiv {
+    border: 2px solid whitesmoke;
+    padding: 2%;
+}
+datetime-popup.dropdown .glyphicon {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+datetime-popup.dropdown timepicker {
+    display: flex;
+    justify-content: center;
+}
+
+datetime-popup.dropdown .bg-faded {
+    border:0;
+    background-color: #fff;
+}
+
+datetime-popup.dropdown datepicker button {
+    border:0;
+    background-color: #fff;
+}
+
+datetime-popup.dropdown datepicker button.active {
+    background-color: #ddd;
+}
+
+datetime-popup.dropdown .glyphicon.glyphicon-remove-circle:before {
+    content: "\f05c";
+}
+
+datetime-popup.dropdown .glyphicon.glyphicon-chevron-down:before {
+    content: "\f078";
+}
+
+datetime-popup.dropdown .glyphicon.glyphicon-chevron-up:before {
+    content: "\f077";
+}
+
+datetime-popup.dropdown .glyphicon.glyphicon-chevron-left:before {
+    content: "\f053";
+}
+
+datetime-popup.dropdown .glyphicon.glyphicon-chevron-right:before {
+    content: "\f054";
+}
+
+datetime-popup.dropdown .glyphicon.hidden {
+    display: none !important;
+}

@@ -1,0 +1,59 @@
+
+<!-- <ngx-spinner bdColor="rgb(244, 244, 244, 0.1)" size="default" color="#d54b4b" type="ball-spin-clockwise"
+  [fullScreen]="false"></ngx-spinner> -->
+<div class="col-sm-12 header-card  mb-2">
+  <div class="row m-0 px-0 py-2">
+    <!-- <div class="col-10 p-1"> -->
+      <div class="row m-0">
+        <div class="col-sm-2 p-1">
+          <span class="pr-0 py-0 detail-heder-l">Demand :</span>
+          <span class="detail-heder-v pl-1" *ngIf="this.demandData !== undefined">{{this.demandData}}</span>
+        </div>
+        <div class="col-sm-2 p-1">
+          <span class="pr-0 py-0 detail-heder-l">Available :</span>
+          <span class="detail-heder-v pl-1"
+            *ngIf="this.prorationDetails !== undefined">{{this.prorationDetails.AVAILABLE}}</span>
+        </div>
+        <div class="col-sm-2 p-1">
+          <span class="pr-0 py-0 detail-heder-l">Intransit :</span>
+          <span class="detail-heder-v pl-1"
+            *ngIf="this.prorationDetails !== undefined">{{this.prorationDetails.INTRANSIT}}</span>
+        </div>
+        <div class="col-sm-3 row m-0">
+          <span class="pt-2 detail-heder-l col-sm-6 p-0">Proration (%):</span>
+          <input type="number" class="form-control form-control-sm col-sm-6" [(ngModel)]="proration">
+          <!-- <span class="detail-heder-v pl-1" *ngIf="this.proration !== undefined">
+            {{proration}} %
+          </span> -->
+        </div>
+        <div class="col-sm-3 row m-0">
+          <span class="pt-2 detail-heder-l col-sm-6">Minimum :</span>
+          <input type="text" class="form-control form-control-sm col-sm-6" [(ngModel)]="minimum">
+          <!-- <span class="detail-heder-v pl-1"></span> -->
+        </div>
+        <div class="col-sm-3 row m-0 p-1">
+          <span class="pt-2 detail-heder-l col-sm-6">Reduce : </span>
+          <input type="text" class="form-control form-control-sm col-sm-6" [(ngModel)]="reduce">
+          <!-- <span class="detail-heder-v pl-1"></span> -->
+        </div>
+        <div class="col-sm-9">
+          <button mat-raised-button type="button" class="dtlsPageBtns custom-btn mt-2 float-right"
+            (click)="backToReport()">Back</button>
+          <button mat-raised-button type="button" class="dtlsPageBtns custom-btn mt-2 mr-2 float-right"
+            (click)="applyChanges()">Apply</button>
+        </div>
+      </div>
+    <!-- </div> -->
+   
+  </div>
+</div>
+<div class="col-sm-12 header-card">
+  <ag-grid-angular #agGrid *ngIf="this.allocObj.allocDtlsObj.length > 0"
+    style="width: 100%; height: calc(100vh - 204px);" class="ag-theme-balham" [rowData]="this.allocObj.allocDtlsObj"
+    [columnDefs]="columnDefs" [modules]="modules" [pagination]="true" [defaultColDef]="defaultColDef"
+    [sideBar]="sidebar" [animateRows]="true" [paginationAutoPageSize]="true" (gridReady)="onGridReady($event)"
+    [autoGroupColumnDef]="autoGroupColumnDef" (cellClicked)="cellClicked($event)" [rowSelection]="rowSelection"
+    [suppressRowClickSelection]="true" [rowGroupPanelShow]="rowGroupPanelShow" [pivotPanelShow]="pivotPanelShowList"
+    [groupMultiAutoColumn]="true" (cellValueChanged)="onCellValueChanged($event)">
+  </ag-grid-angular>
+</div>

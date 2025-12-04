@@ -1,0 +1,101 @@
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.2)"
+  size="default"
+  color="#199ad6"
+  type="ball-spin-clockwise"
+  [fullScreen]="false"
+>
+  <button type="button" mat-raised-button class="mt-4" (click)="cancel()">
+    Cancel
+  </button>
+</ngx-spinner>
+<div class="row m-0">
+  <div class="col-sm-12 p-0">
+    <h4 class="font-14 fw-500 primary pl-2 pr-3 pt-3 pb-3">Create</h4>
+  </div>
+</div>
+
+<form [formGroup]="sqluserform" class="pl-2">
+  <div formArrayName="sqlUser">
+    <div
+      *ngFor="
+        let s of sqluserform['controls'].sqlUser['controls'];
+        let SQLIndex = index
+      "
+      [formGroupName]="SQLIndex"
+      class="row m-0 p-0"
+    >
+      <div class="row" *ngIf="SQLIndex === 0">
+        <div class="col-sm-5 p-0">
+          <mat-form-field appearance="outline" class="font-11 col-sm-12">
+            <mat-label>User Name</mat-label>
+            <mat-select
+              formControlName="userName"
+              (selectionChange)="getInfosetData($event.value)"
+            >
+              <mat-option
+                *ngFor="let user of userNames"
+                value="{{ user.user_name }}"
+                >{{ user.user_name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-5 p-0">
+          <mat-form-field appearance="outline" class="font-11 col-sm-12">
+            <mat-label>Select Infoset</mat-label>
+            <mat-select
+              formControlName="infoset"
+              (selectionChange)="changeInfoset(sqluserform, SQLIndex)"
+            >
+              <mat-option *ngFor="let item of infosetData" [value]="item"
+                >{{ item.infoset }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row col-sm-12 pl-0 belowdiv" *ngIf="submitbtn">
+        <h4 class="row col-sm-12 font-14 fw-500 primary">Parameters</h4>
+
+        <div
+          class="col-sm-3 p-0 m-0"
+          *ngFor="let head of chainsDataDynamic; let chidx = index"
+        >
+          <mat-form-field
+            appearance="outline"
+            class="font-11 col-sm-12"
+            *ngFor="let h of head | keyvalue"
+          >
+            <mat-label>{{ h.key }}</mat-label>
+            <mat-select
+              formControlName="selectBoxes"
+              multiple
+              #abcd
+              value="{{ SQLIndex }}"
+              (selectionChange)="
+                ChainSelection($event.value, SQLIndex, chidx, h.key)
+              "
+            >
+              <mat-option *ngFor="let list of h.value || []" value="{{ list }}"
+                >{{ list }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-2 pt-1" *ngIf="submitbtn">
+          <button
+            type="button"
+            mat-raised-button
+            class="float-right primary md"
+            (click)="AddAdminData(sqluserform.value, sqluserform, 'chainCol')"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div></div>

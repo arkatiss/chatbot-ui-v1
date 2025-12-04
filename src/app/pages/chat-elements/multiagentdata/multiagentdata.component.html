@@ -1,0 +1,219 @@
+<div class="row col-sm-12 p-0 m-0 pb-3">
+  <div class="col-sm-12 p-0 m-0">
+    <div class="row m-0 p-0">
+      <div class="col-sm-12 m-0 p-0">
+        <mat-toolbar
+          class="chathistoryToolbar mat-toolbar"
+          style="height: 40px; background-color: white"
+        >
+          <div class="row m-0" style="width: 100%">
+            <div class="col-10 p-0 mt-1">
+              <div class="row m-0" *ngIf="displayCustomerName !== undefined">
+                <span class="font-20 poppins"> {{ displayCustomerName }} </span>
+              </div>
+              <div
+                class="row m-0"
+                *ngIf="isTyping && displayCustomerName !== undefined"
+              >
+                <small class="bot-warn">Typing...</small>
+              </div>
+            </div>
+
+            <div
+              class="col-2 pt-1 pr-2 pt-2"
+              *ngIf="displayCustomerName !== undefined && this.showCurrentChat"
+            >
+              <i
+                class="fal fa-bars pointer text-infoo pr-2 pl-2 font-16 m-1 float-right"
+                (click)="drawers.toggle(); changeWidth('47.45%')"
+                title="open userchat"
+                *ngIf="showChat"
+              ></i>
+              <i
+                class="fal fa-bars pointer text-infoo pr-2 pl-2 font-16 m-1 float-right"
+                (click)="drawers.toggle(); changeWidth('73.32%')"
+                title="close userchat"
+                *ngIf="!showChat"
+              ></i>
+            </div>
+          </div>
+        </mat-toolbar>
+      </div>
+    </div>
+  </div>
+
+  <mat-sidenav-container class="example-container" style="width: 100%">
+    <mat-sidenav mode="side" #drawers position="end" style="width: 35%">
+      <div class="col-12 p-0">
+        <div *ngFor="let a of previousUserBotConversation">
+          <div
+            class="media media-chat input p-0"
+            *ngIf="a.inputData !== undefined && a.inputData !== ''"
+          >
+            <p class="textFirst2 pointer mr-2">
+              {{ chatUserName.charAt(0) | titlecase }}
+            </p>
+            <div class="media-body m-0">
+              <p class="bot-input">
+                {{ a.inputData }} &nbsp;&nbsp;<sub class="subtime2"
+                  ><small class="bot-input-time">
+                    {{ a.inptimestamp | date : "shortTime" }}</small
+                  ></sub
+                >
+              </p>
+            </div>
+          </div>
+          <div
+            class="media media-chat output row m-0"
+            *ngIf="a.outputData !== undefined && a.outputData !== ''"
+          >
+            <img
+              src="{{ imgurl }}int3030.png"
+              [ngStyle]="{ height: imgHeight }"
+              class="img-fluid"
+            />
+            <div class="media-body row m-0 p-0">
+              <p class="bot-response" *ngFor="let response of a.outputData">
+                {{ response }} &nbsp;<sub class="subtime2">
+                  <small class="bot-input-time">
+                    {{ a.outtimestamp | date : "shortTime" }}</small
+                  ></sub
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav>
+
+    <div
+      class="row col-sm-12 p-0 m-0 agentUserChat"
+      #content
+      *ngIf="displayCustomerName !== undefined"
+    >
+      <div
+        class="mesgs col-sm-12 pb-3"
+        #scrollMe
+        [scrollTop]="scrollMe.scrollHeight"
+      >
+        <div *ngIf="showCurrentChat">
+          <div class="msg_history" *ngFor="let a of acceptedData">
+            <div class="incoming_msg" *ngIf="chatUserName === a.sender_name">
+              <p
+                class="textFirst pointer mr-1 mb-0 userfirstltr"
+                *ngIf="a.body !== undefined"
+              >
+                {{ chatUserName.charAt(0) | titlecase }}
+              </p>
+
+              <div class="received_msg mt-2">
+                <div class="received_withd_msg">
+                  <p>
+                    {{ a.body }}
+                    <span class="incoming_time_date">
+                      {{ a.peer_time | date : "shortTime" }}</span
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="outgoing_msg" *ngIf="loggedUser === a.sender_name"> -->
+            <div class="outgoing_msg" *ngIf="loggedUser === a.sender_name">
+              <div class="sent-img">
+                <img
+                  src="{{ iconUrl }}programmer2.png"
+                  height="35px"
+                  *ngIf="a.body !== undefined"
+                  class="ml-1"
+                />
+              </div>
+              <div class="sent_msg mt-3">
+                <p>
+                  {{ a.body }}
+                  <span class="time_date">
+                    {{ a.peer_time | date : "shortTime" }}</span
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="publisher"
+            [style.width]="inputWidth === '73.32%' ? '73.32%' : '47.45%'"
+          >
+            <input
+              type="text"
+              class="publisher-input pl-4"
+              [(ngModel)]="inputmsg"
+              placeholder="Type a message"
+              (keyup.enter)="sendmessage()"
+              autofocus
+              (keyup)="typingMsg($event)"
+            />
+            <button
+              class="msg_send_btn float-right mr-1"
+              type="button"
+              (click)="sendmessage()"
+            >
+              <i class="fad fa-paper-plane" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="showHistoryChat">
+          <div class="chat_history" *ngFor="let chat of historyData">
+            <h2
+              *ngFor="let b of chat.name"
+              [ngClass]="{ horLine: chat?.data?.length !== 0 }"
+            >
+              <span
+                class="horText"
+                *ngIf="chat?.data?.length !== 0 && chat?.data?.length > 0"
+                >{{ b.htime }}</span
+              >
+            </h2>
+
+            <div *ngFor="let a of chat.data">
+              <div class="incoming_msg" *ngIf="chatUserName === a.sender_name">
+                <p
+                  class="textFirst pointer mr-1 mb-0 userfirstltr"
+                  *ngIf="a.body !== undefined"
+                >
+                  {{ chatUserName.charAt(0) | titlecase }}
+                </p>
+                <div class="received_msg mt-2">
+                  <div class="received_withd_msg">
+                    <p>
+                      {{ a.body }}
+                      <span class="incoming_time_date">
+                        {{ a.peer_time | date : "shortTime" }}</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="outgoing_msg" *ngIf="loggedUser === a.sender_name"> -->
+              <div class="outgoing_msg" *ngIf="loggedUser === a.sender_name">
+                <div class="sent-img">
+                  <img
+                    src="{{ iconUrl }}programmer2.png"
+                    height="35px"
+                    *ngIf="a.body !== undefined"
+                    class="ml-1"
+                  />
+                </div>
+                <div class="sent_msg mt-3">
+                  <p>
+                    {{ a.body }}
+                    <span class="time_date">
+                      {{ a.peer_time | date : "shortTime" }}</span
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</div>

@@ -1,0 +1,1438 @@
+<div class="container-fluid p-3" *ngIf="buildForms === 'table'">
+  <div class="row m-0" style="height: 87vh">
+    <div class="col-12 ps-0">
+      <div class="">
+        <app-shared-data-table
+          (editEvnt)="editRow($event)"
+          [columns]="colData"
+          [rowData]="rowData"
+          [screenName]="screenName"
+          (showFormPage)="
+            this.buildForms = 'buildInfosetsScreen'; this.edit = false
+          "
+          [domain]="domain"
+          [subDomain]="subDomain"
+          [filteredDomainOptions]="filteredDomainOptions"
+          (changeSubDomainForInfoset)="changeSubDomainForInfoset($event)"
+        ></app-shared-data-table>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="container-fluid p-3"
+  [ngClass]="
+    buildForms === 'buildInfosetsScreen' ? 'infoset-content' : 'infoset-build'
+  "
+  *ngIf="buildForms !== 'table'"
+>
+  <div class="row m-0">
+    <div class="col-12 ps-0 pe-0 d-flex align-items-center">
+      <div class="col-sm-6 d-flex gap-2 align-items-center">
+        <h1 class="title mb-0">{{ infoSetName }}</h1>
+        <img
+          [src]="imgUrl + 'infoset-icons/pen-icon.svg'"
+          class="pointer"
+          alt="pen-icon"
+          width="20"
+          height="20"
+          (click)="editTitle()"
+        />
+      </div>
+      <div class="col-sm-6 d-flex gap-2 justify-content-end">
+        <button
+          class="back-btn"
+          *ngIf="buildForms === 'buildInfosetsScreen'"
+          (click)="
+            this.buildForms = 'table';
+            this.edit = false;
+            changeSubDomainForInfoset()
+          "
+        >
+          Back
+        </button>
+        <button
+          class="back-btn"
+          *ngIf="buildForms === 'showDeployScreen'"
+          (click)="backToInfosetCreation()"
+        >
+          <!-- (click)="buildForms = 'buildInfosetsScreen'" -->
+
+          Back
+        </button>
+        <button
+          class="back-btn"
+          *ngIf="buildForms === 'buildInfosetsScreen'"
+          (click)="openTestBoatChat()"
+        >
+          Test the Bot
+        </button>
+        <button class="back-btn" (click)="saveInfoset(saveDialogBox)">
+          Save
+        </button>
+        <button class="save-btn" (click)="buildForms = 'showDeployScreen'">
+          Deploy
+        </button>
+      </div>
+    </div>
+  </div>
+  <ng-template #saveDialogBox>
+    <div class="row m-0 p-2">
+      <div class="col-sm-12 d-flex align-items-center justify-content-between">
+        <h2 class="mb-0 save-title">
+          <img
+            [src]="imgUrl + 'infoset-icons/Save.svg'"
+            class="me-2"
+            alt="pen-icon"
+            width="50"
+            height="50"
+          />Save Infoset
+        </h2>
+        <i class="pi pi-times pointer" (click)="closeDialog()"></i>
+      </div>
+      <div class="row m-0 pt-2">
+        <ng-container>
+          <div class="row pl-2 pt-2 gy-2">
+            <div class="col-sm-6">
+              <label>Select Domain</label>
+              <p-dropdown
+                class="domain-class"
+                [options]="filteredDomainOptions"
+                appendTo="body"
+                [(ngModel)]="domain"
+                optionLabel="domain"
+                [disabled]="edit"
+                placeholder="Select an option"
+                [filter]="true"
+                filterPlaceholder="Search..."
+                [showClear]="true"
+              >
+              </p-dropdown>
+            </div>
+
+            <div class="col-sm-6">
+              <label>Select Sub Domain</label>
+              <p-dropdown
+                class="domain-class"
+                [options]="domain?.sub_domain"
+                appendTo="body"
+                [(ngModel)]="subDomain"
+                (onChange)="changeSubDomainForInfoset()"
+                placeholder="Select an option"
+                [filter]="true"
+                [disabled]="edit"
+                filterPlaceholder="Search..."
+                [showClear]="true"
+              >
+              </p-dropdown>
+              <!-- <p-autoComplete appendTo="body" class="domain-class" [suggestions]="filteredSubDomainOptions" field=""
+                placeholder="Select">
+            </p-autoComplete> -->
+            </div>
+
+            <div class="col-sm-6">
+              <ng-container *ngIf="filteredInfosetOptions.length > 0">
+                <label>Select Infoset</label>
+                <!-- <p-autoComplete appendTo="body" class="domain-class" [suggestions]="filteredInfosetOptions" field=""
+                  placeholder="Select">
+                </p-autoComplete> -->
+
+                <p-dropdown
+                  class="domain-class"
+                  [options]="filteredInfosetOptions"
+                  appendTo="body"
+                  optionLabel="name"
+                  optionValue="file"
+                  [(ngModel)]="infoset"
+                  placeholder="Select an option"
+                  [filter]="true"
+                  [disabled]="edit"
+                  filterPlaceholder="Search..."
+                  [showClear]="true"
+                >
+                </p-dropdown>
+              </ng-container>
+
+              <!-- <ng-container *ngIf="filteredInfosetOptions.length === 0">
+                <label>Enter Infoset</label>
+                <input
+                  pInputText
+                  class="domain-class w-100"
+                  [(ngModel)]="infoset"
+                  autocomplete="off"
+                />
+              </ng-container> -->
+            </div>
+            <div
+              class="col-sm-6"
+              *ngIf="filteredInfosetOptions.length > 0 && edit === false"
+            >
+              <i
+                class="pi pi-plus blue-round-plus"
+                (click)="filteredInfosetOptions = []"
+              ></i>
+            </div>
+            <!-- <div class="col-sm-6 d-flex align-items-end">
+              <button class="save-btn" (click)="selectReport = 'Configuration'">
+                Next
+              </button>
+
+            </div> -->
+            <!-- Add New Infoset Icon -->
+
+            <!-- Public/Private Toggle -->
+            <!-- <p-slider  class="mt-2 pt-1 ml-5" [min]="0" [max]="1" [step]="1" [showInput]="false"
+          [range]="false"  (onChange)="changeSecurity($event)"></p-slider> -->
+          </div>
+        </ng-container>
+        <div class="col-sm-12 pt-4 d-flex justify-content-end gap-3">
+          <button class="back-btn" (click)="cancelScreen()">Cancel</button>
+          <button class="save-btn" (click)="saveInfosetData('infoset')">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <p-toast position="bottom-center" key="bc"></p-toast>
+  <p-dialog
+    [(visible)]="showBot"
+    [draggable]="true"
+    [resizable]="true"
+    [style]="{ width: '20vw', height: '70vh' }"
+    class="bot-chat-conatiner"
+  >
+    <!-- Header content -->
+    <ng-template pTemplate="header">
+      <div class="d-flex col-sm-8 gap-2 align-items-center">
+        <img
+          [src]="
+            headerIcon
+              ? headerIcon
+              : imgUrl + 'infoset-icons/Arkatiss_Logo_New.svg'
+          "
+          alt=""
+          width="35"
+          height="35"
+        />
+        <span class="title-text">{{
+          headerText ? headerText : "Arkatiss Desk"
+        }}</span>
+      </div>
+      <!-- <div class="d-flex col-sm-4 gap-3 align-items-center justify-content-end">
+        <i class="pi pi-minus font-14 pointer"></i>
+        <i class="pi pi-times font-14 pointer" (click)="closeDialog()"></i>
+      </div> -->
+    </ng-template>
+
+    <!-- Body content -->
+    <ng-template pTemplate="body">
+      <div class="content-chat">
+        <ng-container *ngFor="let res of botResponse">
+          <div
+            class="d-flex justify-content-start gap-2 align-items-end mt-3"
+            *ngIf="res.output"
+          >
+            <img
+              class="profile-icon"
+              [src]="
+                widgetIcon
+                  ? widgetIcon
+                  : imgUrl + 'common-imgs/ai-robot-icon.svg'
+              "
+              alt=""
+              width="24"
+              height="24"
+            />
+            <!-- <app-svg-imgs
+            [WhereToShowImg]="'Ai-Icon'"
+            [width]="'2rem'"
+            [height]="'2rem'"
+          ></app-svg-imgs> -->
+            <span class="left-chat">{{ res.output }}</span>
+          </div>
+          <div class="col-sm-12 ps-4 pe-0 brd pt-1" *ngIf="res.list">
+            <div class="row m-0 p-0 pb-1">
+              <div class="d-flex flex-wrap">
+                <ng-container *ngFor="let b of res?.list">
+                  <button
+                    mat-raised-button
+                    *ngIf="b.attr_name"
+                    class="primary m-1 btn btn-sm pointer brdbtn"
+                    (click)="sendMsg(b)"
+                  >
+                    {{ b.attr_name | titlecase }}
+                  </button>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div
+            class="d-flex justify-content-end gap-2 align-items-end mt-3"
+            *ngIf="res.input"
+          >
+            <span
+              class="right-chat"
+              [style.backgroundColor]="accentColor ? accentColor : '#fff'"
+              [style.color]="fontColor ? fontColor : '#000'"
+              >{{ res.input }}</span
+            >
+            <img
+              class="profile-icon"
+              [src]="botIcon ? botIcon : imgUrl + 'infoset-icons/User.svg'"
+              alt=""
+              width="24"
+              height="24"
+            />
+          </div>
+        </ng-container>
+      </div>
+    </ng-template>
+
+    <!-- Footer content -->
+    <ng-template pTemplate="footer">
+      <div class="footer-chat">
+        <span class="d-flex gap-3 align-items-center pe-3 ps-3">
+          <input
+            type="text"
+            name=""
+            pInputText
+            class="w-100"
+            placeholder="Write a message"
+            style="border: none"
+          />
+          <img
+            class="pointer"
+            [src]="imgUrl + 'infoset-icons/emoji.svg'"
+            alt=""
+            width="24"
+            height="24"
+          />
+          <img
+            class="pointer"
+            [src]="imgUrl + 'infoset-icons/attach.svg'"
+            alt=""
+            width="24"
+            height="24"
+          />
+          <img
+            class="pointer"
+            [src]="imgUrl + 'infoset-icons/send.svg'"
+            alt=""
+            width="24"
+            height="24"
+          />
+        </span>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <ng-template class="chat-test" #openChatTestBot>
+    <div class="col-sm-12 p-0 chat-content">
+      <div class="header-chat">
+        <div class="d-flex col-sm-8 gap-2 align-items-center">
+          <img
+            [src]="
+              headerIcon
+                ? headerIcon
+                : imgUrl + 'infoset-icons/Arkatiss_Logo_New.svg'
+            "
+            alt=""
+            width="35"
+            height="35"
+          />
+          <span class="title-text">{{
+            headerText ? headerText : "Arkatiss Desk"
+          }}</span>
+        </div>
+        <div
+          class="d-flex col-sm-4 gap-3 align-items-center justify-content-end"
+        >
+          <i class="pi pi-minus font-14 pointer"></i>
+          <i class="pi pi-times font-14 pointer" (click)="closeDialog()"></i>
+        </div>
+      </div>
+      <div class="content-chat">
+        <ng-container *ngFor="let res of botResponse">
+          <div
+            class="d-flex justify-content-start gap-2 align-items-end mt-3"
+            *ngIf="res.output"
+          >
+            <img
+              class="profile-icon"
+              [src]="
+                widgetIcon
+                  ? widgetIcon
+                  : imgUrl + 'common-imgs/ai-robot-icon.svg'
+              "
+              alt=""
+              width="24"
+              height="24"
+            />
+            <span class="left-chat">{{ res.output }}</span>
+          </div>
+          <div class="col-sm-12 ps-4 pe-0 brd pt-1" *ngIf="res.list">
+            <div class="row m-0 p-0 pb-1">
+              <div class="d-flex flex-wrap">
+                <ng-container *ngFor="let b of res?.list">
+                  <button
+                    mat-raised-button
+                    *ngIf="b.attr_name"
+                    class="primary m-1 btn btn-sm pointer brdbtn"
+                    (click)="sendMsg(b)"
+                  >
+                    {{ b.attr_name | titlecase }}
+                  </button>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div
+            class="d-flex justify-content-end gap-2 align-items-end mt-3"
+            *ngIf="res.input"
+          >
+            <span
+              class="right-chat"
+              [style.backgroundColor]="accentColor ? accentColor : '#fff'"
+              [style.color]="fontColor ? fontColor : '#000'"
+              >{{ res.input }}</span
+            >
+            <img
+              class="profile-icon"
+              [src]="botIcon ? botIcon : imgUrl + 'infoset-icons/User.svg'"
+              alt=""
+              width="24"
+              height="24"
+            />
+          </div>
+        </ng-container>
+      </div>
+      <div class="footer-chat">
+        <span class="d-flex gap-3 align-items-center pe-3 ps-3">
+          <input
+            type="text"
+            name=""
+            pInputText
+            class="w-100"
+            placeholder="Write a message"
+            style="border: none"
+          />
+          <img
+            class="pointer"
+            [src]="imgUrl + 'infoset-icons/emoji.svg'"
+            alt=""
+            width="24"
+            height="24"
+          />
+          <img
+            class="pointer"
+            [src]="imgUrl + 'infoset-icons/attach.svg'"
+            alt=""
+            width="24"
+            height="24"
+          />
+          <img
+            class="pointer"
+            [src]="imgUrl + 'infoset-icons/send.svg'"
+            alt=""
+            width="24"
+            height="24"
+          />
+        </span>
+      </div>
+    </div>
+  </ng-template>
+  <ng-container *ngIf="buildForms === 'buildInfosetsScreen'">
+    <button
+      mat-button
+      [matMenuTriggerFor]="menu"
+      hidden
+      #menuTrigger="matMenuTrigger"
+    ></button>
+    <mat-menu #menu="matMenu" class="menuList ps-2">
+      <span class="d-flex align-items-center gap-2 spanBorder">
+        <i class="pi pi-search"></i>
+        <input
+          type="text"
+          name=""
+          pInputText
+          class="w-100 input-css"
+          placeholder="Search"
+        />
+      </span>
+      <button mat-menu-item (click)="handleMenuAction('Send Message')">
+        <img
+          [src]="imgUrl + 'infoset-icons/send message.svg'"
+          class="me-2"
+          alt=""
+          width="18"
+          height="18"
+        />
+        Send Message
+      </button>
+      <button mat-menu-item (click)="handleMenuAction('Collect Input')">
+        <img
+          [src]="imgUrl + 'infoset-icons/collect input.svg'"
+          class="me-2"
+          alt=""
+          width="18"
+          height="18"
+        />
+        Collect Input
+      </button>
+      <button mat-menu-item (click)="handleMenuAction('Buttons')">
+        <img
+          [src]="imgUrl + 'infoset-icons/buttons.svg'"
+          class="me-2"
+          alt=""
+          width="18"
+          height="18"
+        />
+        Buttons
+      </button>
+      <button mat-menu-item (click)="handleMenuAction('Carousel')">
+        <img
+          [src]="imgUrl + 'infoset-icons/carousel.svg'"
+          class="me-2"
+          alt=""
+          width="18"
+          height="18"
+        />
+        Carousel
+      </button>
+      <button mat-menu-item (click)="handleMenuAction('Calender')">
+        <img
+          [src]="imgUrl + 'infoset-icons/calender.svg'"
+          class="me-2"
+          alt=""
+          width="18"
+          height="18"
+        />
+        Calender
+      </button>
+      <button mat-menu-item (click)="handleMenuAction('Mail')">
+        <img
+          [src]="imgUrl + 'infoset-icons/mail.svg'"
+          class="me-2"
+          alt=""
+          width="18"
+          height="18"
+        />
+        Send a Email
+      </button>
+      <button mat-menu-item (click)="handleMenuAction('Form')">
+        <img
+          [src]="imgUrl + 'infoset-icons/form.svg'"
+          class="me-2"
+          alt=""
+          width="18"
+          height="18"
+        />
+        Form
+      </button>
+    </mat-menu>
+
+    <div class="flowchart-container">
+      <gojs-diagram
+        #myDiagram
+        [initDiagram]="initDiagram"
+        [nodeDataArray]="diagramNodeData"
+        [linkDataArray]="diagramLinkData"
+        [modelData]="diagramModelData"
+        [skipsDiagramUpdate]="skipsDiagramUpdate"
+        [divClassName]="diagramDivClassName"
+      ></gojs-diagram>
+    </div>
+
+    <p-dialog
+      [(visible)]="showConfigMenu"
+      [style]="{ width: '20vw', height: '81vh' }"
+      [draggable]="true"
+      [resizable]="true"
+      position="bottomright"
+    >
+      <ng-template pTemplate="header">
+        <div
+          class="inline-flex align-items-center justify-content-center gap-2"
+        >
+          <img
+            *ngIf="this.dialogDetails === ''"
+            [src]="
+              imgUrl +
+              'infoset-icons/' +
+              (diagramNodeData[this.rowNodeIndex]?.text | lowercase) +
+              '.svg'
+            "
+            alt=""
+            height="24"
+            width="24"
+          />
+          <img
+            *ngIf="this.dialogDetails !== ''"
+            [src]="imgUrl + 'infoset-icons/back-button.svg'"
+            alt=""
+            height="24"
+            width="24"
+            (click)="this.dialogDetails = ''"
+            class="pointer"
+          />
+
+          <span class="font-bold white-space-nowrap font-16">
+            <span *ngIf="this.dialogDetails !== ''">Back to </span
+            >{{ cardDetail?.text }}
+          </span>
+        </div>
+        <!-- <img [src]="imgUrl + 'infoset-icons/trash.svg'" alt="" height="22" width="22"> -->
+      </ng-template>
+
+      <div class="row m-0" *ngIf="this.dialogDetails === ''">
+        <div class="col-sm-12 p-0">
+          <span class="span-content p-0"
+            >Send message will only send messages to the user and not require a
+            response back</span
+          >
+        </div>
+        <div class="row m-0 mt-3 p-0">
+          <div class="col-sm-6 ps-0">
+            <p-dropdown
+              class="w-100"
+              id="fontStyle"
+              [options]="fontStyle"
+              [(ngModel)]="selectFontStyle"
+              optionLabel="fontName"
+              placeholder="Select a font"
+              optionValue="value"
+            ></p-dropdown>
+          </div>
+          <div class="col-sm-3 ps-0">
+            <p-dropdown
+              class="w-100"
+              id="fontSize"
+              [options]="fontSize"
+              [(ngModel)]="selectFontSize"
+              optionLabel="fontSize"
+              placeholder="Select"
+              optionValue="value"
+            ></p-dropdown>
+          </div>
+          <div class="col-sm-3 ps-0 pe-0">
+            <p-selectButton
+              class="justifyOptions"
+              [options]="justifyOptions"
+              [(ngModel)]="selectJustifyOption"
+              [multiple]="true"
+              optionLabel="icon"
+            >
+              <ng-template let-item pTemplate>
+                <i [class]="item.icon"></i>
+              </ng-template>
+            </p-selectButton>
+          </div>
+        </div>
+        <div class="row m-0 mt-3 p-0">
+          <div class="col-sm-6 ps-0 pe-0">
+            <p-selectButton
+              [options]="fontFormat"
+              [(ngModel)]="selectFontFormat"
+              [multiple]="true"
+              optionLabel="icon"
+            >
+              <ng-template let-item pTemplate>
+                <i [class]="item.icon"></i>
+              </ng-template>
+            </p-selectButton>
+          </div>
+          <div class="col-sm-2 ps-0">
+            <p-selectButton
+              [options]="activeLink"
+              [(ngModel)]="selectActiveLink"
+              optionLabel="icon"
+            >
+              <ng-template let-item pTemplate>
+                <i [class]="item.icon"></i>
+              </ng-template>
+            </p-selectButton>
+          </div>
+          <div class="col-4 d-flex justify-content-end p-0">
+            <span class="d-flex colorPicker-border">
+              <img
+                [src]="imgUrl + 'infoset-icons/color-picker.svg'"
+                alt="color-picker-icon"
+                height="24"
+                width="24"
+              />
+              <p-colorPicker [(ngModel)]="selectColor"></p-colorPicker>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-12 mt-3 p-0">
+          <textarea
+            class="w-100 desc-text-area"
+            rows="5"
+            pInputTextarea
+            [(ngModel)]="description"
+            placeholder="Enter Description"
+          ></textarea>
+        </div>
+        <div class="col-sm-12 mt-3 p-0 flex-column d-flex">
+          <span class="font-14">List of buttons to be shown</span>
+          <ng-container *ngFor="let m of diagramNodeData; let i = index">
+            <div
+              class="d-flex justify-content-between align-items-center gap-2 mt-2"
+            >
+              <span
+                class="w-100 pointer"
+                [ngClass]="
+                  this.rowNodeIndex === i ? 'btn-span' : 'btn-span-list'
+                "
+                (click)="this.rowNodeIndex = i; addProps(m, i)"
+                >{{ m?.text }}</span
+              >
+              <img
+                [src]="imgUrl + 'infoset-icons/delete.svg'"
+                alt="delete"
+                width="20px"
+                height="20px"
+                class="pointer"
+                (click)="removeNodeData(i)"
+              />
+            </div>
+          </ng-container>
+          <span class="d-flex gap-2 mt-3">
+            <button class="bt" (click)="handleMenuAction('Buttons')">
+              <i class="pi pi-plus font-12"></i>&nbsp; Add Button
+            </button>
+
+            <button class="bt">
+              <i class="pi pi-plus font-12"></i>&nbsp;Url Button
+            </button>
+          </span>
+        </div>
+        <div
+          class="col-sm-12 mt-3 p-0 flex-column d-flex"
+          *ngIf="cardDetail?.text === 'Form'"
+        >
+          <span class="font-14">Form fields</span>
+          <ng-container
+            *ngFor="
+              let m of diagramNodeData[this.rowNodeIndex]?.fields;
+              let idx = index
+            "
+          >
+            <div class="w-100 d-flex align-items-center gap-1 mb-2">
+              <span
+                class="btn-span d-flex justify-content-between align-items-center"
+                style="width: 100%"
+                (click)="
+                  updateFormDetails(m, diagramNodeData[this.rowNodeIndex]?.text)
+                "
+              >
+                <span>{{ m?.name }}</span>
+                <span
+                  ><img [src]="imgUrl + 'infoset-icons/arrow.svg'" alt="arrow"
+                /></span>
+              </span>
+
+              <img
+                [src]="imgUrl + 'infoset-icons/delete.svg'"
+                alt="delete"
+                (click)="deleteFormDetails(idx)"
+              />
+            </div>
+          </ng-container>
+          <span class="d-flex gap-2 mt-3">
+            <button class="bt" (click)="addField()">
+              <i class="pi pi-plus font-12"></i>&nbsp; Add Field
+            </button>
+            <button class="bt" (click)="saveField()">
+              <i class="pi pi-save font-12"></i>&nbsp; Save
+            </button>
+          </span>
+        </div>
+        <div class="col-sm-12 mt-3 p-0 text-center" style="color: black">
+          <div *ngFor="let category of categories" class="field-checkbox">
+            <p-checkbox
+              [(ngModel)]="selectedCategories"
+              [label]="category.name"
+              name="group"
+              [value]="category"
+            ></p-checkbox>
+          </div>
+          <span class="font-14" style="color: #828282"
+            >Upgrade your plan to access this feature.</span
+          >
+        </div>
+      </div>
+
+      <div *ngIf="this.dialogDetails !== ''">
+        <ng-container
+          *ngIf="this.diagramNodeData[this.rowNodeIndex]?.type === 'Buttons'"
+        >
+          <!-- <span class="btn-style d-flex justify-content-around gap-8">
+            <span class="btnTab labelClass pointer" *ngFor="let i of menuList" (click)="this.selectReport = i;"
+              [style.border]="selectReport === i ? '1px solid rgb(62 163 236)' : ''"
+              [style.color]="selectReport === i ? 'rgb(62 163 236)' : ''">
+              {{i}}</span>
+          </span> -->
+
+          <ng-container>
+            <div class="row pl-2 pt-2 gy-2">
+              <div class="col-sm-6">
+                <input type="text" hidden />
+                <label>Category</label>
+                <!-- <p-fieldset legend="Category" class="example-full-width"> -->
+                <p-dropdown
+                  class="w-100"
+                  placeholder="select"
+                  (onChange)="selectCategory($event)"
+                  [options]="infoCategories"
+                  [(ngModel)]="this.diagramNodeData[this.rowNodeIndex].category"
+                  optionLabel="name"
+                  optionValue="field"
+                ></p-dropdown>
+                <!-- </p-fieldset> -->
+              </div>
+
+              <div class="col-sm-6">
+                <label>Attribute Type</label>
+                <!-- <p-fieldset legend="Attribute Type" class="example-full-width"> -->
+                <p-dropdown
+                  class="w-100"
+                  placeholder="select"
+                  (onChange)="selectAttribute($event)"
+                  [options]="attrValues"
+                  [(ngModel)]="
+                    this.diagramNodeData[this.rowNodeIndex].attr_type
+                  "
+                  optionLabel="op_type"
+                  optionValue="field"
+                ></p-dropdown>
+                <!-- </p-fieldset> -->
+              </div>
+
+              <div class="col-sm-6">
+                <label>Attribute Name</label>
+                <ng-container *ngIf="showAttribute === 'false'">
+                  <input
+                    class="w-100"
+                    [(ngModel)]="
+                      this.diagramNodeData[this.rowNodeIndex].attr_name
+                    "
+                    pInputText
+                    placeholder="Enter"
+                  />
+                </ng-container>
+                <ng-container *ngIf="showAttribute === 'true'">
+                  <p-dropdown
+                    class="w-100"
+                    placeholder="select"
+                    [(ngModel)]="
+                      this.diagramNodeData[this.rowNodeIndex].attr_name
+                    "
+                    [options]="tdtpes"
+                    optionLabel="op_type"
+                    optionValue="field"
+                  ></p-dropdown>
+                </ng-container>
+              </div>
+
+              <div class="col-sm-6">
+                <label>Operation Type</label>
+                <!-- <p-fieldset legend="Operation Type" class="example-full-width"> -->
+                <p-dropdown
+                  class="w-100"
+                  placeholder="select"
+                  (onChange)="selectOperation($event, '')"
+                  [options]="operationTypes"
+                  [(ngModel)]="
+                    this.diagramNodeData[this.rowNodeIndex].operation_type
+                  "
+                  optionLabel="op_type"
+                  optionValue="field"
+                ></p-dropdown>
+                <!-- </p-fieldset> -->
+              </div>
+
+              <div class="col-sm-6" *ngIf="duration">
+                <label>Attribute Reference</label>
+                <!-- <p-fieldset legend="Attribute Reference" class="example-full-width"> -->
+                <input
+                  class="w-100"
+                  [(ngModel)]="this.diagramNodeData[this.rowNodeIndex].attr_ref"
+                  pInputText
+                  placeholder="Enter"
+                />
+                <!-- </p-fieldset> -->
+              </div>
+
+              <div class="col-sm-6" *ngIf="oplink">
+                <label>{{ oplinktext }}</label>
+                <!-- <p-fieldset legend="{{oplinktext}}" class="example-full-width"> -->
+                <input
+                  class="w-100"
+                  [(ngModel)]="
+                    this.diagramNodeData[this.rowNodeIndex].oper_link
+                  "
+                  pInputText
+                  placeholder="Enter"
+                />
+                <!-- </p-fieldset> -->
+              </div>
+
+              <div class="col-sm-6" *ngIf="showfile">
+                <p-fileUpload></p-fileUpload>
+              </div>
+
+              <div class="col-sm-6" *ngIf="opinput">
+                <label>Operation Input</label>
+                <!-- <p-fieldset legend="Operation Input" class="example-full-width"> -->
+                <input
+                  class="w-100"
+                  [(ngModel)]="
+                    this.diagramNodeData[this.rowNodeIndex].oper_output
+                  "
+                  pInputText
+                  placeholder="Enter"
+                />
+                <!-- <i pTooltip="Date Column Name" tooltipPosition="bottom" class="pi pi-info-circle pointer"></i> -->
+                <!-- </p-fieldset> -->
+              </div>
+
+              <div class="col-sm-6" *ngIf="opvalue">
+                <label>Operation Value</label>
+                <!-- <p-fieldset legend="Operation Value" class="example-full-width"> -->
+                <input
+                  class="w-100"
+                  [(ngModel)]="
+                    this.diagramNodeData[this.rowNodeIndex].oper_value
+                  "
+                  pInputText
+                  placeholder="Enter"
+                />
+                <!-- </p-fieldset> -->
+              </div>
+
+              <div class="col-sm-6">
+                <label>Description</label>
+                <!-- <p-fieldset legend="Description" class="example-full-width"> -->
+
+                <input
+                  class="w-100"
+                  pInputText
+                  placeholder="Enter"
+                  [(ngModel)]="
+                    this.diagramNodeData[this.rowNodeIndex].description
+                  "
+                />
+                <!-- </p-fieldset> -->
+              </div>
+            </div>
+            <div class="mt-4 d-flex justify-content-center gap-2">
+              <span class="btn-span pointer" (click)="saveRowData()"
+                >Submit</span
+              >
+
+              <span class="back-btn pointer">Cancel</span>
+            </div>
+          </ng-container>
+        </ng-container>
+
+        <ng-container
+          *ngIf="this.diagramNodeData[this.rowNodeIndex]?.type === 'Form'"
+        >
+          <p>Customize the Form Properties</p>
+          <div *ngFor="let item of [selectedFormDetails]" class="mt-2">
+            <div class="mb-2">
+              <label class="label-title mb-1">Field Name</label><br />
+              <input
+                type="text"
+                [(ngModel)]="item.name"
+                class="input-style"
+                pInputText
+                placeholder="Enter "
+                required
+              />
+            </div>
+            <div class="mb-2">
+              <label class="label-title mb-1">Placeholder Text</label><br />
+              <input
+                type="text"
+                [(ngModel)]="item.placeholder"
+                class="input-style"
+                pInputText
+                placeholder="Enter "
+                required
+              />
+            </div>
+            <div class="mb-2">
+              <label class="label-title mb-1">Field Type</label><br />
+
+              <p-dropdown
+                appendTo="body"
+                class="drp-dwn"
+                [(ngModel)]="item.type"
+                [options]="dataTypes"
+                placeholder="Select "
+              >
+              </p-dropdown>
+            </div>
+            <div class="mb-2">
+              <p-checkbox
+                [(ngModel)]="item.required"
+                binary="true"
+                label="Mandatory Field"
+              ></p-checkbox>
+              <!-- <label class="label-title ms-2">Mandatory Field</label> -->
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </p-dialog>
+  </ng-container>
+  <ng-container *ngIf="buildForms === 'showDeployScreen'">
+    <div class="container-fluid pt-3 p-0">
+      <div class="row m-0">
+        <div class="col-sm-1 p-0 mt-auto mb-auto">
+          <p-dropdown
+            class="w-100"
+            id="fontSize"
+            [options]="viewOptions"
+            [(ngModel)]="selectViewOption"
+            optionLabel="name"
+            placeholder="Select"
+            optionValue="value"
+            (onChange)="selectValue($event)"
+          ></p-dropdown>
+        </div>
+        <div class="col-sm-11 mt-auto mb-auto">
+          <span class="d-flex align-items-center gap-2">
+            <i class="pi pi-arrow-right"></i>
+            <ul class="childConfigMenu">
+              <li
+                *ngFor="let i of customBuildInfoset"
+                (click)="selectConfig(i.key, i.name)"
+                [class.active]="activeMenu === i.key"
+              >
+                {{ i.name }}
+              </li>
+            </ul>
+          </span>
+        </div>
+      </div>
+      <div>
+        <div *ngIf="activeMenu === 'appearance'">
+          <app-appearance
+            (configChanged)="appearanceData($event)"
+          ></app-appearance>
+        </div>
+        <div *ngIf="activeMenu === 'config'">
+          <app-configuration></app-configuration>
+        </div>
+        <div *ngIf="activeMenu === 'gs'">
+          <app-general-settings></app-general-settings>
+        </div>
+        <div *ngIf="activeMenu === 'tc'">
+          <app-trigger-conditions></app-trigger-conditions>
+        </div>
+        <div *ngIf="activeMenu === 'pum'">
+          <app-popup-messages></app-popup-messages>
+        </div>
+      </div>
+
+      <!-- <div class="row m-0 pt-3">
+        <ng-container *ngIf="activeMenu === 'appearance'">
+          <div class="row m-0 p-0">
+            <span class="childMenuName p-0">Customize your bot</span>
+          </div>
+          <div class="row m-0 p-0 pt-3">
+            <div class="col-sm-8 ps-0 row m-0">
+              <table class="customizeTable">
+                <tr>
+                  <td><label class="labels">Widget Icon</label></td>
+                  <td>
+                    <div class="container uploadImageBorder">
+                      <input accept=".png, .svg, .jpg, .jpeg" type="file" id="fileInput" style="display: none"
+                        (change)="onFileSelected($event, fileType)" />
+                      <span class="d-flex align-items-center" (click)="triggerFileInput('widgetIcon')">
+                        <mat-icon style="color: #3ea3ec">image</mat-icon> Upload
+                        Image
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <img [src]="widgetIcon" alt="Uploaded Image" class="uploaded-image" *ngIf="widgetIcon" />
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="labels">Header Logo</label></td>
+                  <td>
+                    <div class="container uploadImageBorder">
+                      <input accept=".png, .svg, .jpg, .jpeg" type="file" id="fileInput" style="display: none"
+                        (change)="onFileSelected($event, fileType)" />
+                      <span class="d-flex align-items-center" (click)="triggerFileInput('headerLogo')">
+                        <mat-icon style="color: #3ea3ec">image</mat-icon> Upload
+                        Image
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <img [src]="headerIcon" alt="Uploaded Image" class="uploaded-image" *ngIf="headerIcon" />
+                  </td>
+                </tr>
+                <tr>
+                  <td><label class="labels">Bot Icon</label></td>
+                  <td>
+                    <div class="container uploadImageBorder">
+                      <input accept=".png, .svg, .jpg, .jpeg" type="file" id="fileInput" style="display: none"
+                        (change)="onFileSelected($event, fileType)" />
+                      <span class="d-flex align-items-center" (click)="triggerFileInput('botIcon')">
+                        <mat-icon style="color: #3ea3ec">image</mat-icon> Upload
+                        Image
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <img [src]="botIcon" alt="Uploaded Image" class="uploaded-image" *ngIf="botIcon" />
+                  </td>
+                </tr>
+              </table>
+              <div class="row m-0 p-0 pt-3">
+                <div class="col-sm-3 ps-0">
+                  <div class="col-sm-12 d-grid">
+                    <label class="label-title">Header Text</label>
+                    <input type="text" pInputText class="w-100" placeholder="Enter Text" [(ngModel)]="headerText" />
+                  </div>
+                  <div class="col-sm-12 pt-3 d-grid">
+                    <label class="label-title">Accent Color</label>
+                    <span class="d-flex colorPicker">
+                      <input type="text" name="" pInputText class="w-100" [(ngModel)]="accentColor"
+                        style="border: none" />
+                      <p-colorPicker [(ngModel)]="accentColor" class="colorPreview" />
+                    </span>
+                  </div>
+                  <div class="col-sm-12 pt-3 d-grid">
+                    <label class="label-title">Custom Style Sheet(CSS)</label>
+                    <textarea class="w-100 desc-text-area" rows="5" pInputTextarea [(ngModel)]="csStyle"
+                      placeholder="Enter Description"></textarea>
+                  </div>
+                </div>
+                <div class="col-sm-3 pe-0">
+                  <div class="col-sm-12 d-grid">
+                    <label class="label-title">Hint Text</label>
+                    <input type="text" pInputText class="w-100" placeholder="Enter Text" [(ngModel)]="hintText" />
+                  </div>
+                  <div class="col-sm-12 pt-3 d-grid">
+                    <label class="label-title">Font Color</label>
+                    <span class="d-flex colorPicker">
+                      <input type="text" name="" pInputText class="w-100" [(ngModel)]="fontColor"
+                        style="border: none" />
+                      <p-colorPicker [(ngModel)]="fontColor" class="colorPreview" />
+                    </span>
+                  </div>
+                  <div class="col-sm-12 pt-3">
+                    <label class="label-title">Chat Interface Position</label><br />
+                    <div class="pt-1 d-flex gap-3">
+                      <label class="label-title">
+                        <input type="checkbox" [(ngModel)]="checkboxes.left" name="left"
+                          (change)="onCheckboxChange('left')" />
+                        Left
+                      </label>
+                      <label class="label-title">
+                        <input type="checkbox" [(ngModel)]="checkboxes.right" name="right"
+                          (change)="onCheckboxChange('right')" />
+                        Right
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 pt-3 p-0">
+                <button class="save-btn">Apply Changes</button>
+              </div>
+            </div>
+            <div class="col-sm-4 d-flex align-items-end">
+              <div class="col-sm-12 p-0 chat-content">
+                <div class="header-chat">
+                  <div class="d-flex col-sm-8 gap-2 align-items-center">
+                    <img [src]="
+                        headerIcon
+                          ? headerIcon
+                          : imgUrl + 'infoset-icons/Arkatiss_Logo_New.svg'
+                      " alt="" width="35" height="35" />
+                    <span class="title-text">{{
+                      headerText ? headerText : "Arkatiss Desk"
+                      }}</span>
+                  </div>
+                  <div class="d-flex col-sm-4 gap-3 align-items-center justify-content-end">
+                    <i class="pi pi-minus font-14 pointer"></i>
+                    <i class="pi pi-times font-14 pointer"></i>
+                  </div>
+                </div>
+                <div class="content-chat">
+                  <div class="d-flex justify-content-start gap-2 align-items-end">
+                    <img class="profile-icon" [src]="
+                        widgetIcon
+                          ? widgetIcon
+                          : imgUrl + 'common-imgs/ai-robot-icon.svg'
+                      " alt="" width="24" height="24" />
+                    <span class="left-chat">Hi there! 👋 How can I Help You</span>
+                  </div>
+                  <div class="d-flex justify-content-end gap-2 align-items-end mt-3">
+                    <span class="right-chat" [style.backgroundColor]="
+                        accentColor ? accentColor : '#fff'
+                      " [style.color]="fontColor ? fontColor : '#000'">Hi, I need Some Tips on Daily Works</span>
+                    <img class="profile-icon" [src]="
+                        botIcon ? botIcon : imgUrl + 'infoset-icons/User.svg'
+                      " alt="" width="24" height="24" />
+                  </div>
+                  <div class="d-flex justify-content-start gap-2 align-items-end mt-3">
+                    <img class="profile-icon" [src]="
+                        widgetIcon
+                          ? widgetIcon
+                          : imgUrl + 'common-imgs/ai-robot-icon.svg'
+                      " alt="" width="24" height="24" />
+                    <span class="left-chat">Nice, Check Tips Below 1.Lorem Ipsum is simply dummy text
+                      2.Lorem Ipsum is simply dummy text
+                    </span>
+                  </div>
+                  <div class="d-flex justify-content-end gap-2 align-items-end mt-3">
+                    <span class="right-chat" [style.backgroundColor]="
+                        accentColor ? accentColor : '#fff'
+                      " [style.color]="fontColor ? fontColor : '#000'">Thank you</span>
+                    <img class="profile-icon" [src]="
+                        botIcon ? botIcon : imgUrl + 'infoset-icons/User.svg'
+                      " alt="" width="24" height="24" />
+                  </div>
+                </div>
+                <div class="footer-chat">
+                  <span class="d-flex gap-3 align-items-center pe-3 ps-3">
+                    <input type="text" name="" pInputText class="w-100" placeholder="Write a message"
+                      style="border: none" />
+                    <img class="pointer" [src]="imgUrl + 'infoset-icons/emoji.svg'" alt="" width="24" height="24" />
+                    <img class="pointer" [src]="imgUrl + 'infoset-icons/attach.svg'" alt="" width="24" height="24" />
+                    <img class="pointer" [src]="imgUrl + 'infoset-icons/send.svg'" alt="" width="24" height="24" />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="activeMenu === 'gs'">
+          <div class="row m-0 p-0">
+            <span class="childMenuName p-0">General Settings</span>
+          </div>
+          <div class="row m-0 p-0 pt-3" style="height: 72vh">
+            <div class="col-sm-12 p-0">
+              <div *ngFor="let gs of generalSettings" class="field-checkbox">
+                <p-checkbox class="generalSetup" [(ngModel)]="selectGsSetting" [label]="gs.name" name="group"
+                  [value]="gs.key" />
+              </div>
+              <div>
+                <p-checkbox class="generalSetup" [binary]="true" inputId="binary" [(ngModel)]="showTypingSpeed"
+                  label="Typing Delay" />
+                <ng-container *ngIf="showTypingSpeed">
+                  <div class="ms-4 mt-2">
+                    <span class="span-type ms-2">How quickly do you want the chatbot to type the
+                      answer</span>
+                  </div>
+                  <div class="ms-5 mt-3">
+                    <p-slider [(ngModel)]="selectSpeed" [step]="20" styleClass="w-20rem" />
+                  </div>
+                </ng-container>
+              </div>
+              <div class="pt-3">
+                <p-checkbox class="generalSetup" [binary]="true" inputId="binary" [(ngModel)]="showFeedBack"
+                  label="Collect feedback when conversation ends" />
+                <ng-container *ngIf="showFeedBack">
+                  <div class="ms-4 mt-2">
+                    <span class="span-type ms-2">The chat widget will prompt the visitor with a CSAT
+                      survey</span>
+                  </div>
+                  <div class="ms-4 mt-3">
+                    <textarea class="w-100 desc-text-area" rows="5" pInputTextarea [(ngModel)]="feedBack"
+                      placeholder="Enter Description" style="width: 25% !important"></textarea>
+                  </div>
+                </ng-container>
+              </div>
+              <div class="col-sm-12 pt-3 p-0">
+                <button class="save-btn">Apply Changes</button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="activeMenu === 'pum'">
+          <div class="row m-0 p-0">
+            <span class="childMenuName p-0">Pop up messages</span>
+          </div>
+          <div class="row m-0 p-0 pt-3">
+            <div class="col-sm-12 ps-0 row m-0">
+              <app-data-table class="p-0" [columns]="popColData" [rowData]="popRowData" [screenName]="popScreenName"
+                (showFormPage)="addMessage()"></app-data-table>
+            </div>
+            <div class="row pt-2 p-0">
+              <div>
+                <button class="save-btn">Apply Changes</button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="activeMenu === 'tc'">
+          <div class="row m-0 p-0">
+            <span class="childMenuName p-0">Trigger Conditions</span>
+          </div>
+          <div class="row m-0 p-0 pt-2 d-flex flex-column gap-3 trigger-section">
+            <p class="childMenuName p-0">New User Configuration</p>
+            <span>
+              New user is a website visitor landing on your website for the
+              first time.
+            </span>
+            <div class="d-flex flex-column gap-1 p-0">
+              <span>
+                What should the chatbot do when a new user lands on your
+                website?
+              </span>
+              <div class="w-25">
+                <p-dropdown class="w-25" id="fontSize" [options]="viewOptions" [(ngModel)]="selectViewOption"
+                  optionLabel="name" placeholder="Select" optionValue="value"
+                  (onChange)="selectValue($event)"></p-dropdown>
+              </div>
+            </div>
+
+            <div class="d-flex flex-column gap-1 p-0">
+              <span>When do you want this action to be triggered?</span>
+
+              <span class="d-flex align-items-center gap-2">
+                <span class="w-25">
+                  <p-dropdown class="w-25" id="fontSize" [options]="viewOptions" [(ngModel)]="selectViewOption"
+                    optionLabel="name" placeholder="Select" optionValue="value"
+                    (onChange)="selectValue($event)"></p-dropdown>
+                </span>
+
+                after
+                <input type="text" pInputText style="width: 10%" placeholder="Enter Text" [(ngModel)]="headerText" />
+                seconds popup should be displayed
+              </span>
+
+              <span>(seconds should be in the range of 1-600)</span>
+            </div>
+
+            <p class="childMenuName pt-3 p-0">Returning User Configuration</p>
+            <span>
+              A returning user is a website visitor who lands on your website
+              again after a certain period of time
+            </span>
+
+            <div class="d-flex flex-column gap-1 p-0">
+              <span>
+                Returning visitor is one who has visited website in the last
+              </span>
+
+              <span class="d-flex align-items-center gap-2">
+                <input type="text" pInputText style="width: 10%" placeholder="Enter Text" [(ngModel)]="headerText" />
+                days ( Days should be in the range of 1-180 )
+              </span>
+            </div>
+
+            <div class="p-0">
+              <span>
+                What should the chatbot do when a returning user lands on your
+                website?
+              </span>
+              <div class="w-25">
+                <p-dropdown class="w-25" id="fontSize" [options]="viewOptions" [(ngModel)]="selectViewOption"
+                  optionLabel="name" placeholder="Select" optionValue="value"
+                  (onChange)="selectValue($event)"></p-dropdown>
+              </div>
+            </div>
+
+            <div class="d-flex flex-column gap-1 p-0">
+              <span> When do you want this action to be triggered? </span>
+
+              <span class="d-flex align-items-center gap-2">
+                <span class="w-25">
+                  <p-dropdown class="w-25" id="fontSize" [options]="viewOptions" [(ngModel)]="selectViewOption"
+                    optionLabel="name" placeholder="Select" optionValue="value"
+                    (onChange)="selectValue($event)"></p-dropdown>
+                </span>
+
+                after
+                <input type="text" pInputText style="width: 10%" placeholder="Enter Text" [(ngModel)]="headerText" />
+                seconds popup should be displayed
+              </span>
+
+              <span>(seconds should be in the range of 1-600)</span>
+            </div>
+          </div>
+          <div class="m-0 p-0 pt-2">
+            <button class="save-btn">Apply Changes</button>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="activeMenu === 'config'">
+          <div class="row m-0 p-0">
+            <span class="childMenuName p-0">Configuration</span>
+          </div>
+          <div class="row pt-2 m-0 p-0 d-flex flex-column gap-2 Web-Configuration-section" style="height: 72vh">
+            <p class="childMenuName p-0">Web Configuration</p>
+
+            <span>Follow the steps listed on the right to setup your chatbot, and
+              go live.</span>
+
+            <div class="d-flex flex-column gap-1 p-0">
+              <span>Website URL</span>
+              <input type="text" pInputText style="width: 25%" placeholder="Enter Url" [(ngModel)]="headerText" />
+            </div>
+
+            <div class="d-flex flex-column gap-1 p-0">
+              <span>
+                Copy the code snippet below, and paste it before the body tag on
+                every page of your website
+              </span>
+              <div class="w-50">
+                <p-dropdown class="w-50" id="fontSize" [options]="viewOptions" [(ngModel)]="selectViewOption"
+                  optionLabel="name" placeholder="Select" optionValue="value"
+                  (onChange)="selectValue($event)"></p-dropdown>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div> -->
+    </div>
+  </ng-container>
+</div>
+
+<p-dialog
+  header="Create Pop up Message"
+  [modal]="true"
+  [(visible)]="popVisible"
+  [style]="{ width: '25rem' }"
+>
+  <div class="d-flex flex-column mb-3">
+    <label for="url" class="font-semibold w-6rem">URL</label>
+    <input
+      pInputText
+      id="url"
+      class="flex-auto"
+      autocomplete="off"
+      placeholder="/"
+    />
+  </div>
+  <div class="d-flex flex-column mb-3">
+    <label for="msg" class="font-semibold w-6rem">Message</label>
+    <textarea
+      pInputText
+      id="msg"
+      class="flex-auto"
+      autocomplete="off"
+      placeholder="Write any message"
+    ></textarea>
+  </div>
+  <div class="d-flex flex-column mb-3">
+    <label for="fileDropRefCard" class="font-semibold w-6rem">Media</label>
+
+    <input type="file" id="fileDropRefCard" />
+  </div>
+  <div class="d-flex justify-content-end gap-2">
+    <button (click)="popVisible = false" class="back-btn">Cancel</button>
+    <button (click)="popVisible = false" class="save-btn">Create</button>
+  </div>
+</p-dialog>

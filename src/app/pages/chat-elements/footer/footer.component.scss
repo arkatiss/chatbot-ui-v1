@@ -1,0 +1,100 @@
+.publisher {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 10px 0px;
+  margin: 1px 0px;
+  // width: 24.2%;
+  width: 23.4%;
+  border-radius: 8px;
+  background-color: #ffffff;
+  position: fixed;
+  left: 16px;
+  bottom: 14px;
+  color: white;
+  text-align: center;
+  border: 1px solid #ebebeb !important;
+}
+@media (min-width: 700px) and (max-width: 1399px) {
+  .publisher {
+    width: 23.9% !important;
+  }
+}
+
+span.publisher-btn.file-group {
+  color: black;
+}
+.publisher > *:first-child {
+  margin-left: 0;
+}
+
+.publisher > * {
+  margin: 0 6px;
+}
+
+.publisher-input {
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  border: none;
+  outline: none !important;
+  background-color: transparent;
+}
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+  .publisher {
+    width: 28.5% !important;
+  }
+}
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+  .publisher {
+    width: 38% !important;
+  }
+}
+.gradient {
+  background: conic-gradient(
+      from -45deg,
+      #d31e25 110deg,
+      #7a7a7a 90deg 180deg,
+      #d31e25 180deg 270deg,
+      #7a7a7a 270deg
+    )
+    73% 55%/150% 150% no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.usergradient {
+  background: conic-gradient(
+      from -45deg,
+      #d31e25 110deg,
+      #d31e25 90deg 180deg,
+      #737373 180deg 270deg,
+      #737373 270deg
+    )
+    73% 55%/150% 150% no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.center {
+  background: #727577;
+  color: white;
+  margin-top: -8px;
+}
+::ng-deep .my-menu {
+  width: 200px;
+  min-height: 250px;
+  max-height: 250px !important;
+  overflow-y: auto;
+}
+.publisher-input::placeholder {
+  font-size: 12px;
+}
+.cancel {
+  position: fixed;
+  bottom: 7%;
+  left: 24%;
+  background: #ededed;
+  color: #d92337;
+}

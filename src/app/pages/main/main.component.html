@@ -1,0 +1,64 @@
+<ngx-spinner
+  bdColor="rgb(244, 244, 244, 0.1)"
+  size="default"
+  color="#d54b4b"
+  type="ball-spin-clockwise"
+  id="spinhide"
+  [fullScreen]="false"
+>
+  <button
+    type="button"
+    mat-raised-button
+    class="warning-btn mt-4"
+    (click)="cancelRequest()"
+  >
+    Cancel
+  </button>
+</ngx-spinner>
+<div class="col-sm-12 pb-3 p-0">
+  <app-mainheader
+    (hideChat)="collapse($event)"
+    (moveToSelectedTab)="moveSelectedTab($event)"
+    (acceptedData)="agentAcceptedData($event)"
+  ></app-mainheader>
+</div>
+<mat-sidenav-container class="example-container">
+  <div class="row p-0 m-0">
+    <div class="chatWidth pl-3 pe-3" *ngIf="showtoggle">
+      <div class="card chatcard">
+        <app-chat
+          [moveSelectedTab]="moveTab"
+          [acceptedagentData]="acceptedAgentData"
+          (getAcceptedData)="getacceptedData($event)"
+        ></app-chat>
+      </div>
+    </div>
+    <div class="dashBoardWidth p-0 pl-3 pr-3" id="dashwidth" #dashwidth>
+      <app-timer></app-timer>
+      <div class="p-0 bodycard" [style.background]="charts" *ngIf="hideGrid">
+        <app-charts *ngIf="showSelector === 'showMainComponent'"></app-charts>
+        <app-docviewer
+          *ngIf="showSelector === 'showDocsComponent'"
+        ></app-docviewer>
+        <app-elasticdocs
+          *ngIf="showSelector === 'elasticDoc'"
+          [elasticsData]="elasticData"
+        ></app-elasticdocs>
+        <app-history *ngIf="showSelector === 'historyView'"></app-history>
+        <app-preference *ngIf="showSelector === 'preferences'"></app-preference>
+        <app-viewprofile *ngIf="showSelector === 'profile'"></app-viewprofile>
+        <app-chatbox *ngIf="showSelector === 'showFormComponent'"></app-chatbox>
+        <app-multiagentdata
+          *ngIf="showSelector === 'showMultiagentData'"
+          [acceptedAgentData]="getacceptedagentData"
+        ></app-multiagentdata>
+        <app-dynamicforms
+          *ngIf="showSelector === 'showDynamicForms'"
+        ></app-dynamicforms>
+      </div>
+      <div class="col-sm-12 p-0" *ngIf="showGridComponent">
+        <app-grid *ngIf="showSelector === 'showGridComponent'"></app-grid>
+      </div>
+    </div>
+  </div>
+</mat-sidenav-container>

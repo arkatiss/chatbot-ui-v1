@@ -1,0 +1,52 @@
+<div class="container-fluid mt-5">
+  <div class="row">
+    <div class="col-md-12 bg-white p-5 rounded shadow-sm">
+      <h2 class="fw-bold mb-2">Web Configuration</h2>
+      <p class="text-muted mb-4">
+        Follow the steps listed on the right to setup your chatbot, and go live.
+      </p>
+      <form>
+        <div class="mb-4 col-lg-2 col-md-4 col-sm-12">
+          <label class="form-label fw-semibold">Website URL</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="websiteUrl"
+            name="websiteUrl"
+          />
+        </div>
+        <div class="mb-3 col-lg-6 col-md-8 col-sm-12">
+          <label class="form-label fw-semibold">
+            Copy the code snippet below, and paste it before the &lt;body&gt;
+            tag on every page of your website
+          </label>
+          <div class="input-group">
+            <textarea
+              class="form-control"
+              rows="3"
+              style="border-right: none"
+              readonly
+              >{{ codeSnippet }}</textarea
+            >
+            <span
+              class="input-group-text bg-light"
+              style="
+                cursor: pointer;
+                background: white !important;
+                border-left: none;
+              "
+              (click)="copyToClipboard(codeSnippet)"
+            >
+              <i
+                class="pi pi-copy"
+                style="font-size: 1.8rem"
+                pTooltip="Copy"
+                tooltipPosition="bottom"
+              ></i>
+            </span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

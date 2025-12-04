@@ -1,0 +1,340 @@
+<div>
+  <!-- <h4 class="font-14 fw-500  pl-2 pr-3 pt-3 pb-3 primary">Infoset view</h4> -->
+  <div class="row m-0 col-12 p-0">
+    <div class="col-4 p-0">
+      <h4 class="font-14 fw-500 pr-3 pt-3 pb-3 pl-4 mb-0 primary">
+        Infoset View
+      </h4>
+    </div>
+    <div class="col-8">
+      <mat-form-field
+        appearance="outline"
+        class="font-11 col-sm-4 p-1 float-right"
+      >
+        <mat-label>Search </mat-label>
+        <input
+          type="text"
+          matInput
+          autocomplete="off"
+          (keyup)="filterDatatable($event)"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+  <!-- <div class="row pl-1 p-0 m-0"> -->
+  <!-- <div class="col-sm-2">
+        <mat-form-field appearance="outline" class="font-11 col-sm-12 p-1">
+          <mat-label>Select Domain</mat-label>
+          <mat-select [(ngModel)] = "infydomain" (selectionChange)="selectDomainForInfoset($event.value);">
+            <mat-option *ngFor="let d of domainDetails" [value]="d.domain">{{d.domain}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-2">
+        <mat-form-field appearance="outline" class="font-11 col-sm-12 p-1">
+          <mat-label>Select Sub Domain</mat-label>
+          <mat-select [(ngModel)] = "subinfydomain"
+            (selectionChange)="changeSubDomainForInfosetView();">
+            <mat-option *ngFor="let sd of  subDomainDetails" [value]="sd">{{sd}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-2">
+        <mat-form-field appearance="outline" class="font-11 col-sm-12 p-1">
+          <mat-label>Select Infoset</mat-label>
+          <mat-select [(ngModel)] = "selectInfoset"
+            (selectionChange)="showJsonEditor($event.value);showTables()">
+            <mat-option *ngFor="let sd of  infosets" [value]="sd">{{sd.fileName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div> -->
+  <!-- <div class="col-sm-2 mt-3" *ngIf = "showtoggle">
+        <mat-slide-toggle class="jsonviewtoggle"
+        (change)="switchonChange($event.checked)">Json View</mat-slide-toggle>
+      </div> -->
+
+  <!-- <div class="col-sm-2">
+
+      </div> -->
+  <!-- </div> -->
+  <form class="row pl-1 p-0 m-0">
+    <div class="col-sm-2">
+      <mat-form-field
+        appearance="outline"
+        class="font-11 col-sm-12 p-1"
+        *ngIf="domainDetails.length > 0"
+      >
+        <mat-label>Select Domain</mat-label>
+        <input
+          type="text"
+          matInput
+          [formControl]="domainNameControl"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          [displayWith]="displayFn"
+          class="securityUser"
+        >
+          <mat-option
+            *ngFor="let option of filteredDomainOptions | async"
+            [value]="option.domain"
+            (click)="selectDomainForInfoset()"
+          >
+            {{ option.domain | titlecase }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="col-sm-2">
+      <mat-form-field
+        appearance="outline"
+        class="font-11 col-sm-12 p-1"
+        *ngIf="subDomainDetails.length === 0"
+      >
+        <mat-label>Select Sub Domain</mat-label>
+        <input
+          type="text"
+          matInput
+          [formControl]="subDomainNameControl"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          [displayWith]="displayFn"
+          class="securityUser"
+        >
+          <mat-option
+            *ngFor="let option of filteredSuDomainOptions | async"
+            [value]="option"
+            (onSelectionChange)="changeSubDomainForInfosetView(option)"
+          >
+            {{ option | titlecase }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field
+        appearance="outline"
+        class="font-11 col-sm-12 p-1"
+        *ngIf="subDomainDetails.length > 0"
+      >
+        <mat-label>Select Sub Domain</mat-label>
+        <input
+          type="text"
+          matInput
+          [formControl]="subDomainNameControl"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          [displayWith]="displayFn"
+          class="securityUser"
+        >
+          <mat-option
+            *ngFor="let option of filteredSuDomainOptions | async"
+            [value]="option"
+            (onSelectionChange)="changeSubDomainForInfosetView(option)"
+          >
+            {{ option | titlecase }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <div class="col-sm-2">
+      <mat-form-field
+        appearance="outline"
+        class="font-11 col-sm-12 p-1"
+        *ngIf="infosets.length > 0"
+      >
+        <!-- <mat-label>Select Infoset</mat-label>
+      <mat-select [(ngModel)] = "selectInfoset"
+        (selectionChange)="showJsonEditor($event.value);showTables()">
+        <mat-option *ngFor="let sd of  infosets" [value]="sd">{{sd.fileName}}
+        </mat-option>
+      </mat-select> -->
+
+        <mat-label>Select Infoset</mat-label>
+        <input
+          type="text"
+          matInput
+          [formControl]="infosetControl"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          [displayWith]="displayFn"
+          class="securityUser"
+        >
+          <mat-option
+            *ngFor="let option of filteredInfosetOptions | async"
+            [value]="option.fileName"
+            (onSelectionChange)="showJsonEditor(option); showTables()"
+          >
+            {{ option.fileName }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        class="font-11 col-sm-12 p-1"
+        *ngIf="infosets.length === 0"
+      >
+        <!-- <mat-label>Select Infoset</mat-label>
+      <mat-select [(ngModel)] = "selectInfoset"
+        (selectionChange)="showJsonEditor($event.value);showTables()">
+        <mat-option *ngFor="let sd of  infosets" [value]="sd">{{sd.fileName}}
+        </mat-option>
+      </mat-select> -->
+
+        <mat-label>Select Infoset</mat-label>
+        <input
+          type="text"
+          matInput
+          [formControl]="infosetControl"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          [displayWith]="displayFn"
+          class="securityUser"
+        >
+          <mat-option
+            *ngFor="let option of filteredInfosetOptions | async"
+            [value]="option.fileName"
+            (onSelectionChange)="showJsonEditor(option); showTables()"
+          >
+            {{ option.fileName }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </form>
+  <div *ngIf="jsoneditor == true">
+    <div class="row m-0 pt-2 p-0">
+      <h4 class="col-sm-8 pt-2 float-right primary">
+        <span (click)="onbackToFiles()">Files / </span>
+        <span>{{ filename }}</span>
+      </h4>
+      <div class="col-sm-4">
+        <button
+          type="button"
+          *ngIf="showojsoneditor"
+          mat-raised-button
+          class="primary md float-end ml-3 me-3"
+          (click)="saveFile()"
+        >
+          Update
+        </button>
+        <!-- <i class="far fa-trash ml-5 textred font-16" (click)="deleteInfoset()"></i> -->
+        <button
+          type="button"
+          mat-raised-button
+          class="primary md float-end me-3"
+          (click)="deleteInfoset()"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+
+    <!-------org data start-->
+    <mat-tab-group
+      class="remove-border-bottom"
+      mat-stretch-tabs
+      (selectedTabChange)="tabChanged($event)"
+    >
+      <mat-tab label="Table View">
+        <ngx-datatable
+          *ngIf="rowData.length > 0"
+          #table
+          style="height: 280px; width: 100%"
+          class="material ml-0 mr-0 mt-3"
+          [rows]="rowData"
+          [columns]="displayedColumns"
+          [columnMode]="'force'"
+          [headerHeight]="40"
+          [footerHeight]="40"
+          [scrollbarH]="true"
+          [limit]="9"
+          [rowHeight]="40"
+          [scrollbarV]="true"
+        >
+          <ngx-datatable-column name="S.No" [width]="5">
+            <ng-template
+              let-row="row"
+              let-rowIndex="rowIndex"
+              ngx-datatable-cell-template
+            >
+              {{ rowIndex + 1 }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column
+            *ngFor="let column of displayedColumns; let i = index"
+            name="{{ column.name }}"
+            prop="{{ column.prop }}"
+          >
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </mat-tab>
+      <mat-tab label="Hierarchical View">
+        <div
+          class="row m-0 col-sm-12 p-0 mt-2 pl-2 belowdiv"
+          *ngIf="showorgchart"
+        >
+          <ngx-org-chart
+            [nodes]="nodeData"
+            direction="vertical"
+          ></ngx-org-chart>
+        </div>
+      </mat-tab>
+      <mat-tab label="Json View">
+        <div class="col-sm-12 p-0 mt-4 pl-2" *ngIf="showojsoneditor">
+          <json-editor
+            #editor
+            [options]="editorOptions"
+            [data]="Logdata"
+            (change)="getData($event)"
+          >
+          </json-editor>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+    <!----tabledata ---->
+
+    <!---------org data end-->
+
+    <!-- <div class="col-sm-12 p-0 mt-2">
+          <button type="button" mat-raised-button class="grey-btn-border md float-left "
+              (click)="saveFile()">Save</button> -->
+    <!-- <button type="button" mat-raised-button class="primary-btn float-left"
+              (click)="saveasOpenTemplate(FileSave)">Save as</button> -->
+    <!-- </div> -->
+
+    <!-- <ng-template #FileSave>
+          <div class="modal-header">
+              <h6 class="modal-title pull-left blue">Save as</h6>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body p-4">
+              <mat-form-field appearance="outline" class="col-sm-12 font-14 p-0">
+                  <mat-label>File name</mat-label>
+                  <input matInput placeholder="Enter name to save" [(ngModel)]="NewFileName">
+              </mat-form-field>
+              <div class="col-sm-12 p-0">
+                  <button type="button" mat-raised-button class="grey-btn-border md mr-2"
+                      (click)="saveasFile()">Submit</button>
+                  <button type="button" mat-raised-button class="grey-btn md"
+                      (click)="closeDialog()">Close</button>
+              </div>
+          </div>
+      </ng-template> -->
+  </div>
+</div>

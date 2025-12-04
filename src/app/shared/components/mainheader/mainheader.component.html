@@ -1,0 +1,300 @@
+<mat-toolbar class="lefttopbar">
+  <div class="row col-sm-12 p-0 m-0">
+    <div class="col-sm-3 p-0">
+      <div class="row p-0">
+        <div class="col-4 p-0">
+          <img
+            src="{{ imgurl }}int7050.png"
+            class="mr-2 pointer"
+            (click)="gotoView('showMainComponent')"
+          />
+        </div>
+        <div class="col-1 pt-1"></div>
+
+        <div class="col-6 pt-1 pr-2 pt-2" *ngIf="location === '/pages/main'">
+          <i
+            class="fal fa-bars pointer text-infoo pr-2 pl-2 font-16 m-1 float-right trsm"
+            (click)="collapseDiv('collapse')"
+            title="Collapse"
+            *ngIf="showtoggle"
+          ></i>
+
+          <i
+            class="fal fa-bars pointer text-infoo pr-2 pl-2 font-16 m-1 float-right trsm"
+            (click)="collapseDiv('expand')"
+            title="expand"
+            *ngIf="!showtoggle"
+          ></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4 pt-3"></div>
+    <div class="col-2 pt-2"></div>
+    <div class="col-3 p-0 pt-2">
+      <div style="float: right">
+        <span class="pr-2 pl-2">
+          <i
+            class="fal fa-home-alt pointer text-infoo trsm mr-1 font-17"
+            title="Home"
+            (click)="gotoView('showMainComponent')"
+          ></i>
+        </span>
+
+        <span class="pr-2 pl-2">
+          <span
+            class="ml-2 pointer font-14 fw-200"
+            title="Notifications"
+            [matMenuTriggerFor]="notification"
+          >
+            <i class="fal fa-bell text-infoo font-16 pointer trsm"></i>
+            <span
+              class="badge badge-warning"
+              id="lblCartCount"
+              *ngIf="agentNormalNotification.length > 0"
+            >
+              {{ agentNormalNotification.length }}
+            </span>
+          </span>
+        </span>
+
+        <span
+          (click)="history()"
+          class="pr-2 pl-2"
+          *ngIf="location === '/pages/main'"
+        >
+          <i
+            class="fal fa-history text-infoo mr-1 font-16 pointer trsm"
+            title="History"
+          ></i>
+        </span>
+        <span class="pr-3">
+          <i
+            class="fa fa-ellipsis-v text-infoo font-16 pl-2"
+            *ngIf="userRole !== 'End User' && userRole !== 'enduser'"
+            aria-hidden="true"
+            [matMenuTriggerFor]="beforeMenu1"
+          ></i>
+        </span>
+        <span [ngClass]="notificationClass">
+          <p class="dotactive" *ngIf="flag === 0"></p>
+          <p class="dotbusy" *ngIf="flag === 1"></p>
+          <p class="dotdisturb" *ngIf="flag === 2"></p>
+          <p class="dotaway" *ngIf="flag === 3"></p>
+          <p class="textFirst2 pointer" [matMenuTriggerFor]="beforeMenu">
+            {{ UserFirstLtr }}
+          </p>
+        </span>
+      </div>
+      <mat-menu #notification="matMenu" xPosition="before">
+        <ul class="p-0">
+          <li class="liheader">NOTIFICATIONS</li>
+          <li class="body">
+            <div
+              class="slimScrollDiv"
+              style="
+                position: relative;
+                overflow-y: auto;
+                width: auto;
+                max-height: 254px;
+              "
+            >
+              <ul class="menu pl-0">
+                <li *ngFor="let a of agentNormalNotification; let i = index">
+                  <a
+                    href="javascript:void(0);"
+                    class="waves-effect waves-block"
+                  >
+                    <div class="icon-circle bg-light-green">
+                      <i class="material-icons">person_add</i>
+                    </div>
+                    <div class="menu-info" (click)="openChat(a, i)">
+                      <h4
+                        *ngIf="
+                          (a.type === 'agent' &&
+                            a.agType !== undefined &&
+                            a.agType === 'request') ||
+                          a.type !== 'agent'
+                        "
+                      >
+                        {{ a.count }}
+                        <span *ngIf="a.count > 1">
+                          new messages from &nbsp; &nbsp;</span
+                        >
+                        <span *ngIf="a.count === 1"
+                          >message from &nbsp; &nbsp;</span
+                        >
+                        <span *ngIf="a.type === 'agent'"
+                          >Request for Support ({{ a.name }})</span
+                        >
+                        <span *ngIf="a.type !== 'agent'">{{
+                          a.user_name | titlecase
+                        }}</span>
+                      </h4>
+                    </div>
+
+                    <div class="row m-0 mt-1">
+                      <div class="col-sm-3"></div>
+                      <div class="col-sm-6 p-0">
+                        <button
+                          type="button"
+                          mat-raised-button
+                          *ngFor="let b of a.confirmButton"
+                          class="text-info saveBtn md font-10 ml-1 mr-1"
+                          (click)="acceptRequest(b, a)"
+                        >
+                          {{ b }}
+                        </button>
+                      </div>
+                      <div class="col-sm-3"></div>
+                    </div>
+                  </a>
+                </li>
+                <li></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </mat-menu>
+      <mat-menu #beforeMenu1="matMenu" xPosition="before">
+        <span
+          mat-menu-item
+          routerLinkActive="active"
+          (click)="navigateTo('config')"
+          *ngIf="
+            userRole !== 'End User' &&
+            userRole !== 'enduser' &&
+            location !== '/config'
+          "
+          ><i class="fal fa-sliders-v text-infoo mr-3 font-16"></i>
+          <span class="font-12 text-mute hvr">Config</span>
+        </span>
+        <span
+          mat-menu-item
+          routerLinkActive="active"
+          (click)="navigateTo('security')"
+          *ngIf="
+            userRole !== 'End User' &&
+            userRole !== 'enduser' &&
+            location !== '/security'
+          "
+          ><i class="fal fa-sliders-v text-infoo mr-3 font-16"></i>
+          <span class="font-12 text-mute hvr">Authorizations</span>
+        </span>
+      </mat-menu>
+
+      <mat-menu #beforeMenu="matMenu" xPosition="before">
+        <span class="ml-1 p-3">
+          <span class="textFirst m-2"> {{ UserFirstLtr | uppercase }} </span
+          >{{ loginFullName | titlecase }} </span
+        ><br />
+        <p class="mb-0 text-center">{{ userRole | titlecase }}</p>
+        <span
+          class="chatActive"
+          mat-menu-item
+          [matMenuTriggerFor]="vertebrates"
+          *ngIf="flag === 0"
+        >
+          <mat-icon class="chatbox__user--active font-15 pt-1">
+            fiber_manual_record
+          </mat-icon>
+          <span class="font-12 text-mute hvr pl-1">Available</span>
+        </span>
+        <span
+          class="chatActive"
+          mat-menu-item
+          [matMenuTriggerFor]="vertebrates"
+          *ngIf="flag === 1"
+        >
+          <mat-icon class="chatbox__user--busy font-15 pt-1">
+            fiber_manual_record
+          </mat-icon>
+          <span class="font-12 text-mute hvr pl-1">Busy</span>
+        </span>
+        <span
+          class="chatActive"
+          mat-menu-item
+          [matMenuTriggerFor]="vertebrates"
+          *ngIf="flag === 2"
+        >
+          <mat-icon class="chatbox__user--disturb font-15 pt-1">
+            fiber_manual_record
+          </mat-icon>
+          <span class="font-12 text-mute hvr pl-1">Do Not Disturb</span>
+        </span>
+        <span
+          class="chatActive"
+          mat-menu-item
+          [matMenuTriggerFor]="vertebrates"
+          *ngIf="flag === 3"
+        >
+          <mat-icon class="chatbox__user--awaydesk font-15 pt-1">
+            fiber_manual_record
+          </mat-icon>
+          <span class="font-12 text-mute hvr pl-1">Away From Desk</span>
+        </span>
+        <span
+          mat-menu-item
+          (click)="dashboard('hide', $event)"
+          *ngIf="hidedashboard && location === '/pages/main'"
+        >
+          <i class="fas fa-eye-slash text-infoo pr-2 font-16"></i>
+          <span class="font-12 text-mute hvr">Hide Dashboard</span>
+        </span>
+        <span
+          mat-menu-item
+          (click)="dashboard('show', $event)"
+          *ngIf="showdashboard && location === '/pages/main'"
+        >
+          <i class="fas fa-eye text-infoo pr-2 font-16"></i>
+          <span class="font-12 text-mute hvr">Show Dashboard</span>
+        </span>
+        <span
+          mat-menu-item
+          routerLinkActive="active"
+          (click)="gotoView('preferences')"
+          ><i class="fal fa-sliders-v text-infoo mr-3 font-16"></i>
+          <span class="font-12 text-mute hvr">Preferences</span>
+        </span>
+        <span
+          mat-menu-item
+          routerLinkActive="active"
+          (click)="gotoView('profile')"
+        >
+          <i class="fal fa-user-circle text-infoo mr-3 font-16"></i
+          ><span class="font-12 text-mute hvr">Profile</span></span
+        >
+        <span mat-menu-item (click)="logout()">
+          <i class="fal fa-sign-out-alt text-infoo mr-3 font-16"></i
+          ><span class="font-12 text-mute hvr">Log out</span></span
+        >
+      </mat-menu>
+      <mat-menu #vertebrates="matMenu">
+        <!-- <button mat-menu-item> Available</button> -->
+        <span mat-menu-item class="chatActive" (click)="updateUserStatus(0)">
+          <mat-icon class="chatbox__user--active font-15 pt-1">
+            fiber_manual_record </mat-icon
+          ><span class="font-12 text-mute hvr">Available</span>
+        </span>
+        <span mat-menu-item class="chatActive" (click)="updateUserStatus(1)">
+          <mat-icon class="chatbox__user--busy font-15 pt-1">
+            fiber_manual_record </mat-icon
+          ><span class="font-12 text-mute hvr">Busy</span>
+        </span>
+        <span mat-menu-item class="chatActive" (click)="updateUserStatus(2)">
+          <mat-icon class="chatbox__user--disturb font-15 pt-1">
+            fiber_manual_record </mat-icon
+          ><span class="font-12 text-mute hvr">Do Not Disturb</span>
+        </span>
+        <span mat-menu-item class="chatActive" (click)="updateUserStatus(3)">
+          <mat-icon class="chatbox__user--awaydesk font-15 pt-1">
+            fiber_manual_record </mat-icon
+          ><span class="font-12 text-mute hvr">Away From Desk</span>
+        </span>
+      </mat-menu>
+      <ng-template #popTemplate>
+        Messages / Alerts From Background Jobs
+      </ng-template>
+    </div>
+  </div>
+</mat-toolbar>

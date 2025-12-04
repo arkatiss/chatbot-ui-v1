@@ -1,0 +1,37 @@
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.text-muted {
+  color: #6c757d !important;
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+hr {
+  border-top: 1px solid #dee2e6;
+}

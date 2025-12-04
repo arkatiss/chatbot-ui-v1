@@ -1,0 +1,64 @@
+<div class="row col-sm-12 p-0 m-0 pb-5">
+    <h4 class="font-14 fw-500  pr-3 pt-3 pb-3 pl-4 mb-0 primary">Create Support Group</h4>
+    <div class="col-sm-12 p-0 pt-1 mt-1">
+
+        <div class="row m-0 pl-1">
+            <div class="col-sm-6">
+                <!-- <mat-form-field appearance="outline" class="font-11 col-sm-12 p-1">
+                    <mat-label>Select User</mat-label>
+                    <mat-select [(ngModel)]="userName" name="userName">
+                        <mat-option *ngFor="let user of userNames" [value]="user.email">{{user.name | titlecase}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                  <!-- <mat-label>Select Domain</mat-label>
+                        <mat-select name="domain" [(ngModel)]="domain">
+                          <mat-option *ngFor="let d of domainDetails" [value]="d">{{d}}
+                          </mat-option>
+                        </mat-select> -->
+
+                <form>
+                    <mat-form-field appearance="outline" class="font-11 col-sm-4 p-1" appearance="outline" *ngIf="userNames.length > 0">
+                        <mat-label>Select User</mat-label>
+                        <input type="text" matInput [formControl]="userNameControl" [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" class="securityUser">
+                          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                            {{option.name}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" class="font-11 col-sm-4 p-1" *ngIf="domainDetails.length > 0">
+                                            
+                      
+                      <mat-label>Select Domain</mat-label>
+                      <input type="text" matInput [formControl]="domainNameControl" [matAutocomplete]="domainAuto">
+                      <mat-autocomplete #domainAuto="matAutocomplete" [displayWith]="displayFn"  (optionSelected)="onDomainSelectionChange($event)" class="securityUser">
+                        <mat-option *ngFor="let option of filteredDomainOptions | async" [value]="option">
+                          {{option.name}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="font-11 col-sm-4 p-1" *ngIf="domainDetails.length > 0">
+
+                        <mat-label>Select Sub Domain</mat-label>
+                        <input type="text" matInput [formControl]="subDomainNameControl" [matAutocomplete]="subDomainauto">
+                        <mat-autocomplete #subDomainauto="matAutocomplete" [displayWith]="displaysubFn" class="securityUser">
+                          <mat-option *ngFor="let option of filteredSubDomainOptions | async" [value]="option">
+                            {{option}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </form>
+            </div>
+           
+            <div class="col-sm-2 mt-2">
+                <button type="submit" mat-raised-button class="text-info md  font-13"
+                    (click)="addSupport()">Submit</button>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

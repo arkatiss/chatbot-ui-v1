@@ -1,0 +1,524 @@
+<div>
+  <div class="row m-0 col-12 p-0">
+    <div class="col-4 p-0">
+      <h4 class="font-14 fw-500 pr-3 pt-3 pb-3 pl-4 mb-0 primary">Training</h4>
+    </div>
+  </div>
+  <div class="row m-0 col-12 p-0">
+    <div class="col-6 p-0 pl-2">
+      <mat-form-field appearance="outline" class="font-11 col-sm-3 m-2">
+        <mat-label>Status </mat-label>
+        <mat-select
+          [(ngModel)]="selected"
+          (selectionChange)="onTrainChange($event.value)"
+        >
+          <mat-option *ngFor="let a of TrainingValues" [value]="a"
+            >{{ a }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="font-11 col-sm-3 m-2">
+        <mat-label>Mode </mat-label>
+        <mat-select [(ngModel)]="selectedMode" (selectionChange)="changeMode()">
+          <mat-option *ngFor="let a of modes" [value]="a">{{ a }} </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="font-11 col-sm-5 m-2">
+        <mat-label>Search </mat-label>
+        <input
+          type="text"
+          matInput
+          autocomplete="off"
+          (keyup)="filterDatatable($event)"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+    <div class="col-6 p-0 pl-2 pe-4">
+      <!-- <i class="fas fa-ban font-18 bot-warn pointer float-right mt-2 pt-1 pl-3"  title="Discard" (click)="rejectedBotTrain(row)"></i>
+            <i class="fas fa-check-circle font-18 bot-green pointer float-right mt-2 pt-1" (click)="onActivate(row,openDialog)" title="Retrain"></i> &nbsp;&nbsp;&nbsp; -->
+
+      <button
+        type="submit"
+        mat-raised-button
+        *ngIf="totUtteranceData.length > 0"
+        class="text-info saveBtn md float-end mt-2 pt-1 font-13 ml-3"
+        (click)="rejectedBotTrain('row')"
+      >
+        Discard
+      </button>
+
+      <!-- <button type="submit" mat-raised-button *ngIf="checkedIntent"
+          class="text-info saveBtn md float-right mt-2 pt-1  font-13"  (click)="saveIntent()" >Save</button>  -->
+      <button
+        type="submit"
+        mat-raised-button
+        *ngIf="checkedIntent"
+        class="text-info saveBtn md float-end mt-2 pt-1 font-13"
+        (click)="saveIntentInSelectionMode()"
+      >
+        Save
+      </button>
+
+      <button
+        type="submit"
+        mat-raised-button
+        *ngIf="totUtteranceData.length > 0"
+        class="text-info saveBtn md float-end mt-2 pt-1 font-13"
+        (click)="onActivate('row', openDialog)"
+      >
+        Train
+      </button>
+    </div>
+    <!-- <div class="col-8">
+
+        </div> -->
+  </div>
+  <div class="row m-0">
+    <div class="col-sm-12">
+      <form [formGroup]="tags">
+        <ag-grid-angular
+          #agGrid
+          class="ag-theme-balham mt-3"
+          [rowData]="rowData"
+          [columnDefs]="columnDefs"
+          style="
+            width: 100%;
+            height: calc(100vh - 275px);
+            border: 1px solid #bdc3c7;
+          "
+          [defaultColDef]="defaultColDef"
+          [groupMultiAutoColumn]="true"
+          [pivotPanelShow]="pivotPanelShow"
+          [sideBar]="sidebar"
+          [animateRows]="true"
+          [pagination]="true"
+          [paginationAutoPageSize]="true"
+          (gridReady)="onGridReady($event)"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          (cellClicked)="onCellItemCodeClicked($event, openContext)"
+          [suppressRowClickSelection]="true"
+          [rowSelection]="rowSelection"
+          (selectionChanged)="getSelectedIntent($event)"
+          [frameworkComponents]="frameworkComponents"
+          [context]="context"
+        >
+        </ag-grid-angular>
+
+        <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" width="100%">
+
+
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef>
+              </th>
+              <td mat-cell *matCellDef="let row;let rowIndex = index;">
+                <mat-checkbox class="mr-2" (click)="$event.stopPropagation()"
+                (change)="$event ? selection.toggle(row) : null;selectIntent(row,$event,rowIndex)"
+                [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="sno">
+              <th mat-header-cell *matHeaderCellDef> S.No. </th>
+              <td mat-cell *matCellDef="let element;let i = index;"> {{this.paginator.pageIndex == 0 ? i + 1 : 1 + i + this.paginator.pageIndex * this.paginator.pageSize}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef> Date. </th>
+              <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="failed_intent">
+              <th mat-header-cell *matHeaderCellDef>Failed Utterance. </th>
+              <td mat-cell *matCellDef="let element"> {{element.failed_intent}} </td>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="priority">
+              <th mat-header-cell *matHeaderCellDef> Priority. </th>
+              <td mat-cell *matCellDef="let element"> {{element.priority}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="type_of_interaction">
+              <th mat-header-cell *matHeaderCellDef> Failure Context. </th>
+              <td mat-cell *matCellDef="let element"> <a (click)="openContextChat(openContext,element);" class="pointer">{{element.type_of_interaction}}</a> </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef style="width: 150px;padding: 0px;">
+              Intent
+            </th>
+              <td mat-cell *matCellDef="let element;let rowIdx = index;"  class="p-0">
+                <mat-form-field appearance="outline" class="font-10 col-sm-8 p-0 mt-1 pt-1" *ngIf="!element.checked">
+                  <mat-label>Intents</mat-label>
+                  <input type="text" matInput [formControl]="intent" [matAutocomplete]="auto" placeholder="search">
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" class="securityUser">
+                    <mat-option *ngFor="let data of filteredIntents | async; let idx = index" [value]="data.intent" (onSelectionChange)="onSelectionChange(data.intent,element,rowIdx,data)">
+                      {{data.intent }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="font-10 col-sm-8 p-0 mt-3" *ngIf="element.checked">
+                  <mat-label>Intents</mat-label>
+                  <input type="text" matInput  readonly >
+                  <mat-icon matSuffix>hide_source</mat-icon>
+                  </mat-form-field>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="annotation">
+            <th mat-header-cell *matHeaderCellDef style="width: 150px;padding: 0px;">
+              Annotation
+            </th>
+            <td mat-cell *matCellDef="let element" class="pr-5 text-center">
+              <i class="fal fa-ballot-check font-18 pointer primary" title="annotate" (click)="navigateAnnotation([{utterance:element.failed_intent,id:element.id}])" *ngIf="element.annotate && totUtteranceData.length === 0"></i>
+            </td>
+
+          </ng-container>
+
+
+            <tr  mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;let mainindex = index;"
+               >
+            </tr>
+          </table> -->
+      </form>
+      <!-- <mat-paginator #paginator
+          [pageSize]="10"
+          [pageSizeOptions]="[5, 10, 20]">
+        </mat-paginator> -->
+    </div>
+  </div>
+
+  <div class="row m-0 mt-3" *ngIf="showPatterns">
+    <form [formGroup]="tags" #formDirective="ngForm" class="pl-2 col-sm-12 p-0">
+      <div formArrayName="tagUser">
+        <div
+          *ngFor="
+            let s of tags['controls'].tagUser['controls'];
+            let SQLIndex = index
+          "
+          [formGroupName]="SQLIndex"
+          class="col-sm-12 p-0"
+        >
+          <div class="row m-0">
+            <div class="col-sm-3 p-0">
+              <mat-form-field
+                appearance="outline"
+                class="font-11 col-sm-10 p-1"
+                *ngIf="showTagDrop && SQLIndex === 0"
+              >
+                <mat-label>Tags</mat-label>
+                <mat-select
+                  formControlName="tagControl"
+                  (selectionChange)="getResponsesAndPatterns($event.value)"
+                >
+                  <mat-option *ngFor="let data of tagsData" [value]="data.tag"
+                    >{{ data.tag }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                class="font-11 col-sm-10 p-1"
+                *ngIf="showTagText && SQLIndex === 0"
+              >
+                <mat-label>Tags</mat-label>
+                <input type="text" matInput formControlName="tagControl" />
+              </mat-form-field>
+
+              <mat-icon
+                class="col-sm-2 pointer font-22 mt-2 pt-1"
+                title="Add"
+                (click)="showInp()"
+                *ngIf="showTagDrop && SQLIndex === 0"
+              >
+                add_circle_outline
+              </mat-icon>
+            </div>
+            <div class="col-sm-3 p-0">
+              <mat-form-field
+                appearance="outline"
+                class="font-11 col-sm-10"
+                *ngIf="showPatternsDrop"
+              >
+                <mat-label>Patterns</mat-label>
+                <mat-select formControlName="pattern">
+                  <mat-option
+                    value="pattern"
+                    *ngFor="let pattern of patternsData"
+                    >{{ pattern }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                class="font-11 col-sm-10"
+                *ngIf="showPatternsInput"
+              >
+                <mat-label>Patterns</mat-label>
+                <input type="text" matInput formControlName="pattern" />
+              </mat-form-field>
+              <mat-icon
+                class="pointer font-22 mt-2 pt-1 col-sm-1"
+                title="Add Patterns"
+                *ngIf="SQLIndex === 0 && showPatternsInput"
+                (click)="addpatterns()"
+              >
+                add_circle_outline
+              </mat-icon>
+            </div>
+
+            <div class="col-sm-3 p-0">
+              <mat-form-field
+                appearance="outline"
+                class="font-11 col-sm-10"
+                *ngIf="showRespDrop"
+              >
+                <mat-label>Responses</mat-label>
+                <mat-select
+                  formControlName="responses"
+                  (selectionChange)="changeInfoset(sqluserform, SQLIndex)"
+                >
+                  <mat-option *ngFor="let resp of responseData" [value]="resp"
+                    >{{ resp }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                class="font-11 col-sm-10 p-1"
+                *ngIf="showResponseInput"
+              >
+                <mat-label>Responses</mat-label>
+                <input type="text" matInput formControlName="responses" />
+              </mat-form-field>
+            </div>
+
+            <i
+              class="fas fa-ban font-18 bot-warn pointer mt-2 pt-1"
+              title="cancel"
+              (click)="saveRespInp()"
+              *ngIf="showRespTagText"
+            ></i>
+
+            <button
+              type="submit"
+              mat-raised-button
+              class="text-info saveBtn md float-end mt-2 ml-2 pt-1 font-13"
+              *ngIf="SQLIndex === 0 && showResponseInput && showPatternsInput"
+              [disabled]="false"
+              (click)="saveResponseAndPatterns()"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-sm-12 p-0 mt-4 pl-2" *ngIf="showojsoneditor">
+    <json-editor
+      #editor
+      [options]="editorOptions"
+      [data]="Logdata"
+      (change)="getData($event)"
+    >
+    </json-editor>
+  </div>
+</div>
+
+<ng-template #openDialog>
+  <div class="row m-0">
+    <div class="col-sm-6 p-0">
+      <div class="row m-0">
+        <!-- <h2>{{failedUtterance}}</h2> -->
+      </div>
+      <div class="row m-0">
+        <div class="col-sm-4 p-0">
+          <p class="mb-0 bot-green">
+            {{ utteranceDate | date : "mediumDate" }}
+          </p>
+        </div>
+        <div class="col-sm-2 p-0 pl-1">
+          <p class="mb-0 bot-green">Priority</p>
+        </div>
+        <div class="col-sm-4 p-0 pl-2">
+          <p class="mb-0 bot-green">
+            {{ priority }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 p-0">
+      <button
+        type="submit"
+        mat-raised-button
+        class="text-info saveBtn md float-end mt-2 ml-2 pt-1 font-13"
+        (click)="saveIntent()"
+      >
+        Save
+      </button>
+      <i
+        class="fal fa-ballot-check font-18 pointer float-end mt-3 pt-1 mr-2 primary"
+        title="annotate"
+        (click)="navigateAnnotation(totalNavData)"
+        *ngIf="totUtteranceData.length > 0"
+      ></i>
+    </div>
+  </div>
+
+  <div class="row m-0 mt-2">
+    <div class="col-sm-2 p-0 pt-3 bot-green">USER SAYS</div>
+    <div class="col-sm-9 p-0">
+      <mat-form-field appearance="outline" class="font-11 col-sm-10 p-1">
+        <mat-label>Failed Utterance</mat-label>
+        <input type="text" matInput [(ngModel)]="userword" />
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row m-0">
+    <div class="col-sm-2 p-0 pt-3 bot-green">INTENT</div>
+    <div class="col-sm-9 p-0">
+      <!-- <mat-form-field appearance="outline" class="font-11 col-sm-10 p-1">
+      <mat-label>Intents</mat-label>
+      <mat-select formControlName="tagControl" (selectionChange)="getResponsesAndPatterns($event.value)">
+        <mat-option *ngFor="let data of tagsData" [value]=data.tag>{{data.tag}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+      <form [formGroup]="tags">
+        <mat-form-field
+          appearance="outline"
+          class="font-11 col-sm-10 p-1"
+          *ngIf="showTagDrop"
+        >
+          <mat-label>Intents</mat-label>
+          <input
+            type="text"
+            matInput
+            [formControl]="intent"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            [displayWith]="displayFn"
+            class="securityUser"
+          >
+            <mat-option
+              *ngFor="let data of filteredIntents | async"
+              [value]="data.intent"
+              (onSelectionChange)="onSaveResponses(data)"
+            >
+              {{ data.intent }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          class="font-11 col-sm-10 p-1"
+          *ngIf="showTagText"
+        >
+          <mat-label>Intents</mat-label>
+          <input
+            type="text"
+            matInput
+            [formControl]="intent"
+            autocomplete="off"
+          />
+        </mat-form-field>
+
+        <mat-icon
+          class="pointer font-22 mt-2 pt-1 pl-2"
+          title="Add"
+          (click)="showInp()"
+          *ngIf="showTagDrop"
+        >
+          add_circle_outline
+        </mat-icon>
+        <mat-icon
+          class="pointer font-22 mt-2 pt-1 pl-2"
+          title="close"
+          (click)="saveRespInp()"
+          *ngIf="showTagText"
+        >
+          highlight_off
+        </mat-icon>
+      </form>
+    </div>
+  </div>
+  <div class="row m-0" *ngIf="showTagText">
+    <div class="col-sm-2 p-0 pt-3 bot-green">RESPONSES</div>
+    <div class="col-sm-9 p-0">
+      <mat-form-field appearance="outline" class="font-11 col-sm-10 p-1">
+        <mat-label>Responses</mat-label>
+        <input type="text" matInput [(ngModel)]="response" />
+      </mat-form-field>
+    </div>
+  </div>
+</ng-template>
+<ng-template #openContext>
+  <button
+    class="btn btn-sm btn-secondary float-end mb-2 d-flex justify-content-end position-sticky top-0 z-1"
+    (click)="closeContext()"
+  >
+    ✕
+  </button>
+
+  <div style="clear: both"></div>
+
+  <div *ngFor="let data of botContextData">
+    <div class="media media-chat input p-0">
+      <i class="fal fa-user text-info font-16 pt-2"></i>
+      <div class="media-body m-0">
+        <p class="bot-input" *ngIf="failedIntent !== data.input">
+          {{ data.input }}
+          &nbsp;&nbsp;
+          <sub class="subtime2">
+            <small class="bot-input-time">
+              {{ data.in_time | date : "shortTime" }}
+            </small>
+          </sub>
+        </p>
+        <p
+          class="main-bot-input"
+          style="background-color: #d31e25"
+          *ngIf="failedIntent === data.input"
+        >
+          {{ data.input }}
+          &nbsp;&nbsp;
+          <sub class="subtime2">
+            <small class="bot-input-time">
+              {{ data.in_time | date : "shortTime" }}
+            </small>
+          </sub>
+        </p>
+      </div>
+    </div>
+    <div class="media media-chat output row m-0">
+      <div class="d-flex">
+        <img
+          src="{{ imgurl }}int3030.png"
+          height="34"
+          width="34"
+          class="mt-2"
+        />
+        <div class="media-body m-0 row m-0 p-0">
+          <p class="bot-response">
+            {{ data.output }} &nbsp;
+            <sub class="subtime2">
+              <small class="bot-input-time">
+                {{ data.out_time | date : "shortTime" }}
+              </small></sub
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

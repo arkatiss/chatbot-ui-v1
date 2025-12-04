@@ -1,0 +1,55 @@
+<div class="col-sm-12 p-0 datamarksheight">
+
+    <!-- <mat-accordion class="example-headers-align" multi class="col-sm-12"
+      style="height: calc(100vh - 140px);overflow-y: auto;"> -->
+      <!-- <mat-expansion-panel > -->
+        <!-- <mat-expansion-panel-header>
+          <mat-panel-title class="abc">
+            <i class="fal fa-clock pt-1 text-info"></i> &nbsp;&nbsp;&nbsp; {{a}}
+          </mat-panel-title>
+        </mat-expansion-panel-header> -->
+        <mat-list role="list">
+          <mat-list-item *ngFor="let a of datamarks" (click)="Datamarksdata(a);">
+            <i class="fal fa-folder text-info pr-3 pb-3 font-20"></i>
+            <p class="datamarkcontent">{{a}}</p>
+          </mat-list-item>
+          <!-- <mat-list-item  (click)="Datamarksdata('service level for today');">
+            <i class="fal fa-folder text-info pr-3 pb-3 font-20"></i>
+            <p class="datamarkcontent">Service level for today</p>
+          </mat-list-item> -->
+        </mat-list>
+        <!-- <mat-list role="list" *ngIf="datamarks.length === 0">
+          <mat-list-item  (click)="Datamarksdata('service level for today');">
+            <i class="fal fa-folder text-info pr-3 pb-3 font-20"></i>
+            <p class="datamarkcontent">Sales for today</p>
+          </mat-list-item>
+           <mat-list-item  (click)="Datamarksdata('service level for today');">
+            <i class="fal fa-folder text-info pr-3 pb-3 font-20"></i>
+            <p class="datamarkcontent">Service level for today</p>
+          </mat-list-item>
+        </mat-list> -->
+      <!-- </mat-expansion-panel> -->
+      <!-- <mat-expansion-panel (opened)="selectedDatamark(a)" *ngFor="let a of datamarks">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="abc">
+            <i class="fal fa-clock pt-1 text-info"></i> &nbsp;&nbsp;&nbsp; {{a}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list role="list">
+          <mat-list-item *ngFor="let aa of datadatewise" (click)="Datamarksdata(aa.msg_text);">
+            <i class="fal fa-folder text-info pr-3 pb-3"></i>
+            <p class="datamarkcontent">{{aa.msg_text}}</p>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel> -->
+      <!-- <mat-accordion class="example-headers-align" multi class="col-sm-12" *ngIf="datamarks === undefined">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title class="abc">
+              <i class="fal fa-clock pt-1 text-info"></i> &nbsp;&nbsp;&nbsp; {{message}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+      </mat-accordion> -->
+    <!-- </mat-accordion> -->
+  </div>

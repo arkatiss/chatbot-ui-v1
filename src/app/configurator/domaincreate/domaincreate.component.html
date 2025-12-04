@@ -1,0 +1,79 @@
+<!-- <div> -->
+
+  <div class="row m-0 col-12 p-0">
+    <div class="col-4 p-0">
+      <h4 class="font-14 fw-500  pr-3 pt-3 pb-3 pl-4 mb-0 primary">Create Domain</h4>
+    </div>
+</div>
+  <!-- <h4 class="font-14 fw-500 p-3 primary pl-4">Create Domain</h4> -->
+  <div class="pt-3 mt-3">
+    <mat-radio-group (change)="radioChange($event.value)" class="pt-3 mt-3 pl-3" [(ngModel)]="domainsubdomain"  name="domainsubdomain">
+
+      <mat-radio-button   value="domain" class="pl-2 pr-2">Domain</mat-radio-button>
+      <mat-radio-button   value="sub_domain" class="pl-2 pr-2">Sub Domain</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div class="col-sm-12 pt-2 mt-2">
+
+   
+    <!-- <ngx-spinner bdColor="rgba(51,51,51,0.2)" size="default" color="#199ad6" type="ball-spin-clockwise"
+    [fullScreen]="false">
+    <button type="button" mat-raised-button class="mt-4" (click)="cancel()"> Cancel </button>
+  </ngx-spinner> -->
+    <form [formGroup]="domainForm" (ngSubmit)="addDomain()" >
+      <div *ngIf="domaintrue">
+        <mat-form-field class="col-sm-2  p-1 font-11 " appearance="outline" *ngIf="!shownewDomain">
+          <input matInput placeholder="Enter New Domain" formControlName="domain_val" type="text" autocomplete="off">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="font-11 col-sm-2 p-1" *ngIf="domains.length > 0 && shownewDomain">
+          <mat-label>Select Domain</mat-label>
+          <input type="text" matInput formControlName="domain_val" [matAutocomplete]="auto" placeholder="Select Domain">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" class="securityUser">
+            <mat-option *ngFor="let option of filteredDomainOptions | async" [value]="option.domain">
+              {{option.domain }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <mat-icon class="pointer ml-2 font-22 pt-3" title="Add" (click)="addnewDomain()" *ngIf="shownewDomain">
+          add_circle_outline
+        </mat-icon>
+        <mat-icon class="pointer ml-2 font-22 pt-3" title="close" (click)="addnewDomain()" *ngIf="!shownewDomain">
+          highlight_off
+        </mat-icon>
+
+        <!-- <mat-form-field class="col-sm-2  p-0 font-12 pr-3 pl-3" appearance="outline">
+          <input matInput placeholder="Add Sub Domain" formControlName="sub_domain_val" type="text"
+            autocomplete="off">
+        </mat-form-field> -->
+
+       
+          <!-- <button type="submit" mat-raised-button class="text-info md ml-3 font-16">Submit</button> -->
+       
+       
+        <button type="button" mat-raised-button class="text-info md ml-4"
+          (click)="addmaindomain('sub_domain');">Next</button>
+      </div>
+      <div *ngIf="!domaintrue && subdomaintrue">
+        <mat-form-field  appearance="outline" class="font-11 col-sm-2 p-1">
+          <mat-label>Domain</mat-label>
+          <input matInput placeholder="Enter New Domain" formControlName="domain_val" type="text" autocomplete="off" readonly>
+        </mat-form-field>
+        <mat-form-field  appearance="outline" class="font-11 col-sm-2 p-1">
+          <input matInput placeholder="Add Sub Domain" formControlName="sub_domain_val" type="text"
+            autocomplete="off">
+        </mat-form-field>
+        <button type="button" mat-raised-button class="text-info md ml-2"  (click)="addmaindomain('domain');"
+        >Back</button>
+        <button type="submit" mat-raised-button class="text-info md ml-2"
+          >Submit</button>
+     
+      </div>
+      
+    </form>
+
+
+
+
+
+  </div>

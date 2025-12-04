@@ -1,0 +1,66 @@
+<ul class="nav nav-pills nav-justified">
+    <li class="nav-item pointer" (click)="showsuggestionsdatamarks('suggestions')">
+      <a class="nav-link" [ngClass]="{
+        'active':selectsubtabclass === 'suggestions'
+      }">Suggestions</a>
+    </li>
+    <li class="nav-item pointer" (click)="showsuggestionsdatamarks('recommendations')">
+      <a class="nav-link" [ngClass]="{
+        'active':selectsubtabclass === 'recommendations'
+      }">Recommendations</a>
+    </li>
+  </ul>
+  <div>
+    <div class="mat-tab-body-content row col-sm-12 p-0 m-0 pt-4" *ngIf="showsuggestionsbool">
+      <!-- <mat-list role="list" style="height: calc(100vh - 250px);overflow: auto;">
+        <mat-list-item *ngFor="let a of suggetionsData" (click)="chatuser(a);">
+          <i class="fas fa-lightbulb pr-3 pb-3" style="color: #feb019"></i>
+          <div>{{a | titlecase}}</div>
+        </mat-list-item>
+      </mat-list> -->
+       <mat-list role="list" style="height: calc(100vh - 250px);overflow: auto;">
+        <mat-list-item  (click)="chatuser('sales for today');">
+          <i class="fas fa-lightbulb pr-3 pb-1 font-17" style="color: #feb019"></i>
+          <div class="poppins">Sales for today</div>
+        </mat-list-item>
+        <mat-list-item  (click)="chatuser('service level for today');">
+          <i class="fas fa-lightbulb pr-3 pb-1 font-17" style="color: #feb019"></i>
+          <div class="poppins">Service level for today</div>
+        </mat-list-item>
+      </mat-list>
+    </div>
+    <div *ngIf="showrecommendationsview">
+      <ul class="nav nav-pills nav-justified">
+        <li class="nav-item pointer" (click)="forecasting('forecasting')">
+          <a class="nav-link" [ngClass]="{
+            'active':submyviewtabclass === 'forecasting'
+          }">Forecasting</a>
+        </li>
+        <li class="nav-item pointer" (click)="forecasting('collaborative')">
+          <a class="nav-link" [ngClass]="{
+            'active':submyviewtabclass === 'collaborative'
+          }">Collaborative Filtering</a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <div class="mat-tab-body-content row col-sm-12 p-0 m-0 pt-4" *ngIf="showforecastingview">
+        <mat-list role="list abc" style="height: calc(100vh - 250px);overflow: auto;">
+          <mat-list-item>
+            <i class="fas fa-thumbs-up pr-3 pb-3" style="color: #feb019;"></i>
+            <div>No Personalization Data Available For Forecasting</div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <div class="mat-tab-body-content row col-sm-12 p-0 m-0 pt-4" *ngIf="showcollabarativeview">
+        <mat-list role="list abc" style="height: calc(100vh - 250px);overflow: auto;">
+          <mat-list-item>
+            <i class="fas fa-thumbs-up pr-3 pb-3" style="color: #feb019;"></i>
+            <div>No Personalization Data Available For Collaborative Filtering</div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+
+    
+  </div>

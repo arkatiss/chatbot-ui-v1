@@ -1,0 +1,201 @@
+<div
+  class="col-sm-12 row p-0 m-0 col-md-12 col-lg-12 login_image"
+  [ngStyle]="{ 'background-image': 'url(' + imgurl + 'abstract.png)' }"
+>
+  <div class="col-sm-12 col-md-12 col-lg-12 row m-0">
+    <div class="col-sm-7 col-md-7 col-lg-7"></div>
+    <div class="col-sm-4 col-md-4 col-lg-4 px-4">
+      <div class="card loginPad" [ngStyle]="{ 'margin-top': margin }">
+        <div class="card-body px-0 pt-0">
+          <div class="col-sm-12 col-md-12 col-lg-12 px-3">
+            <mat-progress-bar
+              mode="indeterminate"
+              color="#09f"
+              *ngIf="isLoading == true"
+            ></mat-progress-bar>
+          </div>
+          <div class="col-sm-12 col-md-12 col-lg-12 pt-3">
+            <p class="signin">
+              <img
+                [src]="imgurl + 'int3030.png'"
+                class="img-fluid"
+                alt=""
+                [ngStyle]="{ height: imgHeight }"
+              />
+              {{ logintext }}
+            </p>
+            <!-- <p class="signin" *ngIf="showcsbot">
+                            <img [src]="imgurl + 'int3030.png'" class="img-fluid"  alt="" style="height: 50px;">
+                            {{logintext}}
+                        </p> -->
+          </div>
+          <div class="col-sm-12 col-md-12 col-lg-12 pt-2 animate_div p-5">
+            <form
+              [formGroup]="signupForm"
+              (ngSubmit)="signup()"
+              *ngIf="showsignupform"
+            >
+              <mat-form-field
+                class="col-sm-12 p-0 font-12"
+                appearance="outline"
+              >
+                <mat-label>First Name</mat-label>
+                <input
+                  matInput
+                  placeholder="First Name"
+                  formControlName="first_name"
+                  required
+                  autocomplete="off"
+                />
+              </mat-form-field>
+              <mat-form-field
+                class="col-sm-12 p-0 font-12"
+                appearance="outline"
+              >
+                <mat-label>Last Name</mat-label>
+                <input
+                  matInput
+                  placeholder="Last Name"
+                  formControlName="last_name"
+                  required
+                  autocomplete="off"
+                />
+              </mat-form-field>
+              <mat-form-field
+                class="col-sm-12 p-0 font-12"
+                appearance="outline"
+              >
+                <mat-label>Email</mat-label>
+                <input
+                  matInput
+                  placeholder="Email"
+                  type="email"
+                  pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+                  formControlName="username"
+                  required
+                  autocomplete="off"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                class="col-sm-12 p-0 font-12"
+              >
+                <mat-label>password</mat-label>
+                <input
+                  matInput
+                  [type]="hide ? 'password' : 'text'"
+                  formControlName="password"
+                  required
+                  autocomplete="off"
+                />
+                <button
+                  type="button"
+                  mat-icon-button
+                  matSuffix
+                  (click)="hide = !hide"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide"
+                >
+                  <mat-icon>{{
+                    hide ? "visibility_off" : "visibility"
+                  }}</mat-icon>
+                </button>
+              </mat-form-field>
+              <div class="col-sm-12 p-0">
+                <button
+                  type="submit"
+                  class="col-sm-12 submit-btn p-0"
+                  mat-raised-button
+                >
+                  <!-- <div id="floatingBarsG">
+                                        <div class="blockG" id="rotateG_01"></div>
+                                        <div class="blockG" id="rotateG_02"></div>
+                                        <div class="blockG" id="rotateG_03"></div>
+                                        <div class="blockG" id="rotateG_04"></div>
+                                        <div class="blockG" id="rotateG_05"></div>
+                                        <div class="blockG" id="rotateG_06"></div>
+                                        <div class="blockG" id="rotateG_07"></div>
+                                        <div class="blockG" id="rotateG_08"></div>
+                                    </div> -->
+                  <i class="fal fa-sign-in-alt mr-2"></i>Sign Up
+                </button>
+              </div>
+              <div class="row m-0 pt-3">
+                <div class="col-sm-6 p-0">
+                  <p class="mb-0">
+                    <a class="font-16" (click)="showlogin()">Back to Sign In</a>
+                  </p>
+                </div>
+                <div class="col-sm-6 p-0">
+                  <a class="float-right font-16">Forgot Password</a>
+                </div>
+              </div>
+            </form>
+            <form
+              [formGroup]="loginForm"
+              (ngSubmit)="login()"
+              *ngIf="showloginform"
+            >
+              <mat-form-field
+                class="col-sm-12 col-md-12 col-lg-12 p-0 font-12"
+                appearance="outline"
+              >
+                <mat-label>User Name</mat-label>
+                <input
+                  matInput
+                  placeholder="User Name"
+                  formControlName="username"
+                  required
+                  autocomplete="off"
+                />
+              </mat-form-field>
+              <mat-form-field
+                appearance="outline"
+                class="col-sm-12 col-md-12 col-lg-12 p-0 font-12"
+              >
+                <mat-label>password</mat-label>
+                <input
+                  matInput
+                  [type]="hide ? 'password' : 'text'"
+                  formControlName="password"
+                  required
+                  autocomplete="off"
+                />
+                <button
+                  type="button"
+                  mat-icon-button
+                  matSuffix
+                  (click)="hide = !hide"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide"
+                >
+                  <mat-icon>{{
+                    hide ? "visibility_off" : "visibility"
+                  }}</mat-icon>
+                </button>
+              </mat-form-field>
+              <div class="col-sm-12 p-0">
+                <button
+                  type="submit"
+                  class="col-sm-12 col-md-12 col-lg-12 submit-btn p-0"
+                  mat-raised-button
+                >
+                  <i class="fal fa-sign-in-alt mr-2"></i>Login
+                </button>
+              </div>
+              <!-- <div class="row m-0 pt-3">
+                                <div class="col-sm-6 p-0">
+                                    <p class="mb-0">New User? <a class="font-16" (click)="showsignup()">Sign Up</a></p>
+                                </div>
+                                <div class="col-sm-6 p-0">
+                                    <a class="float-right font-16">Forgot Password</a>
+                                </div>
+                            </div> -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-1 col-md-1 col-lg-1"></div>
+  </div>
+</div>

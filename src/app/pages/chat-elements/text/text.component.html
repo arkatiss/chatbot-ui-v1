@@ -1,0 +1,66 @@
+<!-- peer sended messages -->
+
+
+<div *ngFor="let a of peermessages;let idx = index;">
+    <div class="media media-chat input p-0 mt-2" *ngIf="user === a.sender_name">
+        <p class="textFirst2 pointer mr-2">{{loginname.charAt(0) | titlecase}} </p>
+        <div class="media-body m-0">
+          <span class="bot-input " *ngIf="a.body !== undefined">{{a.body}}
+            &nbsp;&nbsp;
+            <sub class="subtime">
+              <small class="bot-input-time" *ngIf="a.peer_time!==undefined">
+                {{a.peer_time |date:'shortTime'}}
+              </small>
+            </sub>
+            <mat-icon class="text-white font-13 iconmat pl-2"
+              *ngIf="a.peer_flag === 0 && a.peer_flag !== undefined">
+              check
+            </mat-icon>
+            <mat-icon class="text-white font-13 iconmat pl-2"
+              *ngIf="a.peer_flag === 1 && a.peer_flag !== undefined">
+              done_all
+            </mat-icon>
+          </span>
+        </div>
+      </div>
+      <div class="media media-chat output mb-2" *ngIf="user !== a.sender_name">
+        <p class="textFirst2 ml-2">{{custFirst.charAt(0) | titlecase}} </p>
+        <div class="media-body m-0 mt-2 ml-2">
+
+          <span class="bot-response" *ngIf="a.body !== undefined">{{a.body}} &nbsp;
+            <sub class="subtime">
+              <small class="bot-input-time" *ngIf="a.peer_time!==undefined">
+                {{a.peer_time |date:'shortTime'}}
+              </small>
+            </sub>
+          </span>
+        </div>
+      </div>
+  
+    </div>
+
+    <!-- agent chat -->
+    <div *ngFor="let a of agentResponse">
+      <div class="media media-chat input p-0" *ngIf="loguser === a.sender_name">
+        <p class="textFirst2 pointer mr-2" *ngIf="a.body !== undefined">{{loguser.charAt(0) | titlecase}} </p>
+      
+        <div class="media-body m-0">
+          <p class="bot-input " *ngIf="a.body !== undefined">{{a.body}}
+            &nbsp;&nbsp;
+            <sub class="subtime2">
+              <small class="bot-input-time" *ngIf="a.peer_time!==undefined">
+                {{a.peer_time |date:'shortTime'}}
+              </small>
+            </sub>
+          </p>
+        </div>
+      </div>
+      <div class="media media-chat output row m-0" *ngIf="loguser !== a.sender_name">
+        <img src="{{iconurl}}programmer.png" height="25px" width="25px" *ngIf="a.body !== undefined" class="mt-2 ml-1">
+        <div class="media-body m-0  row m-0 p-0 ml-1">
+          <p class="bot-response" *ngIf="a.body !== undefined">{{a.body}} &nbsp;<sub class="subtime2">
+              <small class="bot-input-time">
+                {{a.peer_time |date:'shortTime'}} </small></sub>
+        </div>
+      </div>
+    </div>

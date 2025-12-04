@@ -1,0 +1,208 @@
+<!-- <span  (click)="closeUserChat()"><i class="fal fa-times pointer font-20 cancel pointer  float-right"  title="close" *ngIf="showPeeragentChat"></i></span> -->
+<div class="row publisher m-0 mb-0 pt-1 pb-2">
+  <div class="col-sm-12 p-0 d-flex align-items-center gap-3 pe-3">
+    <input
+      class="publisher-input pl-3"
+      type="text"
+      placeholder="Type message and press ENTER"
+      autocomplete="off"
+      [(ngModel)]="inputmsg"
+      id="myInput"
+      *ngIf="entertextbox"
+      (keyup.enter)="sendmessage()"
+      autofocus
+      (keyup)="typingMsg($event)"
+    />
+
+    <!-- <mat-icon class="text-infoo font-20 pl-1 pointer gradient float-right ml-auto" *ngIf="showagentTransferIcon"
+      (click)="transferChat()" [matMenuTriggerFor]="transferAgents">
+      transfer_within_a_station
+    </mat-icon> -->
+    <mat-icon
+      class="text-infoo font-20 pl-1 pointer gradient float-right ml-auto"
+      [matMenuTriggerFor]="options"
+    >
+      apps
+    </mat-icon>
+    <a
+      class="publisher-btn text-infoo float-right"
+      data-abc="true"
+      *ngIf="enablevoicechats"
+    >
+      <i
+        class="fad fa-microphone-slash font-19 pointer"
+        style="color: #ea4335"
+        (click)="startService()"
+        *ngIf="starthide"
+        title="mic"
+      ></i>
+      <i
+        class="fad fa-microphone font-19 pointer"
+        (click)="stopService()"
+        *ngIf="stophide"
+        title="mic"
+        style="color: #ea4335"
+      ></i>
+    </a>
+    <a class="publisher-btn file-group pt-1 float-right">
+      <mat-icon
+        class="text-infoo mb-1 pointer usergradient"
+        [matMenuTriggerFor]="activeusers"
+        (click)="getActiveUsers()"
+        title="active users"
+        *ngIf="showUserIcon"
+      >
+        people_outline
+      </mat-icon>
+
+      <img
+        src="{{ imgLink }}int3030.png"
+        class="mb-1 img-fluid"
+        (click)="showBotChat()"
+        *ngIf="showBotIcon"
+        [ngStyle]="{ height: imgHeight }"
+      />
+    </a>
+    <a
+      class="publisher-btn text-infoo float-right"
+      data-abc="true"
+      (click)="sendmessage()"
+      style="color: #d31e25"
+    >
+      <i class="fad fa-paper-plane font-16" title="send message"></i>
+    </a>
+  </div>
+</div>
+
+<mat-menu #activeusers="matMenu" xPosition="after" class="my-menu">
+  <p class="center mb-0 p-2">Users</p>
+  <span *ngFor="let a of usersList">
+    <span
+      mat-menu-item
+      routerLinkActive="active"
+      (click)="chatToUser(a)"
+      *ngIf="a.chatFlag === 0"
+    >
+      <mat-icon class="chatbox__user--active font-15 pt-1">
+        fiber_manual_record
+      </mat-icon>
+      <span class="font-12 text-mute hvr" *ngIf="a.chatFlag === 0">{{
+        a.user | titlecase
+      }}</span>
+    </span>
+  </span>
+</mat-menu>
+
+<mat-menu #transferAgents="matMenu" xPosition="after" class="my-menu">
+  <p class="center mb-0 p-2">Available support agents</p>
+  <span
+    mat-menu-item
+    routerLinkActive="active"
+    *ngIf="transferAgentNames === undefined || transferAgentNames === null"
+  >
+    No Agents Available
+  </span>
+  <!-- <span mat-menu-item routerLinkActive="active" (click)="transferToAgent()" *ngIf="transferAgentName !== undefined">
+
+      <span class="font-15 text-mute hvr pl-2" >{{transferAgentName |
+        titlecase}}
+      </span>
+      <i class="fal fa-long-arrow-alt-right font-15 pt-1 pl-1" *ngIf="transferAgentName !== undefined"></i>
+      </span> -->
+
+  <span>
+    <span
+      mat-menu-item
+      routerLinkActive="active"
+      (click)="transferToAgent()"
+      *ngIf="transferAgentNames !== undefined && transferAgentNames !== null"
+    >
+      <mat-icon
+        class="chatbox__user--active font-15 pt-1"
+        *ngIf="transferAgentNames !== undefined && transferAgentNames !== null"
+      >
+        fiber_manual_record
+      </mat-icon>
+      <span class="font-15 text-mute hvr pl-2"
+        >{{ transferAgentNames | titlecase }}
+      </span>
+      <i
+        class="fal fa-long-arrow-alt-right font-15 pt-1 pl-1"
+        *ngIf="transferAgentNames !== undefined && transferAgentNames !== null"
+      ></i>
+    </span>
+  </span>
+</mat-menu>
+<mat-menu #options="matMenu" xPosition="after">
+  <span
+    mat-menu-item
+    routerLinkActive="active"
+    (click)="resetChat()"
+    class="text-mute hvr font-13"
+  >
+    <mat-icon class="text-infoo font-20" title="reset chat">
+      restart_alt
+    </mat-icon>
+    Reset Chat
+  </span>
+  <!-- <span mat-menu-item routerLinkActive="active" class="text-mute hvr font-13"> -->
+  <!-- <mat-slide-toggle class="headertoggle" [(ngModel)]="checkedtoggle"
+        (change)="switchonChange($event.checked,cnt+1)">
+      </mat-slide-toggle> -->
+  <!-- <mat-slide-toggle class="headertoggle" >
+    </mat-slide-toggle>
+      <span class="pl-3">Prompt Mode</span>
+    </span> -->
+
+  <!-- <span mat-menu-item routerLinkActive="active" class="text-mute hvr font-13 p-0 pl-2 ml-1">
+      <mat-slide-toggle class="headertoggle" (change)="switchMode($event.checked)">
+      </mat-slide-toggle>
+      <span class="pl-3">Intelligent Mode</span>
+    </span> -->
+  <span
+    mat-menu-item
+    routerLinkActive="active"
+    (click)="undoChat()"
+    class="text-mute hvr font-13"
+  >
+    <mat-icon class="text-infoo font-20" title="undo chat"> undo </mat-icon>
+    Undo
+  </span>
+  <span
+    mat-menu-item
+    routerLinkActive="active"
+    (click)="enableVoiceChat('enable')"
+    class="text-mute hvr font-13"
+    *ngIf="enablecontrols"
+  >
+    <i
+      class="fad fa-microphone font-19 pointer"
+      title="mic"
+      [ngStyle]="{ color: bgColor }"
+    ></i>
+    <span class="pl-4"> Enable Voice Chat </span>
+  </span>
+  <span
+    mat-menu-item
+    routerLinkActive="active"
+    (click)="enableVoiceChat('disable')"
+    class="text-mute hvr font-13"
+    *ngIf="enablevoicechats"
+  >
+    <i
+      class="fad fa-microphone font-19 pointer"
+      title="mic"
+      [ngStyle]="{ color: bgColor }"
+    ></i>
+    <span class="pl-4"> Disable Voice Chat </span>
+  </span>
+  <span
+    mat-menu-item
+    routerLinkActive="active"
+    class="text-mute hvr font-13"
+    (click)="chatwindow('close')"
+  >
+    <i class="fal fa-window-restore pointer" title="Minimize"></i>
+    <span class="pl-4"> Minimize Chat </span>
+  </span>
+</mat-menu>
