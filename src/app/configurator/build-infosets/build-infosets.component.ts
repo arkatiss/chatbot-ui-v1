@@ -1315,7 +1315,10 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     body = {
       json_format: {
         domain_data: domainData,
-        infoset_data: transformedArray,
+        infoset_data:
+          transformedArray?.length === 0
+            ? [{ category: 'data_entry' }]
+            : transformedArray,
         draggedData: {
           linkData: this.diagramLinkData,
           nodeData: this.diagramNodeData,
