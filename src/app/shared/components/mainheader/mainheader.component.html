@@ -13,14 +13,14 @@
 
         <div class="col-6 pt-1 pr-2 pt-2" *ngIf="location === '/pages/main'">
           <i
-            class="fal fa-bars pointer text-infoo pr-2 pl-2 font-16 m-1 float-right trsm"
+            class="fa fa-bars pointer text-infoo pr-2 pl-2 font-16 m-1 float-right trsm"
             (click)="collapseDiv('collapse')"
             title="Collapse"
             *ngIf="showtoggle"
           ></i>
 
           <i
-            class="fal fa-bars pointer text-infoo pr-2 pl-2 font-16 m-1 float-right trsm"
+            class="fa fa-bars pointer text-infoo pr-2 pl-2 font-16 m-1 float-right trsm"
             (click)="collapseDiv('expand')"
             title="expand"
             *ngIf="!showtoggle"
@@ -35,7 +35,7 @@
       <div style="float: right">
         <span class="pr-2 pl-2">
           <i
-            class="fal fa-home-alt pointer text-infoo trsm mr-1 font-17"
+            class="fa fa-home-alt pointer text-infoo trsm mr-1 font-17"
             title="Home"
             (click)="gotoView('showMainComponent')"
           ></i>
@@ -47,7 +47,7 @@
             title="Notifications"
             [matMenuTriggerFor]="notification"
           >
-            <i class="fal fa-bell text-infoo font-16 pointer trsm"></i>
+            <i class="fa fa-bell text-infoo font-16 pointer trsm"></i>
             <span
               class="badge badge-warning"
               id="lblCartCount"
@@ -64,7 +64,7 @@
           *ngIf="location === '/pages/main'"
         >
           <i
-            class="fal fa-history text-infoo mr-1 font-16 pointer trsm"
+            class="fa fa-history text-infoo mr-1 font-16 pointer trsm"
             title="History"
           ></i>
         </span>
@@ -166,7 +166,9 @@
             userRole !== 'enduser' &&
             location !== '/config'
           "
-          ><i class="fal fa-sliders-v text-infoo mr-3 font-16"></i>
+          ><i
+            class="fa-solid fa-sliders fa-rotate-90 text-infoo mr-3 font-16"
+          ></i>
           <span class="font-12 text-mute hvr">Config</span>
         </span>
         <span
@@ -178,7 +180,9 @@
             userRole !== 'enduser' &&
             location !== '/security'
           "
-          ><i class="fal fa-sliders-v text-infoo mr-3 font-16"></i>
+          ><i
+            class="fa-solid fa-sliders fa-rotate-90 text-infoo mr-3 font-16"
+          ></i>
           <span class="font-12 text-mute hvr">Authorizations</span>
         </span>
       </mat-menu>
@@ -253,7 +257,9 @@
           mat-menu-item
           routerLinkActive="active"
           (click)="gotoView('preferences')"
-          ><i class="fal fa-sliders-v text-infoo mr-3 font-16"></i>
+          ><i
+            class="fa-solid fa-sliders fa-rotate-90 text-infoo mr-3 font-16"
+          ></i>
           <span class="font-12 text-mute hvr">Preferences</span>
         </span>
         <span
@@ -261,11 +267,11 @@
           routerLinkActive="active"
           (click)="gotoView('profile')"
         >
-          <i class="fal fa-user-circle text-infoo mr-3 font-16"></i
+          <i class="fa fa-user-circle text-infoo mr-3 font-16"></i
           ><span class="font-12 text-mute hvr">Profile</span></span
         >
         <span mat-menu-item (click)="logout()">
-          <i class="fal fa-sign-out-alt text-infoo mr-3 font-16"></i
+          <i class="fa fa-sign-out-alt text-infoo mr-3 font-16"></i
           ><span class="font-12 text-mute hvr">Log out</span></span
         >
       </mat-menu>

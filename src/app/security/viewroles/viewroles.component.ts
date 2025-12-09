@@ -309,7 +309,7 @@ export class ViewrolesComponent implements OnInit {
     if (params.colDef.field === 'delete') {
       return `<i class="far fa-trash-alt bot-warn font-18 pointer"></i>`;
     } else if (params.colDef.field === 'edit') {
-      return `<i class="fal fa-edit bot-warn font-18 pointer" (click)='selClc()'></i>`;
+      return `<i class="fa fa-edit bot-warn font-18 pointer" (click)='selClc()'></i>`;
     }
   }
   displayFn(option: any): string {

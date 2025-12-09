@@ -8,7 +8,7 @@
             <div class="row m-0 pt-1">
               <p class="text-infoo poppins mb-0">{{chatpersonname | titlecase}}</p>
             </div>
-    
+
             <div class="row m-0">
               <small class="bot-warn" *ngIf="typing">Typing...</small>
             </div>
@@ -19,10 +19,10 @@
       </div> -->
       <div class="col-4 p-1 pt-3">
         <span class="p-1">
-          <i class="fal fa-times-circle float-right font-16 pointer pr-2" title="close" (click)="showBotChat()"></i>
+          <i class="fa fa-times-circle float-right font-16 pointer pr-2" title="close" (click)="showBotChat()"></i>
           <i class="fa fa-ellipsis-v text-infoo float-right font-16 pr-3" aria-hidden="true"
             [matMenuTriggerFor]="userinfo"></i>
-         
+
         </span>
 
         <mat-menu #userinfo="matMenu" xPosition="before">

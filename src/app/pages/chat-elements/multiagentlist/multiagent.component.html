@@ -1,7 +1,7 @@
 <div class="">
     <div class="messaging">
           <div class="inbox_msg">
-           
+
               <div class="headind_srch">
                 <!-- <div class="srch_bar">
                   <div class="stylish-input-group">
@@ -10,7 +10,7 @@
                     <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
                     </span> </div>
                 </div> -->
-               
+
                 <!-- <div class="history_heading pointer" (click)="showHistoryChat()">
                   <h4 >History</h4>
                 </div>
@@ -40,17 +40,17 @@
                   <div class="chat_people" (click)="showagentchat(a,i)">
                     <div class="chat_img"> <p class="textFirst pointer"> {{a.firstnameltr}}</p> </div>
                     <div class="chat_ib">
-                      <h5>{{a.loginFullName}} <span class="mb-0 lblCartCount badge badge-warning" *ngIf="a.msgcount !== undefined">{{a.msgcount}}</span> 
-                        <span *ngIf="a.msgcount === undefined" (click)="closeUserChat(a,i)"><i class="fal fa-times pointer font-20 cancel pointer  pt-1"  title="close"></i></span>
+                      <h5>{{a.loginFullName}} <span class="mb-0 lblCartCount badge badge-warning" *ngIf="a.msgcount !== undefined">{{a.msgcount}}</span>
+                        <span *ngIf="a.msgcount === undefined" (click)="closeUserChat(a,i)"><i class="fa fa-times pointer font-20 cancel pointer  pt-1"  title="close"></i></span>
                       </h5>
-                      <p>Test, which is a new approach to have all solutions 
+                      <p>Test, which is a new approach to have all solutions
                         astrology under one roof.</p>
                     </div>
                   </div>
                 </div>
-         
+
               </div>
-              
+
 
               <div class="inbox_chat" *ngIf="showHistoryChat">
               <div class="chat_list" *ngFor="let a of closedUsersList;let i = index;" [style.background]="selectedAgentChatIdx === i ? '#ebebeb' : '#ffffff'">
@@ -58,17 +58,17 @@
                   <div class="chat_img">  <p class="textFirst pointer"> {{a.firstnameltr}}</p> </div>
                   <div class="chat_ib">
                     <h5 style="color: #a298a2;">{{a.name | titlecase}}
-                      <!-- <span class="mb-0 lblCartCount badge badge-warning" *ngIf="a.msgcount !== undefined">{{a.msgcount}}</span> 
-                      <span *ngIf="a.msgcount === undefined" (click)="closeUserChat(a,i)"><i class="fal fa-times pointer font-20 cancel pointer  pt-1"  title="close"></i></span> -->
+                      <!-- <span class="mb-0 lblCartCount badge badge-warning" *ngIf="a.msgcount !== undefined">{{a.msgcount}}</span>
+                      <span *ngIf="a.msgcount === undefined" (click)="closeUserChat(a,i)"><i class="fa fa-times pointer font-20 cancel pointer  pt-1"  title="close"></i></span> -->
                     </h5>
-                    <p>Test, which is a new approach to have all solutions 
+                    <p>Test, which is a new approach to have all solutions
                       astrology under one roof.</p>
                   </div>
                 </div>
               </div>
               </div>
 
-           
+
           </div>
         </div>
     </div>

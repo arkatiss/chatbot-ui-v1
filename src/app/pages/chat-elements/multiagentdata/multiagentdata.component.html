@@ -24,13 +24,13 @@
               *ngIf="displayCustomerName !== undefined && this.showCurrentChat"
             >
               <i
-                class="fal fa-bars pointer text-infoo pr-2 pl-2 font-16 m-1 float-right"
+                class="fa fa-bars pointer text-infoo pr-2 pl-2 font-16 m-1 float-right"
                 (click)="drawers.toggle(); changeWidth('47.45%')"
                 title="open userchat"
                 *ngIf="showChat"
               ></i>
               <i
-                class="fal fa-bars pointer text-infoo pr-2 pl-2 font-16 m-1 float-right"
+                class="fa fa-bars pointer text-infoo pr-2 pl-2 font-16 m-1 float-right"
                 (click)="drawers.toggle(); changeWidth('73.32%')"
                 title="close userchat"
                 *ngIf="!showChat"
@@ -155,7 +155,7 @@
               type="button"
               (click)="sendmessage()"
             >
-              <i class="fad fa-paper-plane" aria-hidden="true"></i>
+              <i class="fa fa-paper-plane" aria-hidden="true"></i>
             </button>
           </div>
         </div>

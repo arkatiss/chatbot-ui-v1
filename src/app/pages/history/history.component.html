@@ -1,9 +1,9 @@
 
   <div class="row col-sm-12 p-0 m-0" >
-   
-  
+
+
     <div  class="col-sm-12 p-0 m-0">
-    
+
       <div  class="row m-0 p-0">
         <div  class="col-sm-12 m-0 p-0">
           <div class="col-sm-12">
@@ -20,7 +20,7 @@
                 </p>
               </div>
             </div>
-      
+
           </div>
           <mat-menu #showdates="matMenu" xPosition="before">
             <ul class="p-0 mb-0">
@@ -31,7 +31,7 @@
                       <a href="javascript:void(0);" class=" waves-effect waves-block">
                         <div class="menu-info" (click)="openHistory(a)">
                           <h4>{{a}}</h4>
-                         
+
                         </div>
                       </a>
                     </li>
@@ -39,46 +39,46 @@
                 </div>
               </li>
             </ul>
-  
+
           </mat-menu>
                 <mat-toolbar class="chathistoryToolbar mat-toolbar" style="height:40px;background-color: white;" *ngIf="historydiv">
                   <div class="row m-0 " style="width:100%">
                   <span class="font-14 col-10 p-0 mt-1 "></span>
                   <span class="example-spacer col-2 p-0 ">
-                   
+
                       <i class="far fa-search-plus font-18 text-infoo pl-2 pr-2 pointer" title="close search" (click)="drawers.toggle();openclose('open')" *ngIf="open"></i>
                       <i class="far fa-search-minus font-18 text-infoo pl-2 pr-2 pointer" title="open search" (click)="drawers.toggle();openclose('close')" *ngIf="close"></i>
                   <i class="far fa-star font-18 text-infoo pl-2 pr-2 pointer" title="starred messages"></i>
-                    <i class="fal fa-file-export font-18 text-infoo pl-2 pr-2 pointer" title="export chat" (click)="export();"></i>
-                    <i class="fal fa-bookmark font-18 text-infoo pl-2 pr-2 pointer" title="bookmark chat"></i>
+                    <i class="fa fa-file-export font-18 text-infoo pl-2 pr-2 pointer" title="export chat" (click)="export();"></i>
+                    <i class="fa fa-bookmark font-18 text-infoo pl-2 pr-2 pointer" title="bookmark chat"></i>
                 </span>
                 </div>
                 </mat-toolbar>
-              
-       
+
+
         </div>
       </div>
- 
+
     </div>
-  
+
     <mat-sidenav-container class="example-container" style="width: 100%;">
       <mat-sidenav  mode="side" opened #drawers position="end" style="width:35%;" >
         <div class="col-12">
-         
+
           <!-- <span class="font-14 p-2 primary">Chat search</span> -->
           <mat-form-field class="font-14 col-sm-12 " >
             <mat-label>Search message</mat-label>
             <input type="text" matInput [(ngModel)]="searchString" autocomplete="off" (ngModelChange)="onTextChange($event)">
             <mat-icon matSuffix class="pointer" (click)="searchHistory()">search</mat-icon>
           </mat-form-field>
-      
+
           <!-- <button mat-raised-button class="primary m-1 font-12 float-right"> Submit</button> -->
-         
-         
+
+
         </div>
       </mat-sidenav>
-     
-     
+
+
       <div class="row col-sm-12 p-0 m-0" #content id="pdfSink" *ngIf="historydiv">
         <div class="col-12 p-0 chathistorydiv" style="overflow: auto;height: calc(100vh - 280px);background-color: white;">
             <div id="chat-content" *ngFor="let b of historyData | filter:searchText">
@@ -107,21 +107,21 @@
                     <p class="bot-response"  >{{a.output}}
                       &nbsp;<sub class="subtime2"><small class="bot-input-time">
                           {{a.outtimestamp }} </small></sub>
-                    </p>            
+                    </p>
                   </div>
                   </div>
               </div>
             </div>
-       
+
         </div>
-        
+
       </div>
     </mat-sidenav-container>
-  
+
   </div>
 <ng-template #diagnosticsPopup>
   <div  class="col-sm-12 m-0 p-0">
-    <p  class="font-14 fw-500 pt-2 pl-2 primary">Chat Bot Diagnostics 
+    <p  class="font-14 fw-500 pt-2 pl-2 primary">Chat Bot Diagnostics
       <i class="fas fa-times  font-16 float-right" (click)="dialog.closeAll()"></i>
     </p>
   </div>

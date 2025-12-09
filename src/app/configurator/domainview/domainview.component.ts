@@ -59,6 +59,13 @@ export class DomainviewComponent implements OnInit {
       }
     );
   }
+  // editCellRenderer(params: any): any {
+  //   if (params.colDef.field === 'delete') {
+  //     return `<i class="far fa-trash-alt bot-warn font-18 pointer"></i>`;
+  //   } else if (params.colDef.field === 'edit') {
+  //     return `<i class="fa fa-edit bot-warn font-18 pointer" (click)='selClc()'></i>`;
+  //   }
+  // }
   onSuccesssRetDomain(datas: any): any {
     this.spinner.hide();
     if (datas.res_status === true) {
@@ -73,6 +80,13 @@ export class DomainviewComponent implements OnInit {
         { headerName: 'S.No', field: 'sno' },
         { headerName: 'Domain', field: 'domain' },
         { headerName: 'Sub Domain', field: 'sub_domain' },
+        // {
+        //   headerName: '',
+        //   field: 'delete',
+        //   cellRenderer: this.editCellRenderer,
+        //   sortable: false,
+        //   editable: false,
+        // },
       ];
       setTimeout(() => {
         this.gridApi.sizeColumnsToFit();

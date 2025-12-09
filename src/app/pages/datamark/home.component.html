@@ -8,7 +8,7 @@
   </div>
   <div class="col-sm-10">
     <span (click)="logout()" class="float-end pointer primary" title="logout">
-      <i class="fal fa-sign-out-alt mr-3 font-16 mt-4 pointer bot-warn"></i
+      <i class="fa fa-sign-out-alt mr-3 font-16 mt-4 pointer bot-warn"></i
     ></span>
   </div>
 </div>
@@ -239,7 +239,7 @@
         for="check"
         [ngStyle]="{ 'background-color': iconBgColor, border: iconBorder }"
       >
-        <i class="fal fa-comment-alt-smile" *ngIf="showchatbot"></i>
+        <i class="fa fa-comment-alt-smile" *ngIf="showchatbot"></i>
         <img
           src="{{ imgurl }}chaticon.png"
           class="pointer"
@@ -259,11 +259,11 @@
               <span class="bot-title bot-warn">C&S </span>
               <span class="bot-title bot-blue">Virtual Rep</span>
               <i
-                class="fal fa-times pointer float-right fa-lg bot-warn mt-4"
+                class="fa fa-times pointer float-right fa-lg bot-warn mt-4"
                 (click)="closewindow()"
               ></i>
               <i
-                class="fal fa-external-link-square fa-md float-right pointer mr-3 mt-4 bot-warn"
+                class="fa fa-external-link-square fa-md float-right pointer mr-3 mt-4 bot-warn"
                 routerLink="/pages/main"
               ></i>
             </p>
@@ -275,11 +275,11 @@
                 <span class="bot-title bot-blue">Bot</span>
               </span>
               <i
-                class="fal fa-times pointer float-right fa-lg bot-warn"
+                class="fa fa-times pointer float-right fa-lg bot-warn"
                 (click)="closewindow()"
               ></i>
               <i
-                class="fal fa-external-link-square fa-md float-right pointer mr-3 bot-blue"
+                class="fa fa-external-link-square fa-md float-right pointer mr-3 bot-blue"
                 routerLink="/pages/main"
               ></i>
             </p>
@@ -305,12 +305,12 @@
 
               <div class="d-flex align-items-center pe-3">
                 <i
-                  class="fal fa-external-link-square fa-md pointer mr-3 bot-warn"
+                  class="fa fa-external-link-square fa-md pointer mr-3 bot-warn"
                   routerLink="/pages/main"
                 ></i>
 
                 <i
-                  class="fal fa-times pointer fa-lg bot-warn"
+                  class="fa fa-times pointer fa-lg bot-warn"
                   (click)="closewindow()"
                 ></i>
               </div>
@@ -328,12 +328,12 @@
 
               <div class="d-flex align-items-center">
                 <i
-                  class="fal fa-external-link-square fa-md pointer mr-3 bot-blue"
+                  class="fa fa-external-link-square fa-md pointer mr-3 bot-blue"
                   routerLink="/pages/main"
                 ></i>
 
                 <i
-                  class="fal fa-times pointer fa-lg bot-warn"
+                  class="fa fa-times pointer fa-lg bot-warn"
                   (click)="closewindow()"
                 ></i>
               </div>
@@ -363,7 +363,7 @@
             <div class="col-4 p-1 pt-3">
               <span class="p-1">
                 <i
-                  class="fal fa-times-circle float-right font-16 pointer pr-2"
+                  class="fa fa-times-circle float-right font-16 pointer pr-2"
                   title="close"
                   (click)="showBotChat()"
                 ></i>
@@ -478,7 +478,7 @@
                 class="img-fluid"
                 [ngStyle]="{ height: imgHeight }"
               />
-              <!-- <i class="fal fa-robot font-20 primary pt-2"></i> -->
+              <!-- <i class="fa fa-robot font-20 primary pt-2"></i> -->
               <div class="media-body m-0">
                 <p class="bot-response" *ngFor="let a of botMsg">
                   {{ a }} &nbsp;<sub
@@ -508,7 +508,7 @@
                   class="media media-chat input p-0 pt-1"
                   *ngIf="a.inputData !== undefined && a.inputData !== ''"
                 >
-                  <!-- <i class="fal fa-user-circle primary font-20 pt-2"></i> -->
+                  <!-- <i class="fa fa-user-circle primary font-20 pt-2"></i> -->
                   <p class="textFirst2 pointer">
                     {{ loginuserName.charAt(0) | titlecase }}
                   </p>
@@ -634,7 +634,7 @@
                 *ngIf="showspinner == true"
                 style="position: relative"
               >
-                <!-- <i class="fal fa-robot font-20 primary pt-2"></i> -->
+                <!-- <i class="fa fa-robot font-20 primary pt-2"></i> -->
                 <img
                   src="{{ imgurl }}int3030.png"
                   class="img-fluid"
@@ -722,7 +722,8 @@
                   style="color: #d31e25"
                 >
                   <i
-                    class="fad fa-paper-plane"
+                    style="color: #d31e25"
+                    class="fa fa-paper-plane"
                     [ngStyle]="{ color: bgColor }"
                     title="send message"
                   ></i>
