@@ -174,7 +174,7 @@
               Annotation
             </th>
             <td mat-cell *matCellDef="let element" class="pr-5 text-center">
-              <i class="fal fa-ballot-check font-18 pointer primary" title="annotate" (click)="navigateAnnotation([{utterance:element.failed_intent,id:element.id}])" *ngIf="element.annotate && totUtteranceData.length === 0"></i>
+              <i class="fa fa-ballot-check font-18 pointer primary" title="annotate" (click)="navigateAnnotation([{utterance:element.failed_intent,id:element.id}])" *ngIf="element.annotate && totUtteranceData.length === 0"></i>
             </td>
 
           </ng-container>
@@ -364,7 +364,7 @@
         Save
       </button>
       <i
-        class="fal fa-ballot-check font-18 pointer float-end mt-3 pt-1 mr-2 primary"
+        class="fa fa-ballot-check font-18 pointer float-end mt-3 pt-1 mr-2 primary"
         title="annotate"
         (click)="navigateAnnotation(totalNavData)"
         *ngIf="totUtteranceData.length > 0"
@@ -474,7 +474,7 @@
 
   <div *ngFor="let data of botContextData">
     <div class="media media-chat input p-0">
-      <i class="fal fa-user text-info font-16 pt-2"></i>
+      <i class="fa fa-user text-info font-16 pt-2"></i>
       <div class="media-body m-0">
         <p class="bot-input" *ngIf="failedIntent !== data.input">
           {{ data.input }}

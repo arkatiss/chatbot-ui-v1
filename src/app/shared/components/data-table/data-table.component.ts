@@ -91,9 +91,9 @@ export class DataTableComponent implements OnInit, OnChanges {
     console.log('screenName:', this.screenName);
   }
   editRowData(data: any, type: any, event: any) {
-    if (type.header !== 'Action' && event === 'cell') {
-      this.editEvnt.emit(data);
-    }
+    // if (type.header !== 'Action' && event === 'cell') {
+    //   this.editEvnt.emit(data);
+    // }
     if (event === 'edit') {
       this.editEvnt.emit(data);
     }

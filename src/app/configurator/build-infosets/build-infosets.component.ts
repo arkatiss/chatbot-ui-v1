@@ -78,8 +78,8 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   selectedCategories: any[] = [];
   selectCustomKey: any;
   viewOptions: any[] = [
-    { name: 'Mobile', value: 'mobile' },
-    { name: 'Web', value: 'web' },
+    { name: 'Application Bot', value: 'appBot' },
+    { name: 'Web Bot', value: 'webBot' },
   ];
   fontSize: any[] = [
     { fontSize: 14, value: 14 },
@@ -1314,6 +1314,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     };
     body = {
       json_format: {
+        botType: this.selectViewOption,
         domain_data: domainData,
         infoset_data:
           transformedArray?.length === 0
@@ -1432,5 +1433,16 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     this.infoset = infosetObj?.file;
     this.subDomain = evt.item.info_data.domain_data.sub_domain;
     this.nextKey = this.diagramNodeData[this.diagramNodeData.length - 1].key;
+  }
+  deleteRow(event: any) {
+    console.log(event);
+  }
+  titleChange(data: any, index: any) {
+    console.log(data.value, index);
+    this.sampleBotResponse[index].attr_name = data.value;
+    this.sampleBotResponse[index].title = data.value;
+    this.sampleBotResponse[index].description = data.value;
+    console.log(this.sampleBotResponse);
+    this.initBot();
   }
 }

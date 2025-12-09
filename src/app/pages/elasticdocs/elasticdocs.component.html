@@ -1,21 +1,21 @@
 <div class="row col-sm-12 p-0 m-0 pb-5" style="background-color: white;">
     <div class="col-sm-12  ">
-    
+
     <div class="container cnt" *ngIf="showmsg" id="cntv">
         <hgroup class="mb20 mt-3" >
             <h3 class="h1 primary">Search Results</h3>
-            <h2 class="lead"><strong class="primary">{{docsdata.length}}</strong> results were found for the search keyword <strong class="primary">{{searchKeyWord}}</strong></h2>								
+            <h2 class="lead"><strong class="primary">{{docsdata.length}}</strong> results were found for the search keyword <strong class="primary">{{searchKeyWord}}</strong></h2>
         </hgroup>
     </div>
-           
-      
+
+
         <div class="container cnt " *ngIf="showdata">
 
             <hgroup class="mb20 mt-3">
                 <h3 class="h1 primarycolor">Search Results</h3>
-                <span class="lead font-14"><strong class="primarycolor"><b>{{docsdata.length}}</b></strong> <span *ngIf="docsdata.length === 1" class="pl-1 font-14">result</span><span *ngIf="docsdata.length > 1" class="pl-1 font-14">results were</span>  found for the search for <strong class="primarycolor font-14"><b>{{searchKeyWord}}</b></strong></span>								
+                <span class="lead font-14"><strong class="primarycolor"><b>{{docsdata.length}}</b></strong> <span *ngIf="docsdata.length === 1" class="pl-1 font-14">result</span><span *ngIf="docsdata.length > 1" class="pl-1 font-14">results were</span>  found for the search for <strong class="primarycolor font-14"><b>{{searchKeyWord}}</b></strong></span>
             </hgroup>
-        
+
             <section class="col-xs-12 col-sm-6 col-md-12">
                 <article class="search-result row" *ngFor="let a of docsdata">
                     <!-- <div class="col-xs-12 col-sm-12 col-md-3">
@@ -23,24 +23,24 @@
                     </div> -->
                     <div class="col-xs-12 col-sm-12 col-md-3">
                         <ul class="meta-search">
-                            <li><i class="fal fa-calendar-alt font-12"></i> <span class="pl-2">{{a.date |date:'shortDate'}},{{a.date |date:'shortTime'}}</span></li>
-                            <li><i class="fal fa-user-check font-12"></i> <span> {{a.document_owner}}</span></li>
+                            <li><i class="fa fa-calendar-alt font-12"></i> <span class="pl-2">{{a.date |date:'shortDate'}},{{a.date |date:'shortTime'}}</span></li>
+                            <li><i class="fa fa-user-check font-12"></i> <span> {{a.document_owner}}</span></li>
                             <li>
-                                <i class="fal fa-file-pdf danger" *ngIf="a.filetype === 'pdf'"></i> 
-                                <!-- <i class="fal fa-file-pdf danger" *ngIf="a.filetype === 'pdf'"></i> 
-                                <i class="fal fa-file-pdf danger" *ngIf="a.filetype === 'pdf'"></i>  -->
+                                <i class="fa fa-file-pdf danger" *ngIf="a.filetype === 'pdf'"></i>
+                                <!-- <i class="fa fa-file-pdf danger" *ngIf="a.filetype === 'pdf'"></i>
+                                <i class="fa fa-file-pdf danger" *ngIf="a.filetype === 'pdf'"></i>  -->
                                 <span class="pl-2">{{a.filetype}}</span></li>
                         </ul>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-8 excerpet">
                         <h3><a class="pointer" title="" (click)="downloadPdf(a);">{{a.filename}}</a></h3>
-                        <p class="font-12 pb-0">{{a.comment}}.</p>						
+                        <p class="font-12 pb-0">{{a.comment}}.</p>
                         <!-- <span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span> -->
                     </div>
                     <!-- <span class="clearfix borda"></span> -->
                 </article>
-        	
-        
+
+
             </section>
         </div>
       </div>

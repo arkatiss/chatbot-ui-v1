@@ -4,6 +4,7 @@
       <div class="">
         <app-shared-data-table
           (editEvnt)="editRow($event)"
+          (deleteEvnt)="deleteRow($event)"
           [columns]="colData"
           [rowData]="rowData"
           [screenName]="screenName"
@@ -238,7 +239,7 @@
               [src]="
                 widgetIcon
                   ? widgetIcon
-                  : imgUrl + 'common-imgs/ai-robot-icon.svg'
+                  : imgUrl + 'repository-imgs/ai-robot-icon.svg'
               "
               alt=""
               width="24"
@@ -936,7 +937,27 @@
             </div>
           </ng-container>
         </ng-container>
-
+        <ng-container
+          *ngIf="this.diagramNodeData[this.rowNodeIndex]?.type === 'label'"
+        >
+          <div
+            *ngFor="let item of sampleBotResponse; let i = index"
+            class="mt-2"
+          >
+            <div class="mb-2">
+              <label class="label-title mb-1">Title</label><br />
+              <input
+                type="text"
+                [(ngModel)]="item.attr_name"
+                class="input-style"
+                pInputText
+                placeholder="Enter "
+                required
+                (onChange)="titleChange($event.target, i)"
+              />
+            </div>
+          </div>
+        </ng-container>
         <ng-container
           *ngIf="this.diagramNodeData[this.rowNodeIndex]?.type === 'Form'"
         >
