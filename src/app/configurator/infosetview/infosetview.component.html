@@ -249,8 +249,8 @@
       (selectedTabChange)="tabChanged($event)"
     >
       <mat-tab label="Table View">
-        <ngx-datatable
-          *ngIf="rowData.length > 0"
+        <!-- <ngx-datatable
+          *ngIf="displayedColumns.length > 0"
           #table
           style="height: 280px; width: 100%"
           class="material ml-0 mr-0 mt-3"
@@ -279,7 +279,61 @@
             prop="{{ column.prop }}"
           >
           </ngx-datatable-column>
-        </ngx-datatable>
+        </ngx-datatable> -->
+
+        <p-table
+          #dt1
+          [value]="rowData"
+          [columns]="displayedColumns"
+          [paginator]="true"
+          [responsive]="true"
+          [resizableColumns]="true"
+          [rowHover]="true"
+          responsiveLayout="scroll"
+          sortMode="multiple"
+          [showCurrentPageReport]="true"
+          [reorderableColumns]="true"
+          editMode="row"
+          [scrollable]="true"
+          styleClass=" myTable "
+          [rows]="10"
+          [rowsPerPageOptions]="[10, 25, 50, 100]"
+          [globalFilterFields]="displayedColumns"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+          dataKey="sno"
+        >
+          <!-- Header -->
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 5%">S.No</th>
+              <th *ngFor="let col of displayedColumns">
+                {{ col.name }}
+              </th>
+            </tr>
+          </ng-template>
+
+          <!-- Body -->
+          <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
+            <tr>
+              <td>{{ rowIndex + 1 }}</td>
+              <td *ngFor="let col of displayedColumns">
+                {{ row[col.prop] }}
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="emptymessage">
+            <tr style="height: calc(100dvh - 50dvh); background-color: #fff">
+              <td [attr.colspan]="displayedColumns.length + 3">
+                <div
+                  class="no-records col-sm-12 d-flex align-items-center justify-content-center"
+                >
+                  No records found
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       </mat-tab>
       <mat-tab label="Hierarchical View">
         <div

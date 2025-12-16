@@ -21,16 +21,20 @@ import * as uuid from 'uuid';
 import { ToastrService } from 'ngx-toastr';
 import { InfosetsService } from '../service/infosets.service';
 import { environment } from '../../../environments/environment';
+import { ConfirmationService, MessageService } from 'primeng/api';
 @Component({
   selector: 'app-build-infosets',
   templateUrl: './build-infosets.component.html',
   styleUrls: ['./build-infosets.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  providers: [ConfirmationService, MessageService],
 })
 export class BuildInfosetsComponent implements OnInit, OnChanges {
   @ViewChild(MatMenuTrigger) matMenuTrigger!: MatMenuTrigger;
   @ViewChild('menuButton') menuButton!: ElementRef;
   private overlayRef!: OverlayRef;
+  updatedTitle: any = '';
+  updateIndex: any;
 
   public diagramNodeData: Array<go.ObjectData> | any = [
     {
@@ -221,10 +225,12 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   filteredSubDomainOptions: any = [];
   filteredInfosetOptions: any = [];
   domain: any;
+  dialogDomain: any;
   tempSecuriryFlag: any;
   securityFlag = '';
   jsonfilenameData: any;
   subDomain: any;
+  dialogSubDomain: any;
   infoset: any;
   sampleBotResponse: any = [
     {
@@ -507,11 +513,14 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   ];
   edit = false;
   appearanceConfig: any = {};
+  infosetFlag: any = false;
   constructor(
     public dialogBox: MatDialog,
     private http: HttpClient,
     public api: InfosetsService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {
     sessionStorage.setItem('activeListMenu', 'Infosets');
     this.screenName = sessionStorage.getItem('activeListMenu');
@@ -842,6 +851,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   }
 
   backToInfosetCreation() {
+    console.log('iam in main screen');
     this.buildForms = 'buildInfosetsScreen';
     this.activeMenu = 'appearance';
     sessionStorage.setItem('activeListMenu', 'Infosets');
@@ -897,6 +907,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   addProps(m: any, i: any) {
     console.log(m);
     console.log(i);
+    this.updateIndex = i;
     //this.rowNodeIndex = i;
     console.log(this.diagramNodeData[this.rowNodeIndex]);
     this.dialogDetails = 'Buttons';
@@ -1170,16 +1181,24 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     // );
   }
   changeSubDomainForInfoset(data: any = null): any {
+    this.infosetFlag = true;
     if (data?.domain && data?.subDomain) {
       this.domain = this.filteredDomainOptions.find(
         (item: any) => item.domain === data?.domain
       );
       this.subDomain = data?.subDomain;
     }
+    this.getDomainSubdomainBasedList(this.domain, this.subDomain);
+  }
+  dialogSubDomainForInfoset() {
+    this.getDomainSubdomainBasedList(this.dialogDomain, this.dialogSubDomain);
+  }
+  getDomainSubdomainBasedList(domain: any, subDomain: any) {
+    this.rowData = [];
     const body = {
       infoset_type: 'retrieve',
-      domain: this.domain?.domain,
-      sub_domain: this.subDomain,
+      domain: domain?.domain,
+      sub_domain: subDomain,
     };
     this.api.retInfoset(body).subscribe(
       (res) => {
@@ -1200,6 +1219,11 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
               name: item?.file?.split('.')[0],
             };
           });
+          if (this.filteredInfosetOptions.length > 0 && this.edit === false) {
+            this.infosetFlag = true;
+          } else {
+            this.infosetFlag = false;
+          }
         }
 
         //this.onSuccessInfoView(res);
@@ -1302,15 +1326,19 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     this.infoset
       ? this.infoset
       : (this.infoset =
-          this.domain.domain + '_' + this.subDomain + '_' + timeStamp);
+          this.dialogDomain.domain +
+          '_' +
+          this.dialogSubDomain +
+          '_' +
+          timeStamp);
     let body: any = {};
     const data = this.transformArray(this.diagramNodeData);
     const firstObjectChilds = data[0]?.childs || [];
     const transformedArray = [...firstObjectChilds, ...data.slice(1)];
 
     const domainData = {
-      domain: this.domain.domain,
-      sub_domain: this.subDomain,
+      domain: this.dialogDomain.domain,
+      sub_domain: this.dialogSubDomain,
     };
     body = {
       json_format: {
@@ -1335,24 +1363,33 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       Object.assign(body['json_format'], { appearance: this.appearanceConfig });
       console.log(body);
     }
-    this.api.saveInfoset(body).subscribe(
-      (res) => {
-        console.log(res);
-        if (res.status === 200 && res.res_status) {
-          this.toast.success(res.msg);
-          this.closeDialog();
-          this.domain = '';
-          this.subDomain = '';
-          this.infoset = '';
-        } else {
-          this.toast.error(res.msg);
+    if (
+      (this.filteredInfosetOptions.length > 0 && this.edit === false) ||
+      this.infosetFlag === true
+    ) {
+      this.toast.warning(
+        'This infoset already exists. You are not allowed to save it. Please update the existing infoset instead.'
+      );
+    } else if ((this.infosetFlag = false)) {
+      this.api.saveInfoset(body).subscribe(
+        (res) => {
+          console.log(res);
+          if (res.status === 200 && res.res_status) {
+            this.toast.success(res.msg);
+            this.closeDialog();
+            this.dialogDomain = '';
+            this.dialogSubDomain = '';
+            this.infoset = '';
+          } else {
+            this.toast.error(res.msg);
+          }
+          //this.onSuccesssInfo(res);
+        },
+        (err) => {
+          //this.onErrorr(err);
         }
-        //this.onSuccesssInfo(res);
-      },
-      (err) => {
-        //this.onErrorr(err);
-      }
-    );
+      );
+    }
   }
   getTableData(): any {
     const body = {
@@ -1422,6 +1459,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     this.edit = true;
     this.diagramNodeData = evt.item.info_data?.draggedData?.nodeData;
     this.diagramLinkData = evt.item.info_data?.draggedData?.linkData;
+    this.appearanceConfig = evt.item.info_data?.appearance;
     this.buildForms = 'buildInfosetsScreen';
     const domainObj = this.filteredDomainOptions.find(
       (item: any) => item.domain === evt.item.info_data.domain_data.domain
@@ -1429,20 +1467,74 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     const infosetObj = this.filteredInfosetOptions.find(
       (item: any) => item.file === evt.item.file
     );
-    this.domain = domainObj;
+    this.dialogDomain = domainObj;
     this.infoset = infosetObj?.file;
-    this.subDomain = evt.item.info_data.domain_data.sub_domain;
+    this.dialogSubDomain = evt.item.info_data.domain_data.sub_domain;
     this.nextKey = this.diagramNodeData[this.diagramNodeData.length - 1].key;
   }
   deleteRow(event: any) {
     console.log(event);
+    const body = {
+      infoset_id: event.item.id,
+      infoset_yml: event.item.file,
+    };
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+      accept: () => {
+        this.api.infosetDelete(body).subscribe((res: any) => {
+          console.log(res);
+          if (res.status === 200 && res.res_status) {
+            this.toast.success(res.msg);
+            this.getTableData();
+            this.getDomainSubdomainBasedList(this.domain, this.subDomain);
+          } else {
+            this.toast.error(res.msg);
+          }
+        });
+      },
+      reject: () => {},
+    });
   }
+
   titleChange(data: any, index: any) {
-    console.log(data.value, index);
-    this.sampleBotResponse[index].attr_name = data.value;
-    this.sampleBotResponse[index].title = data.value;
-    this.sampleBotResponse[index].description = data.value;
+    this.updatedTitle = data;
+    this.sampleBotResponse[index].attr_name = data;
+    this.sampleBotResponse[index].title = data;
+    this.sampleBotResponse[index].description = data;
     console.log(this.sampleBotResponse);
+  }
+  saveChangedTitle() {
+    this.diagramNodeData[this.updateIndex].attr_name = this.updatedTitle;
+    this.diagramNodeData[this.updateIndex].title = this.updatedTitle;
+    this.diagramNodeData[this.updateIndex].description = this.updatedTitle;
+    console.log(this.sampleBotResponse, this.diagramNodeData);
+  }
+  cancel() {
+    this.dialogDetails = '';
+    this.updatedTitle = '';
+    this.updateIndex = '';
     this.initBot();
+  }
+  showForm() {
+    this.buildForms = 'buildInfosetsScreen';
+    this.edit = false;
+    this.appearanceConfig = {
+      widgetIcon: '',
+      headerLogo: '',
+      botIcon: '',
+      headerText: 'ARKATISS DESK',
+      hintText: 'Enter Prompt',
+      accentColor: '#ffffff',
+      fontColor: '#555555',
+      customCSS: '',
+      chatPosition: 'right',
+    };
   }
 }

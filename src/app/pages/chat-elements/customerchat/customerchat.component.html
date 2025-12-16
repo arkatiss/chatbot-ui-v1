@@ -1,93 +1,142 @@
-
-
-<link rel="stylesheet" [href]='this.textCssUrl '>
+<link rel="stylesheet" [href]="this.textCssUrl" />
 <div *ngIf="showpersonHide">
   <!-- <h4 class="line" *ngIf="agentchatmsg !== undefined && agentchatmsg !== ''">
     <span class="lne">{{this.agentchatmsg | titlecase}} joined chat </span>
   </h4> -->
 
-  <div class="row m-0" *ngIf="agentchatmsg !== undefined && agentchatmsg !== ''" style="background-color: #ededed;;">
+  <div
+    class="row m-0"
+    *ngIf="agentchatmsg !== undefined && agentchatmsg !== ''"
+    style="background-color: #ededed"
+  >
     <div class="col-9 p-1">
-        <div class="row m-0">
-          <div class="col-2 p-0">
-            <i class="fas fa-user-circle font-25 p-1 text-infoo"></i>
+      <div class="row m-0">
+        <div class="col-2 p-0">
+          <i class="fas fa-user-circle font-25 p-1 text-infoo"></i>
+        </div>
+        <div class="col-9 pr-2 p-0 pt-1">
+          <div class="row m-0 pt-1">
+            <p class="text-infoo poppins mb-0">
+              {{ this.agentchatmsg | titlecase }}
+            </p>
+            <span class="poppins font-12 pl-2 pt-0">Joined chat</span>
           </div>
-          <div class="col-9 pr-2 p-0 pt-1">
-            <div class="row m-0 pt-1">
-              <p class="text-infoo poppins mb-0">{{this.agentchatmsg | titlecase}}</p> <span class="poppins font-12 pl-2 pt-0">Joined chat</span>
-            </div>
 
-            <div class="row m-0">
-              <small class="bot-warn" *ngIf="Typing">Typing...</small>
-            </div>
+          <div class="row m-0">
+            <small class="bot-warn" *ngIf="Typing">Typing...</small>
           </div>
         </div>
       </div>
-      <!-- <div class="col-4  pt-2 p-0">
+    </div>
+    <!-- <div class="col-4  pt-2 p-0">
       </div> -->
-      <div class="col-3 p-1 pt-3">
-        <span class="p-1">
-          <i class="fa fa-times-circle float-right font-16 pointer pr-2" title="close" (click)="closeUserChat()"></i>
-          <!-- <i class="fa fa-ellipsis-v text-infoo float-right font-16 pr-3" aria-hidden="true"
+    <div class="col-3 p-1 pt-3">
+      <span class="p-1">
+        <i
+          class="fa fa-times-circle float-right font-16 pointer pr-2"
+          title="close"
+          (click)="closeUserChat()"
+        ></i>
+        <!-- <i class="fa fa-ellipsis-v text-infoo float-right font-16 pr-3" aria-hidden="true"
             [matMenuTriggerFor]="userinfo"></i> -->
+      </span>
 
-        </span>
-
-        <!-- <mat-menu #userinfo="matMenu" xPosition="before">
+      <!-- <mat-menu #userinfo="matMenu" xPosition="before">
           <span mat-menu-item class="font-12 text-mute hvr">Info</span>
           <span mat-menu-item class="font-12 text-mute hvr">Export</span>
           <span mat-menu-item class="font-12 text-mute hvr">Delete chat</span>
         </mat-menu> -->
-      </div>
-</div>
-<div class="agentHeight">
-  <div *ngFor="let a of customerChat">
-
-    <div class="media media-chat input p-0" *ngIf="username === a.sender_name">
-
-        <img src="{{iconurl}}programmer.png" height="50px"  *ngIf="(a.body !== undefined || a.inputData !== undefined) && supportpersonbool === false" class="mt-2">
-        <p class="textFirst2 pointer" *ngIf="(a.body !== undefined || a.inputData !== undefined) && supportpersonbool === true" >{{a.sender_name.charAt(0) | titlecase}} </p>
+    </div>
+  </div>
+  <div class="agentHeight">
+    <div *ngFor="let a of customerChat">
+      <div
+        class="media media-chat input p-0"
+        *ngIf="username === a.sender_name"
+      >
+        <img
+          src="{{ iconurl }}programmer.png"
+          height="50px"
+          *ngIf="
+            (a.body !== undefined || a.inputData !== undefined) &&
+            supportpersonbool === false
+          "
+          class="mt-2"
+        />
+        <p
+          class="textFirst2 pointer"
+          *ngIf="
+            (a.body !== undefined || a.inputData !== undefined) &&
+            supportpersonbool === true
+          "
+        >
+          {{ a.sender_name.charAt(0) | titlecase }}
+        </p>
         <div class="media-body m-0">
-          <p class="bot-input " *ngIf="a.body !== undefined">{{a.body}}
+          <p class="bot-input" *ngIf="a.body !== undefined">
+            {{ a.body }}
             &nbsp;&nbsp;
             <sub class="subtime2">
-              <small class="bot-input-time" *ngIf="a.peer_time!==undefined">
-                {{a.peer_time |date:'shortTime'}}
+              <small class="bot-input-time" *ngIf="a.peer_time !== undefined">
+                {{ a.peer_time | date : "shortTime" }}
               </small>
             </sub>
           </p>
-          <p class="bot-input " *ngIf="a.inputData !== undefined">{{a.inputData}}
+          <p class="bot-input" *ngIf="a.inputData !== undefined">
+            {{ a.inputData }}
             &nbsp;&nbsp;
             <sub class="subtime2">
-              <small class="bot-input-time" *ngIf="a.inptimestamp!==undefined">
-                {{a.inptimestamp |date:'shortTime'}}
+              <small
+                class="bot-input-time"
+                *ngIf="a.inptimestamp !== undefined"
+              >
+                {{ a.inptimestamp | date : "shortTime" }}
               </small>
             </sub>
           </p>
         </div>
       </div>
-      <div class="media media-chat output row m-0" *ngIf="username !== a.sender_name">
-        <img src="{{iconurl}}programmer.png" height="50px"  *ngIf="(a.body !== undefined || a.outputData !== undefined) && supportpersonbool === true" class="mt-2">
-        <p class="textFirst2 pointer" *ngIf="(a.body !== undefined || a.outputData !== undefined) && supportpersonbool === false">{{a.sender_name.charAt(0) | titlecase}} </p>
-        <div class="media-body  row m-0 p-0">
-          <p class="bot-response" *ngIf="a.body !== undefined">{{a.body}} &nbsp;<sub class="subtime2">
+      <div
+        class="media media-chat output row m-0"
+        *ngIf="username !== a.sender_name"
+      >
+        <img
+          src="{{ iconurl }}programmer.png"
+          height="50px"
+          *ngIf="
+            (a.body !== undefined || a.outputData !== undefined) &&
+            supportpersonbool === true
+          "
+          class="mt-2"
+        />
+        <p
+          class="textFirst2 pointer"
+          *ngIf="
+            (a.body !== undefined || a.outputData !== undefined) &&
+            supportpersonbool === false
+          "
+        >
+          {{ a.sender_name.charAt(0) | titlecase }}
+        </p>
+        <div class="media-body row m-0 p-0">
+          <p class="bot-response" *ngIf="a.body !== undefined">
+            {{ a.body }} &nbsp;<sub class="subtime2">
               <small class="bot-input-time">
-                {{a.peer_time |date:'shortTime'}} </small></sub>
-                </p>
-                <p class="bot-response"  *ngFor="let response of a.outputData"> {{response}}
-
-                  </p>
+                {{ a.peer_time | date : "shortTime" }}
+              </small></sub
+            >
+          </p>
+          <p class="bot-response" *ngFor="let response of a.outputData">
+            {{ response }}
+          </p>
         </div>
         <div class="col-sm-12 m-0 p-0" *ngIf="a.ratings !== undefined">
-            <app-buttons [ratingsButton]="a.ratings" (ratingChat)="ratingUserChat($event)"></app-buttons>
-          </div>
+          <app-buttons
+            [ratingsButton]="a.ratings"
+            (ratingChat)="ratingUserChat($event)"
+          ></app-buttons>
+        </div>
       </div>
+    </div>
+  </div>
 </div>
-</div>
-
-
-
-
-</div>
-
-

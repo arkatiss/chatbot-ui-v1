@@ -32,4 +32,10 @@ export class InfosetsService {
       body
     );
   }
+  infosetDelete(body: any): Observable<any> {
+    return this.http.post(
+      this.general.getHttpUrl('genAIBotUrl') + 'delete_infoset',
+      body
+    );
+  }
 }

@@ -24,7 +24,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/AI-Desk",
+            "outputPath": "dist/chatbot-config",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -48,6 +48,8 @@
               "./node_modules/bootstrap/dist/css/bootstrap-grid.min.css",
               "node_modules/ngx-spinner/animations/ball-spin-clockwise.css",
               "node_modules/ngx-spinner/animations/ball-atom.css",
+              "node_modules/ngx-spinner/animations/ball-fall.css",
+              "node_modules/ngx-spinner/animations/ball-pulse-sync.css",
               "node_modules/ag-grid-community/styles/ag-theme-balham.css",
               "node_modules/highlight.js/styles/monokai.css",
               "node_modules/prismjs/themes/prism-okaidia.css",

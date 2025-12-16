@@ -4,6 +4,7 @@ import {
   Component,
   Output,
   EventEmitter,
+  Input,
 } from '@angular/core';
 
 @Component({
@@ -14,14 +15,14 @@ import {
 export class AppearanceComponent {
   activeTab: 'web' | 'mobile' = 'web';
   @Output() configChanged = new EventEmitter<string>();
-  config: any = {
+  @Input() config: any = {
     widgetIcon: '',
     headerLogo: '',
     botIcon: '',
     headerText: 'ARKATISS DESK',
-    hintText: 'Send a message',
-    accentColor: 'gray',
-    fontColor: '#ffffff',
+    hintText: 'Enter Prompt',
+    accentColor: '#ffffff',
+    fontColor: '#555555',
     customCSS: '',
     chatPosition: 'right',
   };

@@ -1,70 +1,124 @@
 <div>
-<app-header (showTabSelected)="showSelectedTab($event)" [slecttabclass]="tabclass" [userrole]="userRole"></app-header>
+  <app-header
+    (showTabSelected)="showSelectedTab($event)"
+    [slecttabclass]="tabclass"
+    [userrole]="userRole"
+  ></app-header>
 </div>
 <div>
   <div class="col-sm-12 p-0" *ngIf="showchat">
-    <div class="col-sm-12 p-0" *ngIf="showlivechat"> 
+    <div class="col-sm-12 p-0" *ngIf="showlivechat">
       <ul class="nav nav-pills nav-justified">
         <li class="nav-item pointer" (click)="showHistoryTab('livechat')">
-          <a class="nav-link" [ngClass]="{
-            'active':subHistabclass === 'livechat'
-          }">Live Chat</a>
+          <a
+            class="nav-link"
+            [ngClass]="{
+              active: subHistabclass === 'livechat'
+            }"
+            >Live Chat</a
+          >
         </li>
         <li class="nav-item pointer" (click)="showHistoryTab('history')">
-          <a class="nav-link" [ngClass]="{
-            'active':subHistabclass === 'history'
-          }">History</a>
+          <a
+            class="nav-link"
+            [ngClass]="{
+              active: subHistabclass === 'history'
+            }"
+            >History</a
+          >
         </li>
-        </ul>
-    
-     
-  
+      </ul>
     </div>
-    <div class=" onlineuser m-0 p-0" *ngIf="showperson">
-      <app-peerheader [chatpersonname]="chatnamedisplay" [typing]="isTyping" (showMainBotChat)="showBotChat()"></app-peerheader>
+    <div class="onlineuser m-0 p-0" *ngIf="showperson">
+      <app-peerheader
+        [chatpersonname]="chatnamedisplay"
+        [typing]="isTyping"
+        (showMainBotChat)="showBotChat()"
+      ></app-peerheader>
     </div>
     <ng-template #openCall>
-
-      <iframe width="300" height="500" allow="microphone"
-        src="https://ringcentral.github.io/ringcentral-embeddable/app.html">
+      <iframe
+        width="300"
+        height="500"
+        allow="microphone"
+        src="https://ringcentral.github.io/ringcentral-embeddable/app.html"
+      >
       </iframe>
     </ng-template>
-  
-    <div class="card mt-2" [ngClass]="{'chatcard': chatcardHeight === 'default', 'agentChatCard': chatcardHeight === 'agent', 'normalChatCard': chatcardHeight === 'normal'}" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+
+    <div
+      class="card mt-2"
+      [ngClass]="{
+        chatcard: chatcardHeight === 'default',
+        agentChatCard: chatcardHeight === 'agent',
+        normalChatCard: chatcardHeight === 'normal'
+      }"
+      #scrollMe
+      [scrollTop]="scrollMe.scrollHeight"
+    >
       <!-- (scroll)="scrollHandler($event,appsshow)" -->
       <div class="" *ngIf="showperson">
-          <app-text [peermessages]="peerResponse" [user]="userName"  [loginname]="loginuserName"
-          [custFirst]="userNameLtr"></app-text>
+        <app-text
+          [peermessages]="peerResponse"
+          [user]="userName"
+          [loginname]="loginuserName"
+          [custFirst]="userNameLtr"
+        ></app-text>
       </div>
 
-      <div class="media media-chat output pt-2 pb-2" *ngIf="showperson2 && botMsg.length !== 0">
-        <img src="{{imgurl}}int3030.png" class="img-fluid" [ngStyle]="{'height':imgHeight}">
-      
+      <div
+        class="media media-chat output pt-2 pb-2"
+        *ngIf="showperson2 && botMsg.length !== 0"
+      >
+        <img
+          src="{{ imgurl }}int3030.png"
+          class="img-fluid"
+          [ngStyle]="{ height: imgHeight }"
+        />
+
         <div class="media-body m-0">
-
           <p class="bot-response" *ngFor="let a of botMsg">
-            {{a}}
-            &nbsp;<sub class="subtime2"><small class="bot-input-time">
-                {{timestamp |date:'shortTime'}}</small></sub>
+            {{ a }}
+            &nbsp;<sub class="subtime2"
+              ><small class="bot-input-time">
+                {{ timestamp | date : "shortTime" }}</small
+              ></sub
+            >
           </p>
-
         </div>
       </div>
       <div *ngIf="showperson2">
-        <div *ngFor="let a of chatResponse | filter:queryVal; trackBy:trackByArtNo;let idx = index;">
-          <div class="media media-chat input p-0" *ngIf="a.inputData!==undefined && a.inputData!==''">
-
-            <p class="textFirst2 pointer mr-2" *ngIf="agentShortName !== undefined">{{agentShortName.charAt(0) |
-              titlecase}} </p>
+        <div
+          *ngFor="
+            let a of chatResponse | filter : queryVal;
+            let idx = index;
+            trackBy: trackByArtNo
+          "
+        >
+          <div
+            class="media media-chat input p-0"
+            *ngIf="a.inputData !== undefined && a.inputData !== ''"
+          >
+            <p
+              class="textFirst2 pointer mr-2"
+              *ngIf="agentShortName !== undefined"
+            >
+              {{ agentShortName.charAt(0) | titlecase }}
+            </p>
             <div class="media-body m-0">
-              <p class="bot-input ">{{a.inputData}}
-                &nbsp;&nbsp;<sub class="subtime2"><small class="bot-input-time" *ngIf="a.inptimestamp!==undefined">
-                    {{a.inptimestamp |date:'shortTime'}}</small></sub>
-
+              <p class="bot-input">
+                {{ a.inputData }} &nbsp;&nbsp;<sub class="subtime2"
+                  ><small
+                    class="bot-input-time"
+                    *ngIf="a.inptimestamp !== undefined"
+                  >
+                    {{ a.inptimestamp | date : "shortTime" }}</small
+                  ></sub
+                >
               </p>
             </div>
           </div>
-          <div class="media media-chat output  row m-0">
+          <!-- <div class="media media-chat output  row m-0">
             <img src="{{imgurl}}int3030.png" class="img-fluid" [ngStyle]="{'height':imgHeight}" *ngIf="a.outputData!==undefined && a.outputData!==''">
             <div class="media-body  row m-0 p-0" *ngIf="a.outputData!==undefined && a.outputData!=='' && a.tilename === undefined">
               <p class="bot-response" *ngIf="a.promptVal!==undefined">{{a.promptVal}} &nbsp;<sub class="subtime2"><small
@@ -75,178 +129,340 @@
                 &nbsp;<sub class="subtime2">
                   <small class="bot-input-time">
                     {{a.outtimestamp |date:'shortTime'}}</small></sub>
-              </p>            
+              </p>
+            </div> -->
+
+          <div class="media media-chat output pt-2 pb-2">
+            <img
+              *ngIf="
+                a.outputData !== undefined &&
+                a.outputData !== '' &&
+                a?.outputData
+              "
+              src="{{ imgurl }}int3030.png"
+              class="img-fluid"
+              [ngStyle]="{ height: imgHeight }"
+            />
+
+            <div
+              class="media-body m-0"
+              *ngIf="
+                a.outputData !== undefined &&
+                a.outputData !== '' &&
+                a.tilename === undefined
+              "
+            >
+              <p class="bot-response" *ngIf="a.promptVal !== undefined">
+                {{ a.promptVal }} &nbsp;<sub class="subtime2"
+                  ><small class="bot-input-time">
+                    {{ a.outtimestamp }}</small
+                  ></sub
+                >
+              </p>
+
+              <p class="bot-response" *ngFor="let response of a.outputData">
+                {{ response }} &nbsp;<sub class="subtime2"
+                  ><small class="bot-input-time">
+                    {{ a.outtimestamp | date : "shortTime" }}</small
+                  ></sub
+                >
+              </p>
             </div>
             <!-- buttons start -->
             <div class="col-sm-12 m-0 p-0" *ngIf="a.layout !== undefined">
-              <app-buttons [buttons]="a.layout" (sendSelection)="app_data_get($event)"></app-buttons>
+              <app-buttons
+                [buttons]="a.layout"
+                (sendSelection)="app_data_get($event)"
+              ></app-buttons>
             </div>
-            <div class="col-sm-12 m-0 p-0" *ngIf="a.suppportchat !== undefined">  
-              <app-buttons [supportButtons]="a.suppportchat" (sendPeerChat)="peerChat($event)"></app-buttons>
+            <div class="col-sm-12 m-0 p-0" *ngIf="a.suppportchat !== undefined">
+              <app-buttons
+                [supportButtons]="a.suppportchat"
+                (sendPeerChat)="peerChat($event)"
+              ></app-buttons>
             </div>
             <div class="col-sm-12 m-0 p-0" *ngIf="a.ratings !== undefined">
-              <app-buttons [ratingsButton]="a.ratings" (ratingChat)="ratingUserChat($event)"></app-buttons>
+              <app-buttons
+                [ratingsButton]="a.ratings"
+                (ratingChat)="ratingUserChat($event)"
+              ></app-buttons>
             </div>
-              <!-- buttons end -->
-            <div class="row col-sm-12 m-0 p-0 mb-2" *ngIf="a.tilename !== undefined">
-              <div class="col-sm-2">
-              </div>
-              <div class="col-sm-3  pl-2 pr-0 pointer" (click)="getAttendanceData(supervisor);" title="click to view" *ngIf="supervisor.length>0">
-                <div class="grid1 dashboard-card d-flex flex-column align-items-center justify-content-center">
+            <!-- buttons end -->
+            <div
+              class="row col-sm-12 m-0 p-0 mb-2"
+              *ngIf="a.tilename !== undefined"
+            >
+              <div class="col-sm-2"></div>
+              <div
+                class="col-sm-3 pl-2 pr-0 pointer"
+                (click)="getAttendanceData(supervisor)"
+                title="click to view"
+                *ngIf="supervisor.length > 0"
+              >
+                <div
+                  class="grid1 dashboard-card d-flex flex-column align-items-center justify-content-center"
+                >
                   <div class="grid-body1 text-center">
                     <p class="font-weight-medium mb-0">
-                      <span class="animated-count" >{{supervisor.length}}</span>
-
-                    </p><small class="text-gray cardText d-block"> Supervisors</small>
+                      <span class="animated-count">{{
+                        supervisor.length
+                      }}</span>
+                    </p>
+                    <small class="text-gray cardText d-block">
+                      Supervisors</small
+                    >
                   </div>
                 </div>
               </div>
-              <div class="col-sm-3  pl-2 pr-0 pointer" (click)="getAttendanceData(Selector);" title="click to view" *ngIf="Selector.length>0"> 
-                <div class="grid1 dashboard-card d-flex flex-column align-items-center justify-content-center">
+              <div
+                class="col-sm-3 pl-2 pr-0 pointer"
+                (click)="getAttendanceData(Selector)"
+                title="click to view"
+                *ngIf="Selector.length > 0"
+              >
+                <div
+                  class="grid1 dashboard-card d-flex flex-column align-items-center justify-content-center"
+                >
                   <div class="grid-body1 text-center">
                     <!-- <div class="profile-img img-rounded  no-avatar component-flat mt-1 mx-auto">
-                    
+
                       <mat-icon style="color: white;">
                         account_circle
                       </mat-icon>
                     </div> -->
-                  
-                    <p class="font-weight-medium mb-0">
-                      <span class="animated-count">{{Selector.length}}</span>
 
-                    </p><small class="text-gray cardText d-block">Selectors</small>
+                    <p class="font-weight-medium mb-0">
+                      <span class="animated-count">{{ Selector.length }}</span>
+                    </p>
+                    <small class="text-gray cardText d-block">Selectors</small>
                   </div>
                 </div>
               </div>
-              <div class="col-sm-3  pl-2 pr-0 pointer" (click)="getAttendanceData(lifOperator);" title="click to view" *ngIf="lifOperator.length>0">
-                <div class="grid1 dashboard-card d-flex flex-column align-items-center justify-content-center">
+              <div
+                class="col-sm-3 pl-2 pr-0 pointer"
+                (click)="getAttendanceData(lifOperator)"
+                title="click to view"
+                *ngIf="lifOperator.length > 0"
+              >
+                <div
+                  class="grid1 dashboard-card d-flex flex-column align-items-center justify-content-center"
+                >
                   <div class="grid-body1 text-center">
                     <!-- <div class="profile-img img-rounded  no-avatar component-flat mt-1">
-                    
+
                       <mat-icon style="color: white;">
                         accessible
                       </mat-icon>
-                    
+
                     </div> -->
                     <p class="font-weight-medium mb-0">
-                      <span class="animated-count">{{lifOperator.length}}</span>
-
-                    </p><small class="text-gray cardText d-block">Lift Operators</small>
+                      <span class="animated-count">{{
+                        lifOperator.length
+                      }}</span>
+                    </p>
+                    <small class="text-gray cardText d-block"
+                      >Lift Operators</small
+                    >
                   </div>
                 </div>
               </div>
-              <div class="col-sm-1">
-
-              </div>
+              <div class="col-sm-1"></div>
             </div>
-            <div class="row col-sm-12 m-0 p-0 mb-4 mt-1" *ngIf="a.tilename !== undefined && showattendance">
+            <div
+              class="row col-sm-12 m-0 p-0 mb-4 mt-1"
+              *ngIf="a.tilename !== undefined && showattendance"
+            >
               <div class="col-sm-12 table-responsive usersscroll ml-2">
-                <table class="table table-hover table-sm table-striped productSearch-table mb-0">
+                <table
+                  class="table table-hover table-sm table-striped productSearch-table mb-0"
+                >
                   <thead>
                     <tr class="solid-header">
                       <td class="text-mute fw-500 opuser pl-2">Name</td>
                       <td class="text-mute fw-500 opuser">Role</td>
                       <td class="text-mute fw-500 opuser">Warehouse Name</td>
-
                     </tr>
                   </thead>
                   <tbody>
-
                     <tr *ngFor="let a of tilesdata">
                       <td class="pl-2 md-0 pointer pt-3 font-13">
-                        <small class="text-mute font-11">{{a.name}}</small>
-
+                        <small class="text-mute font-11">{{ a.name }}</small>
                       </td>
                       <td class="pl-md-0 pointer pt-3 font-13">
-                        <small class="text-mute font-11">{{a.role}}</small>
+                        <small class="text-mute font-11">{{ a.role }}</small>
                       </td>
-                      <td class="pt-3"><small class="font-11 text-mute">{{a.warehouse_name}}</small></td>
-
+                      <td class="pt-3">
+                        <small class="font-11 text-mute">{{
+                          a.warehouse_name
+                        }}</small>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
-                <p class="mb-0 float-right mt-1 text-mute pointer" (click)="openAttendanceData()">
+                <p
+                  class="mb-0 float-right mt-1 text-mute pointer"
+                  (click)="openAttendanceData()"
+                >
                   view all
                 </p>
               </div>
             </div>
           </div>
         </div>
-
-       
       </div>
-      <app-customerchat [customerChat]="this.agentResponse" [username]="userName" [iconurl]="iconUrl" [loginusername]="loginuserName" [agentchatmsg]="agentChatMsg" [supportpersonbool]="supportPersonBool" (ratingCustChat)="ratingUserChat($event)" [showpersonHide]="showperson2" (closeUserChats)="closeuserChat($event)" [Typing]="isTyping"></app-customerchat>
+      <app-customerchat
+        [customerChat]="this.agentResponse"
+        [username]="userName"
+        [iconurl]="iconUrl"
+        [loginusername]="loginuserName"
+        [agentchatmsg]="agentChatMsg"
+        [supportpersonbool]="supportPersonBool"
+        (ratingCustChat)="ratingUserChat($event)"
+        [showpersonHide]="showperson2"
+        (closeUserChats)="closeuserChat($event)"
+        [Typing]="isTyping"
+      ></app-customerchat>
       <div *ngIf="showperson2">
-        <div class="media media-chat output pt-2 pb-2" *ngIf="showspinner==true" style="position: relative;">
-          <img src="{{imgurl}}int3030.png" class="img-fluid" [ngStyle]="{'height':imgHeight}">
+        <div
+          class="media media-chat output pt-2 pb-2"
+          *ngIf="showspinner == true"
+          style="position: relative"
+        >
+          <img
+            src="{{ imgurl }}int3030.png"
+            class="img-fluid"
+            [ngStyle]="{ height: imgHeight }"
+          />
           <div class="media-body m-0 pb-3">
             <!-- <p class="bot-response" style="height:50px;"> -->
-              <ngx-spinner class="cust1" bdColor="#ffffff00" size="small" [color]="clrcode" type="ball-pulse-sync"
-                [fullScreen]="false">
-
-              </ngx-spinner>
+            <ngx-spinner
+              class="cust1"
+              bdColor="#ffffff00"
+              size="small"
+              [color]="clrcode"
+              type="ball-pulse-sync"
+              [fullScreen]="false"
+            >
+            </ngx-spinner>
             <!-- </p> -->
-
           </div>
         </div>
       </div>
       <div *ngIf="showhistory">
         <div *ngFor="let a of previousBotConversation">
-          <div class="media media-chat input p-0" *ngIf="a.inputData!==undefined && a.inputData!==''">
-
-            <p class="textFirst2 pointer mr-2" *ngIf="agentShortName !== undefined">{{agentShortName.charAt(0) |
-              titlecase}} </p>
+          <div
+            class="media media-chat input p-0"
+            *ngIf="a.inputData !== undefined && a.inputData !== ''"
+          >
+            <p
+              class="textFirst2 pointer mr-2"
+              *ngIf="agentShortName !== undefined"
+            >
+              {{ agentShortName.charAt(0) | titlecase }}
+            </p>
             <div class="media-body m-0">
-              <p class="bot-input ">{{a.inputData}}
-                &nbsp;&nbsp;<sub class="subtime2"><small class="bot-input-time" *ngIf="a.inptimestamp!==undefined">
-                    {{a.inptimestamp |date:'shortTime'}}</small></sub>
-  
+              <p class="bot-input">
+                {{ a.inputData }} &nbsp;&nbsp;<sub class="subtime2"
+                  ><small
+                    class="bot-input-time"
+                    *ngIf="a.inptimestamp !== undefined"
+                  >
+                    {{ a.inptimestamp | date : "shortTime" }}</small
+                  ></sub
+                >
               </p>
             </div>
           </div>
-          <div class="media media-chat output  row m-0">
-            <img src="{{imgurl}}int3030.png" class="img-fluid" [ngStyle]="{'height':imgHeight}" *ngIf="a.outputData!==undefined && a.outputData!==''">
-            <div class="media-body  row m-0 p-0" *ngIf="a.outputData!==undefined && a.outputData!=='' && a.tilename === undefined">
-              <p class="bot-response" *ngIf="a.promptVal!==undefined">{{a.promptVal}} &nbsp;<sub class="subtime2"><small
-                    class="bot-input-time">
-                    {{a.outtimestamp |date:'shortTime'}} </small></sub>
-                    </p>
-              <p class="bot-response"  *ngFor="let response of a.outputData" >{{response}}
-                &nbsp;<sub class="subtime2"><small class="bot-input-time">
-                    {{a.outtimestamp |date:'shortTime'}} </small></sub>
-              </p>            
+          <div class="media media-chat output row m-0">
+            <img
+              src="{{ imgurl }}int3030.png"
+              class="img-fluid"
+              [ngStyle]="{ height: imgHeight }"
+              *ngIf="a.outputData !== undefined && a.outputData !== ''"
+            />
+            <div
+              class="media-body row m-0 p-0"
+              *ngIf="
+                a.outputData !== undefined &&
+                a.outputData !== '' &&
+                a.tilename === undefined
+              "
+            >
+              <p class="bot-response" *ngIf="a.promptVal !== undefined">
+                {{ a.promptVal }} &nbsp;<sub class="subtime2"
+                  ><small class="bot-input-time">
+                    {{ a.outtimestamp | date : "shortTime" }}
+                  </small></sub
+                >
+              </p>
+              <p class="bot-response" *ngFor="let response of a.outputData">
+                {{ response }} &nbsp;<sub class="subtime2"
+                  ><small class="bot-input-time">
+                    {{ a.outtimestamp | date : "shortTime" }}
+                  </small></sub
+                >
+              </p>
             </div>
-            </div>
+          </div>
         </div>
       </div>
     </div>
-  
+
     <div class="col-sm-12 p-0 pt-3">
-      
-      <app-footer (sendMsg)="sendChat($event)" (sendTyping)="typingChat($event)" (getUsers)="getActiveUsers()"
-      (chatWithUser)="chatUser($event)" [usersList]="activeUsers" [entertextbox]="enterbox"
-      (undoMsg)="undoChat()" (resetMsgChat)="resetChat()" (showMainBotChat)="showBotChat()" [showUserIcon]="showuserIcon" [showBotIcon]="showbotIcon"
-      [showagentTransferIcon]="agentchatenable"  (transferChats)="transferChat()"
-      [transferAgentNames]="transferAgentName" [enablecontrols]="enablecontrol" [enablevoicechats]="enablevoicechat"
-      [imgLink]="imgurl" (goToMiniChat)="chatwindow($event)" (enableVoiceChats)="enableVoiceChat($event)" (switchModes)="switchMode($event)" (transferToAgents)="transferToAgent()" [showPeeragentChat]="enableagentchat">
-    </app-footer>
-
+      <app-footer
+        (sendMsg)="sendChat($event)"
+        (sendTyping)="typingChat($event)"
+        (getUsers)="getActiveUsers()"
+        (chatWithUser)="chatUser($event)"
+        [usersList]="activeUsers"
+        [entertextbox]="enterbox"
+        (undoMsg)="undoChat()"
+        (resetMsgChat)="resetChat()"
+        (showMainBotChat)="showBotChat()"
+        [showUserIcon]="showuserIcon"
+        [showBotIcon]="showbotIcon"
+        [showagentTransferIcon]="agentchatenable"
+        (transferChats)="transferChat()"
+        [transferAgentNames]="transferAgentName"
+        [enablecontrols]="enablecontrol"
+        [enablevoicechats]="enablevoicechat"
+        [imgLink]="imgurl"
+        (goToMiniChat)="chatwindow($event)"
+        (enableVoiceChats)="enableVoiceChat($event)"
+        (switchModes)="switchMode($event)"
+        (transferToAgents)="transferToAgent()"
+        [showPeeragentChat]="enableagentchat"
+      >
+      </app-footer>
     </div>
-
- 
   </div>
   <div class="mat-tab-body-content col-sm-12 p-0 m-0" *ngIf="showdatamarks">
-    <app-datamarkstab (openTab)="selectedDatamark($event)" 
-    [datamarks]="datamarkdata" [datadatewise]="datamarksdatewise" 
-    (openDataMarksData)="Datamarksdata($event)" 
-    [message]="msg"></app-datamarkstab>
+    <app-datamarkstab
+      (openTab)="selectedDatamark($event)"
+      [datamarks]="datamarkdata"
+      [datadatewise]="datamarksdatewise"
+      (openDataMarksData)="Datamarksdata($event)"
+      [message]="msg"
+    ></app-datamarkstab>
   </div>
   <div class="col-sm-12 p-0" *ngIf="showmyview">
-
-    <app-myview (showSubTabs)="showsuggestionsdatamarks($event)" [selectsubtabclass]="subtabclass" [showsuggestionsbool]="showsuggestions"
-    [suggetionsData]="suggetions" (suggestionClick)="chatuser($event)" [showrecommendationsview]="showrecommendations" (selectForecasting)="forecasting($event)" [submyviewtabclass]="subsubtabclass" [showforecastingview]="showforecasting" [showcollabarativeview]="showcollabarative"></app-myview>
+    <app-myview
+      (showSubTabs)="showsuggestionsdatamarks($event)"
+      [selectsubtabclass]="subtabclass"
+      [showsuggestionsbool]="showsuggestions"
+      [suggetionsData]="suggetions"
+      (suggestionClick)="chatuser($event)"
+      [showrecommendationsview]="showrecommendations"
+      (selectForecasting)="forecasting($event)"
+      [submyviewtabclass]="subsubtabclass"
+      [showforecastingview]="showforecasting"
+      [showcollabarativeview]="showcollabarative"
+    ></app-myview>
   </div>
   <div class="col-sm-12 p-0" *ngIf="showagentchat">
-    <app-multiagentlist [acceptedaAgentData]="acceptedData" (getSelectedChat)="getSelectedAgentChat($event)"></app-multiagentlist>
+    <app-multiagentlist
+      [acceptedaAgentData]="acceptedData"
+      (getSelectedChat)="getSelectedAgentChat($event)"
+    ></app-multiagentlist>
   </div>
 </div>

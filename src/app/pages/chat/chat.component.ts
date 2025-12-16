@@ -37,6 +37,7 @@ import { CommonService } from '../../helper/common.service';
 import { MessagingService } from '../../service/messaging.service';
 import { UrlConfigService } from '../../helper/url-config.service';
 import { ErrorService } from '../../helper/error.service';
+import { ChangeDetectorRef } from '@angular/core';
 type AOA = any[][];
 @Component({
   selector: 'app-chat',
@@ -44,7 +45,7 @@ type AOA = any[][];
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit, OnChanges {
-  @ViewChild('spinhide') spinhide!: ElementRef;
+  // @ViewChild('spinhide') spinhide!: ElementRef;
   today = new Date();
   todaysDataTime = '';
   CurrentTime: any;
@@ -211,7 +212,8 @@ export class ChatComponent implements OnInit, OnChanges {
     public snack: MatSnackBar,
     public cs: ChatService,
     private sanitizer: DomSanitizer,
-    private error: ErrorService
+    private error: ErrorService,
+    private cdr: ChangeDetectorRef
   ) {
     this.urlsubstring = this.url.getUrls();
     this.iconUrl = environment.iconUrl;
@@ -801,7 +803,7 @@ export class ChatComponent implements OnInit, OnChanges {
         }
         this.showspinner = true;
         // this.document.getElementById('spinhide').style.display = 'none';
-        this.spinhide.nativeElement.style.display = 'none';
+        // this.spinhide.nativeElement.style.display = 'none';
         this.spinner.show();
         this.msgdata = [];
         this.keys = [];
@@ -1344,7 +1346,11 @@ export class ChatComponent implements OnInit, OnChanges {
                 tilename: tiledataname,
                 tilecount: tiledatacount,
               });
+              setTimeout(() => {
+                this.cdr.detectChanges();
+              });
             }
+            console.log(this.chatResponse);
             this.supportType = this.msgdata.output.support_type;
             this.pageservice.setChatData(this.chatResponse);
           }

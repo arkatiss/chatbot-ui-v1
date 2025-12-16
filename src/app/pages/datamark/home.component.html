@@ -523,7 +523,7 @@
                   </div>
                 </div>
                 <div
-                  class="media media-chat output row m-0"
+                  class="media media-chat output m-0"
                   *ngIf="a.outputData !== undefined && a.outputData !== ''"
                 >
                   <img
@@ -549,6 +549,35 @@
                       >
                     </p>
                   </div>
+
+                  <!-- <img
+                    *ngIf="a.outputData !== undefined && a.outputData !== ''"
+                    src="{{ imgurl }}int3030.png"
+                    class="img-fluid"
+                    [ngStyle]="{ height: imgHeight }"
+                  />
+
+                  <div class="media-body m-0" *ngIf="a.promptVal !== undefined">
+                    <p class="bot-response" *ngIf="a.promptVal !== undefined">
+                      {{ a.promptVal }} &nbsp;<sub class="subtime2"
+                        ><small class="bot-input-time">
+                          {{ a.outtimestamp }}</small
+                        ></sub
+                      >
+                    </p>
+
+                    <p
+                      class="bot-response"
+                      *ngFor="let response of a.outputData"
+                    >
+                      {{ response }} &nbsp;<sub class="subtime2"
+                        ><small class="bot-input-time">
+                          {{ a.outtimestamp | date : "shortTime" }}</small
+                        ></sub
+                      >
+                    </p>
+                  </div> -->
+
                   <div
                     class="row col-sm-12 m-0 p-0"
                     *ngIf="a.layout !== undefined"

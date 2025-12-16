@@ -42,7 +42,12 @@ export class InfosetviewComponent implements OnInit {
   masterDetails: any[] = [];
   filteredData: any[] = [];
   rowData: any[] = [];
-  displayedColumns: any[] = [];
+  displayedColumns: any[] = [
+    { name: 'Attribute Name', prop: 'attr_name' },
+    { name: 'Operation Type', prop: 'operation_type' },
+    { name: 'Operation Value', prop: 'oper_value' },
+    { name: 'Description', prop: 'description' },
+  ];
   editorOptions = new JsonEditorOptions();
   editorOptions1 = new JsonEditorOptions();
   selectInfoset: any;
