@@ -7,6 +7,7 @@ import {
   HostListener,
   ChangeDetectionStrategy,
   ElementRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
@@ -41,7 +42,8 @@ export class MainComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     public service: VoicerecognitionService,
     private spinner: NgxSpinnerService,
-    private gs: GeneralService
+    private gs: GeneralService,
+    private cdr: ChangeDetectorRef
   ) {
     const imgUrl = this.gs.getPropertiesUrl();
 

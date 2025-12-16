@@ -1,4 +1,15 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ApplicationRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -132,8 +143,9 @@ export interface PeriodicElement {
   selector: 'app-charts',
   templateUrl: './charts.component.html',
   styleUrls: ['./charts.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class ChartsComponent implements OnInit {
+export class ChartsComponent implements OnInit, OnChanges, AfterViewInit {
   hidedashboard = true;
   @ViewChild('chart') chart: ChartComponent | any;
   public PiechartOptions: Partial<PieChartOptions> | any;
@@ -250,7 +262,8 @@ export class ChartsComponent implements OnInit {
     private dialog: MatDialog,
     private sanitizer: DomSanitizer,
     private cs: ChartService,
-    private error: ErrorService
+    private error: ErrorService,
+    private cdr: ChangeDetectorRef
   ) {
     this.getActiveUsers();
     this.gs.getUserRoleData().subscribe((info: any) => {
@@ -276,6 +289,8 @@ export class ChartsComponent implements OnInit {
       }
     });
   }
+
+  ngAfterViewInit() {}
   // localUrl = this.sanitizer.bypassSecurityTrustResourceUrl("https://dpl.cswg.com/dpl/#/application?type=data_viz&name=Service Level&search=ar_ship_date  = '12-03-2022'");
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   ngOnInit(): void {
@@ -288,7 +303,9 @@ export class ChartsComponent implements OnInit {
     this.changeColor();
     this.getAgentAnalytics();
     //this.getSuggestionsCount();
+    this.cdr.detectChanges();
   }
+  ngOnChanges(changes: SimpleChanges): void {}
   cancel(): any {}
   getAgentAnalytics(): void {
     const body = {};
@@ -629,6 +646,7 @@ export class ChartsComponent implements OnInit {
           },
         ],
       };
+      this.cdr.detectChanges();
       //Object.assign(this.PiechartOptions,{chart:{height: 300}});
     } else {
       Swal.fire({
@@ -708,6 +726,7 @@ export class ChartsComponent implements OnInit {
         //   }
         // }
       };
+      this.cdr.detectChanges();
     } else {
       Swal.fire({
         icon: 'error',
@@ -851,6 +870,7 @@ export class ChartsComponent implements OnInit {
       };
       this.gaugeUserChart = true;
       this.getSupportGroups();
+      this.cdr.detectChanges();
     } else {
       this.error.handleError(data);
     }
@@ -961,6 +981,7 @@ export class ChartsComponent implements OnInit {
         ],
       };
       this.gaugeChart = true;
+      this.cdr.detectChanges();
     } else {
       Swal.fire({
         icon: 'error',
@@ -1278,6 +1299,7 @@ export class ChartsComponent implements OnInit {
       }
     } else {
     }
+    this.cdr.detectChanges();
   }
   getBrowserName(): any {
     const agent = window.navigator.userAgent.toLowerCase();

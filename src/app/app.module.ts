@@ -33,6 +33,7 @@ import { NgxAnnotateTextModule } from 'ngx-annotate-text';
 import { ToastrModule } from 'ngx-toastr';
 import { RouterModule } from '@angular/router';
 // import { ConfiguratorModule } from './configurator/configurator.module';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 //import { ConfigheaderComponent } from './pages/chat-elements/configheader/configheader.component';
 @NgModule({
@@ -76,6 +77,7 @@ import { RouterModule } from '@angular/router';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ChatInterceptor, multi: true },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     MessagingService,
     AsyncPipe,
   ],

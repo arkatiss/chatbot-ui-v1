@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -58,7 +59,8 @@ export class MultiagentListComponent implements OnInit, OnChanges {
     private gs: GeneralService,
     private cs: ChatService,
     private spinner: NgxSpinnerService,
-    private msgservice: MessagingService
+    private msgservice: MessagingService,
+    private cdr: ChangeDetectorRef
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (
@@ -454,6 +456,7 @@ export class MultiagentListComponent implements OnInit, OnChanges {
             .toUpperCase(),
         });
       });
+      this.cdr.detectChanges();
     } else {
       Swal.fire({ title: data.msg });
     }

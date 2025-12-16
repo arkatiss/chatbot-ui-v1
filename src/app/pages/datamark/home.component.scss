@@ -213,7 +213,8 @@ span.publishers-btn.file-group {
 .media-chat .media-body {
   -webkit-box-flex: initial;
   // flex: initial;
-  display: table;
+  // display: table;
+  display: flex;
 }
 
 .media-body {

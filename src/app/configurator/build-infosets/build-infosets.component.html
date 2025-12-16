@@ -1,3 +1,5 @@
+<p-toast />
+<p-confirmDialog />
 <div class="container-fluid p-3" *ngIf="buildForms === 'table'">
   <div class="row m-0" style="height: 87vh">
     <div class="col-12 ps-0">
@@ -8,9 +10,7 @@
           [columns]="colData"
           [rowData]="rowData"
           [screenName]="screenName"
-          (showFormPage)="
-            this.buildForms = 'buildInfosetsScreen'; this.edit = false
-          "
+          (showFormPage)="showForm()"
           [domain]="domain"
           [subDomain]="subDomain"
           [filteredDomainOptions]="filteredDomainOptions"
@@ -100,7 +100,7 @@
                 class="domain-class"
                 [options]="filteredDomainOptions"
                 appendTo="body"
-                [(ngModel)]="domain"
+                [(ngModel)]="dialogDomain"
                 optionLabel="domain"
                 [disabled]="edit"
                 placeholder="Select an option"
@@ -117,8 +117,8 @@
                 class="domain-class"
                 [options]="domain?.sub_domain"
                 appendTo="body"
-                [(ngModel)]="subDomain"
-                (onChange)="changeSubDomainForInfoset()"
+                [(ngModel)]="dialogSubDomain"
+                (onChange)="dialogSubDomainForInfoset()"
                 placeholder="Select an option"
                 [filter]="true"
                 [disabled]="edit"
@@ -132,7 +132,9 @@
             </div>
 
             <div class="col-sm-6">
-              <ng-container *ngIf="filteredInfosetOptions.length > 0">
+              <ng-container
+                *ngIf="filteredInfosetOptions.length > 0 && edit === true"
+              >
                 <label>Select Infoset</label>
                 <!-- <p-autoComplete appendTo="body" class="domain-class" [suggestions]="filteredInfosetOptions" field=""
                   placeholder="Select">
@@ -164,7 +166,7 @@
                 />
               </ng-container> -->
             </div>
-            <div
+            <!-- <div
               class="col-sm-6"
               *ngIf="filteredInfosetOptions.length > 0 && edit === false"
             >
@@ -172,7 +174,7 @@
                 class="pi pi-plus blue-round-plus"
                 (click)="filteredInfosetOptions = []"
               ></i>
-            </div>
+            </div> -->
             <!-- <div class="col-sm-6 d-flex align-items-end">
               <button class="save-btn" (click)="selectReport = 'Configuration'">
                 Next
@@ -953,9 +955,16 @@
                 pInputText
                 placeholder="Enter "
                 required
-                (onChange)="titleChange($event.target, i)"
+                (ngModelChange)="titleChange($event, i)"
               />
             </div>
+          </div>
+          <div class="mt-4 d-flex justify-content-center gap-2">
+            <span class="btn-span pointer" (click)="saveChangedTitle()"
+              >Submit</span
+            >
+
+            <span class="back-btn pointer" (click)="cancel()">Cancel</span>
           </div>
         </ng-container>
         <ng-container
@@ -1044,6 +1053,7 @@
         <div *ngIf="activeMenu === 'appearance'">
           <app-appearance
             (configChanged)="appearanceData($event)"
+            [config]="appearanceConfig"
           ></app-appearance>
         </div>
         <div *ngIf="activeMenu === 'config'">
