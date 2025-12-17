@@ -22,10 +22,29 @@ export class MessagingService {
     // }
     isSupported().then((supported) => {
       if (supported) {
-        const messaging = getMessaging();
-        navigator.serviceWorker.addEventListener('message', (event) => {
-          this.processMessage(event.data);
-        });
+         const messaging = getMessaging();
+        // navigator.serviceWorker.addEventListener('message', (event) => {
+        //   this.processMessage(event.data);
+        // });
+         onMessage(messaging, (payload) => {
+                    console.log('Foreground message:', payload);
+                    this.processMessage(payload);
+                  });
+
+                  // Handle messages from service worker (BACKGROUND)
+                  navigator.serviceWorker.addEventListener(
+                    'message',
+                    (event) => {
+                      console.log('Message from SW:', event.data);
+
+                      if (
+                        event.data &&
+                        event.data.type === 'FIREBASE_NOTIFICATION'
+                      ) {
+                        this.processMessage(event.data);
+                      }
+                    }
+                  );
       }
     });
     fromEvent(window, 'myCustomEvent').subscribe((item: any) => {
