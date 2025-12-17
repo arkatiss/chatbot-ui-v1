@@ -1,4 +1,4 @@
-<!-- peer sended messages -->
+<!-- peer sended messages
 
 
 <div *ngFor="let a of peermessages;let idx = index;">
@@ -36,14 +36,14 @@
           </span>
         </div>
       </div>
-  
+
     </div>
 
-    <!-- agent chat -->
+
     <div *ngFor="let a of agentResponse">
       <div class="media media-chat input p-0" *ngIf="loguser === a.sender_name">
         <p class="textFirst2 pointer mr-2" *ngIf="a.body !== undefined">{{loguser.charAt(0) | titlecase}} </p>
-      
+
         <div class="media-body m-0">
           <p class="bot-input " *ngIf="a.body !== undefined">{{a.body}}
             &nbsp;&nbsp;
@@ -63,4 +63,61 @@
                 {{a.peer_time |date:'shortTime'}} </small></sub>
         </div>
       </div>
+    </div> -->
+
+<!-- Chat Messages -->
+<div *ngFor="let a of peermessages">
+  <!-- OUTGOING (logged-in user) -->
+  <div class="chat-row outgoing" *ngIf="user === a.sender_name">
+    <div class="bubble outgoing">
+      {{ a.body }}
+
+      <div class="meta">
+        {{ a.peer_time | date : "shortTime" }}
+
+        <mat-icon *ngIf="a.peer_flag === 0">check</mat-icon>
+        <mat-icon *ngIf="a.peer_flag === 1">done_all</mat-icon>
+      </div>
     </div>
+    <div class="avatar">
+      {{ loginname.charAt(0) | titlecase }}
+    </div>
+  </div>
+
+  <!-- INCOMING -->
+  <div class="chat-row incoming" *ngIf="user !== a.sender_name">
+    <div class="avatar">
+      {{ custFirst.charAt(0) | titlecase }}
+    </div>
+
+    <div class="bubble incoming">
+      {{ a.body }}
+      <div class="meta">
+        {{ a.peer_time | date : "shortTime" }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Agent Messages -->
+<div *ngFor="let a of agentResponse">
+  <div class="chat-row outgoing" *ngIf="loguser === a.sender_name">
+    <div class="avatar">
+      {{ loguser.charAt(0) | titlecase }}
+    </div>
+
+    <div class="bubble outgoing">
+      {{ a.body }}
+      <div class="meta">{{ a.peer_time | date : "shortTime" }}</div>
+    </div>
+  </div>
+
+  <div class="chat-row incoming" *ngIf="loguser !== a.sender_name">
+    <img src="{{ iconurl }}programmer.png" class="agent-icon" />
+
+    <div class="bubble incoming">
+      {{ a.body }}
+      <div class="meta">{{ a.peer_time | date : "shortTime" }}</div>
+    </div>
+  </div>
+</div>

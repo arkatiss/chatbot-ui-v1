@@ -5,11 +5,12 @@
   padding: 10px 0px;
   margin: 1px 0px;
   // width: 24.2%;
-  width: 23.4%;
+  // width: 23.4%;
+  width: 100%;
   border-radius: 8px;
   background-color: #ffffff;
-  position: fixed;
-  left: 16px;
+  // position: fixed;
+  // left: 16px;
   bottom: 14px;
   color: white;
   text-align: center;
@@ -17,7 +18,8 @@
 }
 @media (min-width: 700px) and (max-width: 1399px) {
   .publisher {
-    width: 23.9% !important;
+    // width: 23.9% !important;
+    width: 100% !important;
   }
 }
 
@@ -41,12 +43,14 @@ span.publisher-btn.file-group {
 }
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
   .publisher {
-    width: 28.5% !important;
+    // width: 28.5% !important;
+    width: 100% !important;
   }
 }
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
   .publisher {
-    width: 38% !important;
+    // width: 38% !important;
+    width: 100% !important;
   }
 }
 .gradient {

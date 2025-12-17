@@ -664,6 +664,7 @@ export class ChatComponent implements OnInit, OnChanges {
         text: data.msg,
       });
     }
+    this.cdr.detectChanges();
   }
   chatUser(val: any): any {
     this.pageservice.setStatusUser(val.username);
@@ -1814,6 +1815,7 @@ export class ChatComponent implements OnInit, OnChanges {
           sender_name: this.loginuserName,
           receiver_name: this.chatname,
           peer_chat_type: this.peerChatType,
+          input: this.inputmsg,
         };
         this.cs.sendMessage(body).subscribe(
           (res) => {
@@ -1831,6 +1833,7 @@ export class ChatComponent implements OnInit, OnChanges {
           sender_name: this.loginuserName,
           receiver_name: this.chatname,
           peer_chat_type: this.peerChatType,
+          input: this.inputmsg,
         };
         this.cs.sendMessage(body).subscribe(
           (res) => {
@@ -1855,6 +1858,7 @@ export class ChatComponent implements OnInit, OnChanges {
           sender_name: this.loginuserName,
           receiver_name: this.chatname,
           peer_chat_type: this.peerChatType,
+          input: this.inputmsg,
         };
         this.cs.sendMessage(body).subscribe(
           (res) => {
