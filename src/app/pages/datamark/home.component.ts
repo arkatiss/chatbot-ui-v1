@@ -6,6 +6,7 @@ import {
   Inject,
   ElementRef,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { ScrollToBottomDirective } from '../scroll-to-bottom.directive';
@@ -121,7 +122,8 @@ export class HomeComponent implements OnInit {
     private msgservice: MessagingService,
     private ds: DatamarkService,
     private error: ErrorService,
-    public url: UrlConfigService
+    public url: UrlConfigService,
+    private cdr: ChangeDetectorRef
   ) {
     this.service.init();
     // const time = new Date();
@@ -910,6 +912,7 @@ export class HomeComponent implements OnInit {
         text: this.error.handleError(data),
       });
     }
+    this.cdr.detectChanges();
   }
 
   showBotChat(): any {
