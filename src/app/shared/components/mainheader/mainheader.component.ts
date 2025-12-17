@@ -6,6 +6,7 @@ import {
   HostListener,
   Output,
   EventEmitter,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
@@ -51,7 +52,8 @@ export class MainheaderComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private msgservice: MessagingService,
     private gs: GeneralService,
-    private api: ApicallService
+    private api: ApicallService,
+    private cdr:ChangeDetectorRef
   ) {
     const imgUrl = this.gs.getPropertiesUrl();
 
@@ -125,6 +127,7 @@ export class MainheaderComponent implements OnInit {
           }
         }
       }
+      this.cdr.detectChanges();
     });
     this.pageservice.getShowView().subscribe((info: any) => {
       if (info !== undefined && info !== null) {
@@ -199,6 +202,7 @@ export class MainheaderComponent implements OnInit {
     } else {
       this.notificationClass = '';
     }
+    this.cdr.detectChanges();
   }
   getNotificationsData(): any {
     let normalchatarray: any[] = [];
@@ -350,6 +354,7 @@ export class MainheaderComponent implements OnInit {
         }
       });
     }
+    this.cdr.detectChanges();
   }
 
   acceptRequest(status: any, totObj: any): void {

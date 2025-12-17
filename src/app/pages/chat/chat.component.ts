@@ -283,10 +283,13 @@ export class ChatComponent implements OnInit, OnChanges {
           this.checkedtoggle = false;
         }
       }
+       this.cdr.detectChanges();
     });
     this.msgservice.recievedCloudMessage().subscribe((info: any) => {
       if (info !== undefined && info !== null) {
+
         if (info.data.peer_chat_type === 'normal') {
+
           if (info.data.is_updated === 'true') {
             this.peerResponse.map((item) => {
               item.peer_flag = +info.data.peer_flag;
@@ -302,6 +305,7 @@ export class ChatComponent implements OnInit, OnChanges {
             }
           } else {
             this.peerResponse.push(info.data);
+            this.peerResponse = [...this.peerResponse]
             this.isTyping = false;
             this.peerChatType = 'normal';
             this.updateRetPersonChat();
@@ -379,6 +383,7 @@ export class ChatComponent implements OnInit, OnChanges {
             info.data.is_typing !== null &&
             info.data.is_typing !== undefined
           ) {
+
             if (info.data.is_typing === 'true') {
               this.isTyping = true;
             } else {
@@ -403,6 +408,7 @@ export class ChatComponent implements OnInit, OnChanges {
           }
         }
       }
+      this.cdr.detectChanges();
     });
     this.pageservice.getVoiceChat().subscribe((info: any) => {
       // if(info !== undefined && info !== '' && info !== null && Object.keys(info).length > 0) {
@@ -427,6 +433,7 @@ export class ChatComponent implements OnInit, OnChanges {
       } else if (info === 'agent') {
         this.showSelectedTab('agent');
       }
+       this.cdr.detectChanges();
     });
 
     this.pageservice.getSwitchData().subscribe((info: any) => {
@@ -1018,6 +1025,7 @@ export class ChatComponent implements OnInit, OnChanges {
       sender_name: this.loginuserName,
       receiver_name: this.chatname,
       peer_chat_type: 'normal',
+      input:''
     };
     this.cs.sendMessage(body).subscribe(
       (res) => {
@@ -1069,10 +1077,12 @@ export class ChatComponent implements OnInit, OnChanges {
     if (data.res_status === true) {
       this.peerResponse = data.data;
       this.typeOfUser = data.data[0].peer_chat_type;
+
       this.updateRetPersonChat();
     } else {
       this.peerResponse = [];
     }
+    this.cdr.detectChanges();
   }
   updateRetPersonChat(): any {
     const body = {
@@ -1080,6 +1090,7 @@ export class ChatComponent implements OnInit, OnChanges {
       sender_name: this.loginuserName,
       receiver_name: this.chatname,
       peer_chat_type: this.peerChatType,
+      input:''
     };
     this.cs.sendMessage(body).subscribe(
       (res) => {
@@ -1810,12 +1821,13 @@ export class ChatComponent implements OnInit, OnChanges {
     if (this.showPeerAgentChat === true) {
       if (curLength > this.prevLength && this.prevLength === 0) {
         const body = {
+
           peer_type: 'typing',
           typing: 'true',
           sender_name: this.loginuserName,
           receiver_name: this.chatname,
           peer_chat_type: this.peerChatType,
-          input: this.inputmsg,
+          input: '',
         };
         this.cs.sendMessage(body).subscribe(
           (res) => {
@@ -1833,7 +1845,7 @@ export class ChatComponent implements OnInit, OnChanges {
           sender_name: this.loginuserName,
           receiver_name: this.chatname,
           peer_chat_type: this.peerChatType,
-          input: this.inputmsg,
+          input: '',
         };
         this.cs.sendMessage(body).subscribe(
           (res) => {
@@ -1858,7 +1870,7 @@ export class ChatComponent implements OnInit, OnChanges {
           sender_name: this.loginuserName,
           receiver_name: this.chatname,
           peer_chat_type: this.peerChatType,
-          input: this.inputmsg,
+          input: '',
         };
         this.cs.sendMessage(body).subscribe(
           (res) => {
