@@ -554,6 +554,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {}
   addNode(type: string, parentKey: number): void {
+    debugger;
     const newKey = ++this.nextKey;
 
     let obj = {
@@ -575,6 +576,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       oper_link: '',
       oper_output: '',
       oper_value: '',
+      file: '',
       id: '',
       // infoset: this.diagramNodeData[this.diagramNodeData.length - 1]?.infoset ?? '',
       type: type,
@@ -1370,7 +1372,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       this.toast.warning(
         'This infoset already exists. You are not allowed to save it. Please update the existing infoset instead.'
       );
-    } else if ((this.infosetFlag = false)) {
+    } else if (this.infosetFlag === false) {
       this.api.saveInfoset(body).subscribe(
         (res) => {
           console.log(res);
@@ -1435,6 +1437,9 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
         oper_output: this.getValidValue(item.oper_output),
         oper_value: this.getValidValue(item.oper_value),
         description: this.getValidValue(item.description),
+        file: this.getValidValue(item.file),
+        type: this.getValidValue(item.type),
+        key: item.key,
         childs: [],
         title: item.attr_name,
       };
@@ -1457,6 +1462,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   editRow(evt: any) {
     console.log(evt);
     this.edit = true;
+    this.infosetFlag = false;
     this.diagramNodeData = evt.item.info_data?.draggedData?.nodeData;
     this.diagramLinkData = evt.item.info_data?.draggedData?.linkData;
     this.appearanceConfig = evt.item.info_data?.appearance;
@@ -1536,5 +1542,17 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       customCSS: '',
       chatPosition: 'right',
     };
+  }
+
+  onFileSelect(event: any, field: 'widgetIcon' | 'headerLogo' | 'botIcon') {
+    debugger;
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.diagramNodeData[this.rowNodeIndex].file = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 }
