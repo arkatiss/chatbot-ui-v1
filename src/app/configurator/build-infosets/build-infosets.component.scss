@@ -446,3 +446,33 @@ span.spanBorder {
 .bot-chat-conatiner .p-dialog {
   border-radius: 50px;
 }
+
+.upload-box {
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 12px 20px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: white;
+  width: fit-content;
+}
+
+.upload-box:hover {
+  border-color: #d82028;
+  background: #f8f9fa;
+}
+
+.upload-box i {
+  color: #d82028;
+  font-size: 20px;
+}
+
+.preview-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+}
