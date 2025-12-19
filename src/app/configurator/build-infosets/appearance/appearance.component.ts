@@ -21,8 +21,8 @@ export class AppearanceComponent {
     botIcon: '',
     headerText: 'ARKATISS DESK',
     hintText: 'Enter Prompt',
-    accentColor: '#ffffff',
-    fontColor: '#555555',
+    fontColor: '#ffffff',
+    accentColor: '#555555',
     customCSS: '',
     chatPosition: 'right',
   };

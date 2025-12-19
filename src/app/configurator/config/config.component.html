@@ -3,7 +3,179 @@
 </div>
 <app-timer></app-timer>
 <div class="row m-0 p-0">
-  <div class="col-sm-2 pl-3 pr-0 p-0">
+  <!-- <div
+    [ngClass]="{
+      'col-sm-2 ': !collapsed,
+      'col-sm-auto': collapsed
+    }"
+  >
+    <div class="sidenav card m-0 p-0">
+      <div class="d-flex justify-content-end align-items-end">
+        <img
+          *ngIf="!collapsed"
+          [src]="imgUrl + 'images/close.svg'"
+          class="close_icon"
+          width="40"
+          height="40"
+          alt=""
+          (click)="toggleSidebar()"
+        />
+        <img
+          *ngIf="collapsed"
+          [src]="imgUrl + 'images/open.svg'"
+          class="close_icon"
+          width="40"
+          height="40"
+          alt=""
+          (click)="toggleSidebar()"
+        />
+      </div>
+      <div class="toggle-btn text-end p-2">
+        <i
+          class="pi"
+          [ngClass]="
+            collapsed ? 'pi-chevron-circle-right' : 'pi-chevron-circle-left'
+          "
+          (click)="toggleSidebar()"
+        ></i>
+      </div>
+
+      <ul class="nav flex-column">
+        <li *ngFor="let item of navItems" class="nav-item">
+          <a
+            class="nav-link d-flex align-items-center"
+            [ngClass]="{ 'active-parent': activeParent === item }"
+            (click)="selectParent(item)"
+            [title]="collapsed ? item.label : ''"
+          >
+            <i class="me-2" [ngClass]="item.icon"></i>
+            <span *ngIf="!collapsed">{{ item.label }}</span>
+            <i
+              *ngIf="item.children && !collapsed"
+              class="ms-auto"
+              [ngClass]="
+                activeParent === item
+                  ? 'pi pi-chevron-up'
+                  : 'pi pi-chevron-down'
+              "
+            ></i>
+          </a>
+
+
+          <ul
+            *ngIf="item.children && activeParent === item && !collapsed"
+            class="nav flex-column ms-5"
+          >
+            <li *ngFor="let child of item.children">
+              <a
+                class="nav-link"
+                [ngClass]="{ 'active-child': activeChild === child }"
+                (click)="selectChild(item, child)"
+              >
+                {{ child.label }}
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div> -->
+
+  <div
+    [ngClass]="{
+      'col-sm-2': !collapsed,
+      'col-sm-auto': collapsed
+    }"
+  >
+    <div class="sidenav card m-0 p-0">
+      <!-- Toggle -->
+      <div class="d-flex justify-content-end align-items-end p-2">
+        <img
+          *ngIf="!collapsed"
+          [src]="imgUrl + 'images/close.svg'"
+          class="close_icon"
+          width="32"
+          height="32"
+          alt=""
+          (click)="toggleSidebar()"
+        />
+        <img
+          *ngIf="collapsed"
+          [src]="imgUrl + 'images/open.svg'"
+          class="close_icon"
+          width="32"
+          height="32"
+          alt=""
+          (click)="toggleSidebar()"
+        />
+      </div>
+
+      <!-- Navigation -->
+      <ul class="nav flex-column">
+        <li *ngFor="let item of navItems" class="nav-item position-relative">
+          <!-- Parent -->
+          <a
+            class="nav-link d-flex align-items-center"
+            [ngClass]="{ 'active-parent': activeParent === item }"
+            (click)="!collapsed && selectParent(item)"
+            (mouseenter)="collapsed && showOverlay($event, item, op)"
+            (mouseleave)="collapsed && hideOverlay(op)"
+            [title]="collapsed ? item.label : ''"
+          >
+            <i class="me-2" [ngClass]="item.icon"></i>
+
+            <span *ngIf="!collapsed">
+              {{ item.label }}
+            </span>
+
+            <i
+              *ngIf="item.children && !collapsed"
+              class="ms-auto pi"
+              [ngClass]="
+                activeParent === item ? 'pi-chevron-up' : 'pi-chevron-down'
+              "
+            ></i>
+          </a>
+
+          <!-- Collapsed Hover Children -->
+          <p-overlayPanel
+            #op
+            appendTo="body"
+            [dismissable]="true"
+            [showCloseIcon]="false"
+          >
+            <ul class="list-unstyled m-0">
+              <li
+                *ngFor="let child of item.children"
+                class="overlay-item px-3 py-2"
+                (click)="navigateFromOverlay(item, child, op)"
+              >
+                {{ child.label }}
+              </li>
+            </ul>
+          </p-overlayPanel>
+
+          <!-- Expanded Children -->
+          <ul
+            *ngIf="item.children && activeParent === item && !collapsed"
+            class="nav flex-column ms-5"
+          >
+            <li *ngFor="let child of item.children">
+              <a
+                class="nav-link"
+                [ngClass]="{ 'active-child': activeChild === child }"
+                (click)="selectChild(item, child)"
+              >
+                {{ child.label }}
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- <div class="col-sm-2 pl-3 pr-0 p-0">
     <div class="card sidenav">
       <mat-accordion class="example-headers-align">
         <mat-expansion-panel class="m-0">
@@ -40,14 +212,14 @@
           >
             Create
           </p>
-          <!-- <p
+          <p
             class="subheaders"
             mat-button
             routerLinkActive="active-list-item"
             routerLink="/config/createinfoset"
           >
             Create
-          </p> -->
+          </p>
           <p
             class="subheaders"
             mat-button
@@ -57,7 +229,7 @@
             View
           </p>
         </mat-expansion-panel>
-        <!-- <mat-expansion-panel class="m-0">
+        <mat-expansion-panel class="m-0">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
                                 Data Auth
@@ -68,7 +240,7 @@
                         <p class="subheaders"  mat-button
                         routerLinkActive="active-list-item" routerLink="/config/viewdataauth" >
                             View</p>
-                    </mat-expansion-panel> -->
+                    </mat-expansion-panel>
         <mat-expansion-panel class="m-0">
           <mat-expansion-panel-header>
             <mat-panel-title> Training </mat-panel-title>
@@ -102,15 +274,21 @@
           >
             Create
           </p>
-          <!-- <p class="subheaders"  mat-button
+          <p class="subheaders"  mat-button
                     routerLinkActive="active-list-item" routerLink="/config/training" >
-                        View</p> -->
+                        View</p>
         </mat-expansion-panel>
       </mat-accordion>
     </div>
-  </div>
+  </div> -->
 
-  <div class="col-sm-10 p-0 pl-3 pr-3">
+  <div
+    class="col-sm-10 p-0 pl-3 pr-3"
+    [ngClass]="{
+      'col-sm-10 ': !collapsed,
+      'col-sm ': collapsed
+    }"
+  >
     <ngx-spinner
       bdColor="rgba(51,51,51,0.2)"
       size="default"

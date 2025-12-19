@@ -549,7 +549,7 @@
 
     <p-dialog
       [(visible)]="showConfigMenu"
-      [style]="{ width: '20vw', height: '81vh' }"
+      [style]="{ width: '25vw', height: '81vh' }"
       [draggable]="true"
       [resizable]="true"
       position="bottomright"
@@ -881,24 +881,31 @@
                 />
                 <!-- </p-fieldset> -->
               </div>
-              <div class="col-sm-6" *ngIf="showfile">
+              <div class="col-sm-12 pl-4" *ngIf="showfile">
                 <!-- <p-fileUpload></p-fileUpload> -->
-                <div class="mb-4 row">
+                <div class="d-flex">
                   <label class="upload-box d-block col-md-10 col-sm-12">
-                    <i class="pi pi-image"></i>
-                    <span class="ms-2">File</span>
+                    <i class="pi pi-upload"></i>
+                    <span class="ms-4">Browse</span>
                     <input
                       type="file"
                       (change)="onFileSelect($event, 'botIcon')"
                       hidden
                     />
                   </label>
-                  <img
+                  <!-- <img
                     *ngIf="this.diagramNodeData[this.rowNodeIndex].file"
                     [src]="this.diagramNodeData[this.rowNodeIndex].file"
                     class="preview-img mt-2"
-                    alt="Bot Icon"
-                  />
+                    alt="Preview"
+                  /> -->
+                  <div
+                    *ngIf="selectedFileData.name"
+                    class="ps-3 d-flex align-items-center"
+                  >
+                    <!-- <i class="pi pi-file"></i> -->
+                    <span class="ms-2">{{ selectedFileData.name }}</span>
+                  </div>
                 </div>
               </div>
 

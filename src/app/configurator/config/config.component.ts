@@ -7,6 +7,13 @@ import { CommonService } from '../../helper/common.service';
 import { PagesService } from '../../pages/pages.service';
 import { GeneralService } from '../../helper/general.service';
 import { ErrorService } from '../../helper/error.service';
+
+interface NavItem {
+  label: string;
+  icon: string;
+  route?: string;
+  children?: NavItem[];
+}
 @Component({
   selector: 'app-config',
   templateUrl: './config.component.html',
@@ -102,4 +109,185 @@ export class ConfigComponent implements OnInit {
     });
     this.userStatus();
   }
+
+  imgUrl = '/assets/';
+  collapsed = false;
+  activeParent: NavItem | null = null;
+  activeChild: NavItem | null = null;
+
+  // navItems: NavItem[] = [
+  //   {
+  //     label: 'Domain',
+  //     icon: 'fa fa-plus',
+  //     children: [
+  //       { label: 'Create', icon: 'fa fa-plus', route: '/config/createdomain' },
+  //       { label: 'View', icon: 'fa fa-plus', route: '/config/viewdomain' },
+  //     ],
+  //   },
+  //   {
+  //     label: 'Infoset',
+  //     icon: 'fa fa-plus',
+  //     children: [
+  //       { label: 'Create', icon: 'fa fa-plus', route: '/config/infoset' },
+  //       // { label: 'Create', icon: 'fa fa-plus', route: '/config/createinfoset' },
+  //       { label: 'View', icon: 'fa fa-plus', route: '/config/viewinfoset' },
+  //     ],
+  //   },
+  //   // {
+  //   //   label: 'Data Auth',
+  //   //   icon: 'fa fa-plus',
+  //   //   children: [
+  //   //     {
+  //   //       label: 'Create',
+  //   //       icon: 'fa fa-plus',
+  //   //       route: '/config/dataauthcreate',
+  //   //     },
+  //   //     { label: 'View', icon: 'fa fa-plus', route: '/config/viewdataauth' },
+  //   //   ],
+  //   // },
+  //   {
+  //     label: 'Training',
+  //     icon: 'fa fa-plus',
+  //     children: [
+  //       {
+  //         label: 'New App On Boarding',
+  //         icon: 'fa fa-plus',
+  //         route: '/config/createtraining',
+  //       },
+  //       {
+  //         label: 'Failed Utterances',
+  //         icon: 'fa fa-plus',
+  //         route: '/config/training',
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     label: 'Configurations',
+  //     icon: 'fa fa-plus',
+  //     children: [
+  //       {
+  //         label: 'Create',
+  //         icon: 'fa fa-plus',
+  //         route: '/config/configurations',
+  //       },
+  //       { label: 'View', icon: 'fa fa-plus', route: '/config/training' },
+  //     ],
+  //   },
+  // ];
+  navItems: NavItem[] = [
+    {
+      label: 'Domain',
+      icon: 'fa-solid fa-diagram-project',
+      children: [
+        {
+          label: 'Create',
+          route: '/config/createdomain',
+          icon: 'fa-solid fa-circle-plus',
+        },
+        { label: 'View', route: '/config/viewdomain', icon: 'fa-solid fa-eye' },
+      ],
+    },
+    {
+      label: 'Infoset',
+      icon: 'fa-solid fa-folder',
+      children: [
+        {
+          label: 'Create',
+          route: '/config/infoset',
+          icon: 'fa-solid fa-circle-plus',
+        },
+        // {
+        //   label: 'Create',
+        //   route: '/config/createinfoset',
+        //   icon: 'fa-solid fa-circle-plus',
+        // },
+        {
+          label: 'View',
+          route: '/config/viewinfoset',
+          icon: 'fa-solid fa-eye',
+        },
+      ],
+    },
+    // {
+    //   label: 'Data Auth',
+    //   icon: 'fa-solid fa-shield-halved',
+    //   children: [
+    //     {
+    //       label: 'Create',
+    //       route: '/config/dataauthcreate',
+    //       icon: 'fa-solid fa-circle-plus',
+    //     },
+    //     {
+    //       label: 'View',
+    //       route: '/config/viewdataauth',
+    //       icon: 'fa-solid fa-eye',
+    //     },
+    //   ],
+    // },
+    {
+      label: 'Training',
+      icon: 'fa-solid fa-book-journal-whills',
+      children: [
+        {
+          label: 'New App On Boarding',
+          route: '/config/createtraining',
+          icon: 'fa-solid fa-rocket',
+        },
+        {
+          label: 'Failed Utterances',
+          route: '/config/training',
+          icon: 'fa-solid fa-triangle-exclamation',
+        },
+      ],
+    },
+    {
+      label: 'Configurations',
+      icon: 'fa-solid fa-gear',
+      children: [
+        {
+          label: 'Create',
+          route: '/config/configurations',
+          icon: 'fa-solid fa-circle-plus',
+        },
+        { label: 'View', route: '/config/training', icon: 'fa-solid fa-eye' },
+      ],
+    },
+  ];
+
+  toggleSidebar() {
+    this.collapsed = !this.collapsed;
+  }
+
+  selectParent(item: NavItem) {
+    if (item.children) {
+      this.activeParent = this.activeParent === item ? null : item;
+    } else if (item.route) {
+      this.activeParent = item;
+      this.activeChild = null;
+      this.router.navigate([item.route]);
+    }
+  }
+
+  selectChild(parent: NavItem, child: NavItem) {
+    this.activeParent = parent;
+    this.activeChild = child;
+    if (child.route) {
+      this.router.navigate([child.route]);
+    }
+  }
+
+  showOverlay(event: Event, item: any, overlay: any) {
+  if (!item.children) return;
+  overlay.show(event);
+}
+
+hideOverlay(overlay: any) {
+  overlay.hide();
+}
+
+navigateFromOverlay(parent: any, child: any, overlay: any) {
+  this.selectChild(parent, child);
+  overlay.hide();
+}
+
 }
