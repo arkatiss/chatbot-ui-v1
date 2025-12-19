@@ -140,6 +140,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   public diagramDivClassName: string = 'myDiagramDiv';
   activeMenu: any;
   selectedFile!: File;
+  selectedFileData!: File | any;
   imagePreviewUrl!: string | ArrayBuffer | null | any;
   widgetIcon!: string | ArrayBuffer | null | any;
   headerIcon!: string | ArrayBuffer | null | any;
@@ -1537,15 +1538,18 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       botIcon: '',
       headerText: 'ARKATISS DESK',
       hintText: 'Enter Prompt',
-      accentColor: '#ffffff',
-      fontColor: '#555555',
+      fontColor: '#ffffff',
+      accentColor: '#555555',
       customCSS: '',
       chatPosition: 'right',
     };
   }
 
   onFileSelect(event: any, field: 'widgetIcon' | 'headerLogo' | 'botIcon') {
-    debugger;
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files) {
+      this.selectedFileData = fileInput.files[0];
+    }
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();

@@ -80,3 +80,48 @@
   margin-right: 1em;
   color: white;
 }
+
+//latest css
+
+.sidebar {
+  transition: width 0.3s;
+}
+
+.nav-link {
+  cursor: pointer;
+  padding: 10px 20px;
+  margin: 0px 5px;
+}
+
+.active-parent {
+  font-weight: bold;
+  background-color: #e9ecef;
+  padding: 10px 20px;
+  margin: 0px 5px;
+}
+
+.active-child {
+  font-weight: bold;
+  // background-color: #dee2e6;
+}
+
+.nav-link:hover {
+  background-color: #f8f9fa;
+}
+
+.close_icon {
+  //position: absolute;
+  margin-top: -1rem;
+  margin-right: -1.1rem;
+  cursor: pointer;
+  float: right;
+}
+
+.overlay-item {
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.overlay-item:hover {
+  background-color: #f1f1f1;
+}
