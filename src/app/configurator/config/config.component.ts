@@ -253,6 +253,7 @@ export class ConfigComponent implements OnInit {
       ],
     },
   ];
+  currentOverlay: any;
 
   toggleSidebar() {
     this.collapsed = !this.collapsed;
@@ -276,18 +277,26 @@ export class ConfigComponent implements OnInit {
     }
   }
 
+
   showOverlay(event: Event, item: any, overlay: any) {
-  if (!item.children) return;
-  overlay.show(event);
-}
+    if (!item.children) return;
 
-hideOverlay(overlay: any) {
-  overlay.hide();
-}
+    // Close previously open overlay
+    if (this.currentOverlay && this.currentOverlay !== overlay) {
+      this.currentOverlay.hide();
+    }
 
-navigateFromOverlay(parent: any, child: any, overlay: any) {
-  this.selectChild(parent, child);
-  overlay.hide();
-}
+    this.currentOverlay = overlay;
+    overlay.show(event);
+  }
 
+
+  onOverlayLeave(overlay: any) {
+    overlay.hide();
+  }
+
+  navigateFromOverlay(parent: any, child: any, overlay: any) {
+    this.selectChild(parent, child);
+    overlay.hide();
+  }
 }

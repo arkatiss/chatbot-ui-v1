@@ -1888,3 +1888,19 @@ ol,
 ul {
   padding: 0;
 }
+.custom-overlaypanel {
+  margin-top: -1em !important;
+  margin-left: 4em !important;
+  // margin-left: 8px !important;
+  // position: relative !important;
+
+  // right: 5em !important;
+}
+
+.custom-overlaypanel .overlay-item:hover {
+  background-color: #f1f1f1;
+}
+.custom-overlaypanel:before,
+.custom-overlaypanel:after {
+  display: none !important;
+}
