@@ -83,6 +83,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { NgxOrgChartComponent } from '@ahmedaoui/ngx-org-chart';
 import { PopupMessagesComponent } from './build-infosets/popup-messages/popup-messages.component';
+import { MegaMenuModule } from 'primeng/megamenu';
 
 @NgModule({
   declarations: [
@@ -146,6 +147,7 @@ import { PopupMessagesComponent } from './build-infosets/popup-messages/popup-me
     FileUploadModule,
     SliderModule,
     ButtonModule,
+    MegaMenuModule,
     // NgIdleKeepaliveModule.forRoot()
     // NgxAnnotateTextModule
     // AgGridModule.withComponents([]),
