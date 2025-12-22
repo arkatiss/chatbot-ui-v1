@@ -35,12 +35,13 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   private overlayRef!: OverlayRef;
   updatedTitle: any = '';
   updateIndex: any;
-
+pendingNodePoint: go.Point | null = null;
   public diagramNodeData: Array<go.ObjectData> | any = [
     {
       key: 1,
-      text: 'Bot is triggered ' + 1,
+      text: 'Build triggered ',
       color: '#fff',
+      loc: '-750 -231',
       parent: '',
       font: '14px Manrope',
       buttonColor: '#3EA3EC',
@@ -552,58 +553,78 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       }
     );
   }
+@ViewChild('myDiagram', { static: false })
+diagramComponent!: any;
 
   ngOnChanges(changes: SimpleChanges): void {}
-  addNode(type: string, parentKey: number): void {
-    debugger;
-    const newKey = ++this.nextKey;
+   getChildLocation(parentKey: number): string {
+  const parent = this.diagramNodeData.find((n: { key: number; }) => n.key === parentKey);
+  if (!parent?.loc) return '0 0';
 
-    let obj = {
-      key: newKey,
-      text: type,
-      color: '#fff',
-      parent: parentKey,
-      buttonColor: '#3EA3EC',
-      plusIconColor: '#fff',
-      operation_type: '',
-      description: '',
-      category: '',
-      master_data_id: '',
-      //domain: this.diagramNodeData[this.diagramNodeData.length - 1]?.domain ?? '',
-      //sub_domain: this.diagramNodeData[this.diagramNodeData.length - 1]?.sub_domain ?? '',
-      attr_type: '',
-      attr_name: '',
-      attr_ref: '',
-      oper_link: '',
-      oper_output: '',
-      oper_value: '',
-      file: '',
-      id: '',
-      // infoset: this.diagramNodeData[this.diagramNodeData.length - 1]?.infoset ?? '',
-      type: type,
-    };
-    if (type === 'Form') {
-      Object.assign(obj, {
-        fields: [
-          {
-            name: 'Ticket Id',
-            type: '',
-            placeholder: '',
-            value: '',
-            required: false,
-          },
-        ],
-      });
-    }
-    //this.rowNodeIndex = this.diagramNodeData.length;
-    this.diagramNodeData.push(obj);
-    this.diagramLinkData.push({ key: -newKey, from: parentKey, to: newKey });
-    console.log(this.diagramNodeData);
-    console.log(this.diagramLinkData);
-    this.skipsDiagramUpdate = false;
-    this.diagramNodeData = [...this.diagramNodeData];
-    this.diagramLinkData = [...this.diagramLinkData];
-  }
+  const siblings = this.diagramNodeData.filter(
+    (    n: { parent: number; }) => n.parent === parentKey
+  );
+
+  const p = go.Point.parse(parent.loc);
+
+  const spacing = 180;
+  const startX = p.x - ((siblings.length - 1) * spacing) / 2;
+
+  const x = startX + siblings.length * spacing;
+  const y = p.y + 140;
+
+  return `${x} ${y}`;
+}
+
+addNode(type: string): void {
+  debugger;
+  const diagram: go.Diagram = this.diagramComponent.diagram;
+  const model = diagram.model as go.GraphLinksModel;
+
+  const parentKey = this.contextNodeData.key;
+  const newKey = ++this.nextKey;
+
+  diagram.startTransaction('add node');
+  this.skipsDiagramUpdate = true;
+  // const loc = this.pendingNodePoint
+  //   ? go.Point.stringify(this.pendingNodePoint)
+  //   : undefined;
+const loc = this.getChildLocation(parentKey);
+  const newNode: any = {
+    key: newKey,
+    text: type,
+    parent: parentKey,
+    loc,
+    color: '#fff',
+    buttonColor: '#3EA3EC',
+    plusIconColor: '#fff',
+    isLayoutPositioned: false,
+    type,
+    master_data_id:'',
+    category:'',
+    description:'',
+  };
+
+
+  model.addNodeData(newNode);
+  model.addLinkData({
+    key: -newKey,
+    from: parentKey,
+    to: newKey
+  });
+this.diagramNodeData.push(newNode);
+this.diagramLinkData.push({ key: -newKey, from: parentKey, to: newKey });
+this.diagramNodeData = [...this.diagramNodeData];
+this.diagramLinkData = [...this.diagramLinkData];
+console.log(this.diagramNodeData);
+
+  diagram.commitTransaction('add node');
+
+  this.pendingNodePoint = null;
+}
+
+
+
   public initDiagram(): go.Diagram {
     const $ = go.GraphObject.make;
 
@@ -613,112 +634,167 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
         linkKeyProperty: 'key',
       }),
       layout: $(go.TreeLayout, {
-        angle: 90,
-        layerSpacing: 35,
-      }),
+  angle: 90,
+  layerSpacing: 50,
+  nodeSpacing: 60,
+  arrangement: go.TreeLayout.ArrangementFixedRoots,
+  setsPortSpot: false,
+  setsChildPortSpot: false // ✅ IMPORTANT
+})
+
     });
 
-    diagram.nodeTemplate = $(
-      go.Node,
+  diagram.nodeTemplate = $(
+  go.Node,
+  'Auto',
+  {
+    locationSpot: go.Spot.Center,
+    isLayoutPositioned: true,// ✅ ADD
+    selectionAdornmentTemplate: $(
+      go.Adornment,
+      'Auto',
+      $(go.Shape, { fill: null, stroke: 'dodgerblue', strokeWidth: 2 }),
+      $(go.Placeholder)
+    ),
+  },
+  // ✅ ADD location binding HERE
+  new go.Binding('location', 'loc', go.Point.parse)
+    .makeTwoWay(go.Point.stringify),
+
+  $(
+    go.Shape,
+    'RoundedRectangle',
+    { strokeWidth: 1, stroke: '#3ea3ec' },
+    new go.Binding('fill', 'color'),
+    {
+      click: (e: any, obj: any) => {
+        const node = obj.part;
+        if (node) {
+          this.openConfigMenu(node, 'config');
+        }
+      },
+    }
+  ),
+  $(
+    go.Panel,
+    'Vertical',
+    $(
+      go.TextBlock,
+      { margin: 8, editable: true },
+      new go.Binding('text', 'text'),
+      new go.Binding('font', 'font').makeTwoWay(),
+      {
+        click: (e: any, obj: any) => {
+          const node = obj.part;
+          if (node) {
+            this.openConfigMenu(node, 'config');
+          }
+        },
+      }
+    ),
+    $(
+      go.Panel,
       'Auto',
       {
-        selectionAdornmentTemplate: $(
-          go.Adornment,
-          'Auto',
-          $(go.Shape, { fill: null, stroke: 'dodgerblue', strokeWidth: 2 }),
-          $(go.Placeholder)
-        ),
+        alignment: go.Spot.Bottom,
+        alignmentFocus: go.Spot.Bottom,
       },
       $(
-        go.Shape,
-        'RoundedRectangle',
-        { strokeWidth: 1, stroke: '#3ea3ec' },
-        new go.Binding('fill', 'color'),
-        {
-          click: (e: any, obj: any) => {
-            var node = obj.part;
-            if (node) {
-              this.openConfigMenu(node, 'config');
-            }
-          },
-        }
-      ),
-      $(
         go.Panel,
-        'Vertical',
+        'Spot',
         $(
-          go.TextBlock,
-          { margin: 8, editable: true },
-          new go.Binding('text', 'text'),
-          new go.Binding('font', 'font').makeTwoWay(),
+          go.Shape,
+          'Circle',
           {
-            click: (e: any, obj: any) => {
-              var node = obj.part;
-              if (node) {
-                this.openConfigMenu(node, 'config');
-              }
-            },
-          }
+            width: 24,
+            height: 24,
+            stroke: null,
+            strokeWidth: 0,
+            click: (e: any, obj: any) =>
+              this.onAddNodeButtonClick(e, obj),
+          },
+          new go.Binding('fill', 'buttonColor')
         ),
         $(
-          go.Panel,
-          'Auto',
+          go.Shape,
+          'PlusLine',
+          { width: 12, height: 12, cursor: 'pointer' },
           {
-            alignment: go.Spot.Bottom,
-            alignmentFocus: go.Spot.Bottom,
+            click: (e: any, obj: any) =>
+              this.onAddNodeButtonClick(e, obj),
           },
-          $(
-            go.Panel,
-            'Spot',
-            $(
-              go.Shape,
-              'Circle',
-              {
-                click: (e: any, obj: any) => this.onAddNodeButtonClick(e, obj),
-              },
-              {
-                width: 24,
-                height: 24,
-                stroke: null,
-                strokeWidth: 0,
-              },
-              new go.Binding('fill', 'buttonColor')
-            ),
-            $(
-              go.Shape,
-              'PlusLine',
-              { width: 12, height: 12, cursor: 'pointer' },
-              {
-                click: (e: any, obj: any) => this.onAddNodeButtonClick(e, obj),
-              },
-              new go.Binding('stroke', 'plusIconColor')
-            )
-          )
-        )
-        // $(
-        //   'Button',
-        //   {
-        //     alignment: go.Spot.Bottom,
-        //     alignmentFocus: go.Spot.Bottom,
-        //     click: (e, obj) => this.onAddNodeButtonClick(e, obj),
-        //   },
-        //   $(go.Shape, 'PlusLine', { width: 12, height: 12 })
-        // )
+          new go.Binding('stroke', 'plusIconColor')
+        ),
+
       )
-    );
+    )
+  )
+);
+diagram.addDiagramListener('SelectionMoved', e => {
+  const diagram = e.diagram;
+
+  e.subject.each((part: go.Part) => {
+    if (part instanceof go.Node) {
+      const data = part.data;
+      const loc = go.Point.stringify(part.location);
+
+      // Update GoJS model
+      diagram.model.setDataProperty(data, 'loc', loc);
+
+      // Update Angular data
+      const idx = this.diagramNodeData.findIndex(
+        (        n: { key: any; }) => n.key === data.key
+      );
+      if (idx > -1) {
+        this.diagramNodeData[idx].loc = loc;
+      }
+    }
+  });
+
+  // ✅ CONSOLE HERE
+  console.log('After drag, Angular node data:', this.diagramNodeData);
+});
+diagram.addDiagramListener('InitialLayoutCompleted', () => {
+  diagram.nodes.each(node => {
+    node.isLayoutPositioned = false;
+  });
+});
+diagram.linkTemplate = $(
+  go.Link,
+  {
+    routing: go.Link.Orthogonal,      // 🔑
+    corner: 6,
+    selectable: false
+  },
+  $(go.Shape, { strokeWidth: 1 }),
+  $(go.Shape, { toArrow: 'Standard' })
+);
+
+
+
 
     return diagram;
   }
 
-  private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
-    const clickedNode = obj.part;
-    if (clickedNode instanceof go.Node) {
-      const nodeData = clickedNode.data;
-      this.contextNodeData = nodeData;
-      const mousePt = e.viewPoint;
-      this.openMenuAt(mousePt.x, mousePt.y);
-    }
+
+private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
+  const clickedNode = obj.part;
+
+  if (clickedNode instanceof go.Node) {
+    this.contextNodeData = clickedNode.data;
+
+    // ✅ Convert mouse to diagram coordinates
+    const docPt = e.diagram.lastInput.documentPoint;
+
+    // ✅ Store for later use
+    this.pendingNodePoint = docPt.copy();
+
+    // Keep using view coords for menu positioning
+    const viewPt = e.viewPoint;
+    this.openMenuAt(viewPt.x, viewPt.y);
   }
+}
+
 
   private openMenuAt(x: number, y: number) {
     const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
@@ -744,7 +820,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   public handleMenuAction(action: string) {
     console.log(this.contextNodeData);
     if (this.contextNodeData) {
-      this.addNode(action, this.contextNodeData.key);
+      this.addNode(action);
     }
   }
   saveInfoset(saveDialogBox: any) {
@@ -1464,6 +1540,9 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     console.log(evt);
     this.edit = true;
     this.infosetFlag = false;
+     this.skipsDiagramUpdate = false;
+
+  //this.diagramNodeData = this.patchNodeLocations(evt.item.info_data?.draggedData?.nodeData);
     this.diagramNodeData = evt.item.info_data?.draggedData?.nodeData;
     this.diagramLinkData = evt.item.info_data?.draggedData?.linkData;
     this.appearanceConfig = evt.item.info_data?.appearance;
@@ -1532,6 +1611,37 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   showForm() {
     this.buildForms = 'buildInfosetsScreen';
     this.edit = false;
+
+    this.diagramLinkData = [{ key: -1 }];
+    this.nextKey = 2;
+    this.diagramNodeData = [
+      {
+        key: 1,
+        text: 'Build triggered ',
+        color: '#fff',
+        loc: '-750 -231',
+      parent: '',
+      font: '14px Manrope',
+      buttonColor: '#3EA3EC',
+      plusIconColor: '#fff',
+      type: 'label',
+      operation_type: 'NA',
+      category: 'data_entry',
+      attr_type: 'nav',
+      attr_name: 'Hi! I am Intellobot. How can I help you?',
+      attr_ref: '["NA"]',
+      oper_link: 'NA',
+      oper_output: 'NA',
+      oper_value: 'NA',
+      description: 'Hi! I am Intellobot. How can I help you?',
+      title: 'Hi! I am Intellobot. How can I help you?',
+    },
+  ];
+
+
+
+    this.skipsDiagramUpdate = false;
+
     this.appearanceConfig = {
       widgetIcon: '',
       headerLogo: '',
