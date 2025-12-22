@@ -119,7 +119,6 @@
             [ngClass]="{ 'active-parent': activeParent === item }"
             (click)="!collapsed && selectParent(item)"
             (mouseenter)="collapsed && showOverlay($event, item, op)"
-            (mouseleave)="collapsed && hideOverlay(op)"
             [title]="collapsed ? item.label : ''"
           >
             <i class="me-2" [ngClass]="item.icon"></i>
@@ -142,20 +141,22 @@
             #op
             appendTo="body"
             [dismissable]="true"
-            [showCloseIcon]="false"
+            styleClass="custom-overlaypanel"
           >
-            <ul class="list-unstyled m-0">
-              <li
-                *ngFor="let child of item.children"
-                class="overlay-item px-3 py-2"
-                (click)="navigateFromOverlay(item, child, op)"
-              >
-                {{ child.label }}
-              </li>
-            </ul>
+            <div (mouseleave)="onOverlayLeave(op)">
+              <ul class="list-unstyled m-0">
+                <li
+                  *ngFor="let child of item.children"
+                  class="overlay-item px-3 py-2"
+                  (click)="navigateFromOverlay(item, child, op)"
+                >
+                  {{ child.label }}
+                </li>
+              </ul>
+            </div>
           </p-overlayPanel>
 
-          <!-- Expanded Children -->
+          <!-- Expanded Children (UNCHANGED BEHAVIOR) -->
           <ul
             *ngIf="item.children && activeParent === item && !collapsed"
             class="nav flex-column ms-5"
