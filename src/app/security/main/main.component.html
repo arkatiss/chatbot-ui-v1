@@ -1,13 +1,106 @@
 <div class="col-sm-12 pb-3 p-0" *ngIf="hideDashBoard === true">
-
-  <app-mainheader ></app-mainheader>
-
+  <app-mainheader></app-mainheader>
 </div>
 <app-timer></app-timer>
-<div class="row m-0 p-0" >
-    
-        <div class="col-sm-2 pl-3 pr-0 p-0" *ngIf="hideDashBoard === true">
-            <div class="card sidenav">
+<div class="row m-0 p-0">
+  <div
+    *ngIf="hideDashBoard === true"
+    [ngClass]="{
+      'col-sm-2': !collapsed,
+      'col-sm-auto': collapsed
+    }"
+  >
+    <div class="sidenav card m-0 p-0">
+      <!-- Toggle -->
+      <div class="d-flex justify-content-end align-items-end p-2">
+        <img
+          *ngIf="!collapsed"
+          [src]="imageURL + 'images/close.svg'"
+          class="close_icon"
+          width="32"
+          height="32"
+          alt=""
+          (click)="toggleSidebar()"
+        />
+        <img
+          *ngIf="collapsed"
+          [src]="imageURL + 'images/open.svg'"
+          class="close_icon"
+          width="32"
+          height="32"
+          alt=""
+          (click)="toggleSidebar()"
+        />
+      </div>
+
+      <!-- Navigation -->
+      <ul class="nav flex-column">
+        <li *ngFor="let item of navItems" class="nav-item position-relative">
+          <!-- Parent -->
+          <a
+            class="nav-link d-flex align-items-center"
+            [ngClass]="{ 'active-parent': activeParent === item }"
+            (click)="!collapsed && selectParent(item)"
+            (mouseenter)="collapsed && showOverlay($event, item, op)"
+            [title]="collapsed ? item.label : ''"
+          >
+            <i class="me-2" [ngClass]="item.icon"></i>
+
+            <span *ngIf="!collapsed">
+              {{ item.label }}
+            </span>
+
+            <i
+              *ngIf="item.children && !collapsed"
+              class="ms-auto pi"
+              [ngClass]="
+                activeParent === item ? 'pi-chevron-up' : 'pi-chevron-down'
+              "
+            ></i>
+          </a>
+
+          <!-- Collapsed Hover Children -->
+          <p-overlayPanel
+            #op
+            appendTo="body"
+            [dismissable]="true"
+            styleClass="custom-overlaypanel"
+          >
+            <div (mouseleave)="onOverlayLeave(op)">
+              <ul class="list-unstyled m-0">
+                <li
+                  *ngFor="let child of item.children"
+                  class="overlay-item px-3 py-2"
+                  (click)="navigateFromOverlay(item, child, op)"
+                >
+                  {{ child.label }}
+                </li>
+              </ul>
+            </div>
+          </p-overlayPanel>
+
+          <!-- Expanded Children (UNCHANGED BEHAVIOR) -->
+          <ul
+            *ngIf="item.children && activeParent === item && !collapsed"
+            class="nav flex-column ms-5"
+          >
+            <li *ngFor="let child of item.children">
+              <a
+                class="nav-link"
+                [ngClass]="{ 'active-child': activeChild === child }"
+                (click)="selectChild(item, child)"
+              >
+                {{ child.label }}
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!--    <div class="col-sm-2 pl-3 pr-0 p-0" *ngIf="hideDashBoard === true">
+   <div class="card sidenav">
                 <mat-accordion class="example-headers-align">
                     <mat-expansion-panel class="m-0" >
                         <mat-expansion-panel-header>
@@ -19,24 +112,24 @@
                         routerLinkActive="active-list-item" routerLink="/security/createrole">Create</p>
                         <p class="subheaders" mat-button
                         routerLinkActive="active-list-item" routerLink="/security/viewrole">View</p>
-    
-    
-    
+
+
+
                     </mat-expansion-panel>
-                    <!-- <mat-expansion-panel class="m-0" >
+                    <mat-expansion-panel class="m-0" >
                         <mat-expansion-panel-header>
                             <mat-panel-title>
-                                App Viz 
+                                App Viz
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <p class="subheaders" mat-button
                         routerLinkActive="active-list-item" routerLink="/security/apps">Apps</p>
                         <p class="subheaders" mat-button
                         routerLinkActive="active-list-item" routerLink="/security/viewvizroles">Roles</p>
-    
-    
-    
-                    </mat-expansion-panel> -->
+
+
+
+                    </mat-expansion-panel>
                     <mat-expansion-panel class="m-0">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
@@ -61,19 +154,29 @@
                             View</p>
                     </mat-expansion-panel>
                 </mat-accordion>
-                </div>
-        
-        </div>
+                </div> </div>-->
 
-        <div  [ngClass]="hideDashBoard===false ? 'col-sm-12 p-0' : 'col-sm-10 p-0 pl-3 pr-3'">
-
-            <ngx-spinner bdColor="rgba(51,51,51,0.2)" size="default" color="#09f" type="ball-spin-clockwise"
-            [fullScreen]="false">
-            <button type="button" mat-raised-button class="mt-4" (click)="cancel()"> Cancel </button>
-          </ngx-spinner>
-          <div class="card p-1" [ngClass]="hideDashBoard===false ? 'mainhidebodycard' : 'mainbodycard'">
-            <router-outlet></router-outlet>
-              </div>
-           
-        </div>
+  <div
+    [ngClass]="
+      hideDashBoard === false ? 'col-sm-12 p-0' : 'col-sm p-0 pl-3 pr-3 mr-3'
+    "
+  >
+    <ngx-spinner
+      bdColor="rgba(51,51,51,0.2)"
+      size="default"
+      color="#09f"
+      type="ball-spin-clockwise"
+      [fullScreen]="false"
+    >
+      <button type="button" mat-raised-button class="mt-4" (click)="cancel()">
+        Cancel
+      </button>
+    </ngx-spinner>
+    <div
+      class="card p-1"
+      [ngClass]="hideDashBoard === false ? 'mainhidebodycard' : 'mainbodycard'"
+    >
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>

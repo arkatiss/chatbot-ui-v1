@@ -7,6 +7,14 @@ import { SecurityService } from '../service/security.service';
 import { CommonService } from '../../helper/common.service';
 import { GeneralService } from '../../helper/general.service';
 import { ErrorService } from '../../helper/error.service';
+import { environment } from '../../../environments/environment';
+
+interface NavItem {
+  label: string;
+  icon: string;
+  route?: string;
+  children?: NavItem[];
+}
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -14,6 +22,7 @@ import { ErrorService } from '../../helper/error.service';
 })
 export class MainComponent implements OnInit {
   imgurl: any;
+  imageURL: any = environment.imageUrl;
   userName: any;
   flag: any;
   showuserstatus = false;
@@ -183,5 +192,105 @@ export class MainComponent implements OnInit {
         text: this.error.handleError(data),
       });
     }
+  }
+
+  collapsed = false;
+  activeParent: NavItem | null = null;
+  activeChild: NavItem | null = null;
+
+  navItems: NavItem[] = [
+    {
+      label: 'Roles',
+      icon: 'fa-solid fa-user-shield',
+      children: [
+        {
+          label: 'Create',
+          route: '/security/createrole',
+          icon: 'fa-solid fa-circle-plus',
+        },
+        {
+          label: 'View',
+          route: '/security/viewrole',
+          icon: 'fa-solid fa-eye',
+        },
+      ],
+    },
+    {
+      label: 'Support Group',
+      icon: 'fa-solid fa-headset',
+      children: [
+        {
+          label: 'Create',
+          route: '/security/createsupport',
+          icon: 'fa-solid fa-circle-plus',
+        },
+        {
+          label: 'View',
+          route: '/security/viewsupport',
+          icon: 'fa-solid fa-eye',
+        },
+      ],
+    },
+    {
+      label: 'Domain Mapping',
+      icon: 'fa-solid fa-diagram-project',
+      children: [
+        {
+          label: 'Create',
+          route: '/security/createmaping',
+          icon: 'fa-solid fa-circle-plus',
+        },
+        {
+          label: 'View',
+          route: '/security/viewmaping',
+          icon: 'fa-solid fa-eye',
+        },
+      ],
+    },
+  ];
+
+  currentOverlay: any;
+
+  toggleSidebar() {
+    this.collapsed = !this.collapsed;
+  }
+
+  selectParent(item: NavItem) {
+    if (item.children) {
+      this.activeParent = this.activeParent === item ? null : item;
+    } else if (item.route) {
+      this.activeParent = item;
+      this.activeChild = null;
+      this.router.navigate([item.route]);
+    }
+  }
+
+  selectChild(parent: NavItem, child: NavItem) {
+    this.activeParent = parent;
+    this.activeChild = child;
+    if (child.route) {
+      this.router.navigate([child.route]);
+    }
+  }
+
+  showOverlay(event: Event, item: any, overlay: any) {
+    if (!item.children) return;
+
+    // Close previously open overlay
+    if (this.currentOverlay && this.currentOverlay !== overlay) {
+      this.currentOverlay.hide();
+    }
+
+    this.currentOverlay = overlay;
+    overlay.show(event);
+  }
+
+  onOverlayLeave(overlay: any) {
+    overlay.hide();
+  }
+
+  navigateFromOverlay(parent: any, child: any, overlay: any) {
+    this.selectChild(parent, child);
+    overlay.hide();
   }
 }

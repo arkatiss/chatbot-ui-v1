@@ -584,11 +584,28 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr style="height: calc(100vh - 410px); background-color: #fff">
-            <td [attr.colspan]="columns.length + 3">
+            <td [attr.colspan]="columns.length + 3" *ngIf="!loading">
               <div
                 class="no-records col-sm-12 d-flex align-items-center justify-content-center"
               >
                 No records found
+              </div>
+            </td>
+            <td [attr.colspan]="columns.length + 3" *ngIf="loading">
+              <div
+                class="no-records col-sm-12 d-flex align-items-center justify-content-center"
+              >
+                <!-- <ngx-spinner
+                  bdColor="rgba(51,51,51,0.2)"
+                  size="default"
+                  color="#09f"
+                  type="ball-spin-clockwise"
+                  [fullScreen]="false"
+                >
+                  <button type="button" mat-raised-button class="mt-4">
+                    Cancel
+                  </button>
+                </ngx-spinner> -->
               </div>
             </td>
           </tr>
