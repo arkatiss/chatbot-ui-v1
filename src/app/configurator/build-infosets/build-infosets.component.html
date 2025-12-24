@@ -9,6 +9,7 @@
           (deleteEvnt)="deleteRow($event)"
           [columns]="colData"
           [rowData]="rowData"
+          [loading]="isLoading"
           [screenName]="screenName"
           (showFormPage)="showForm()"
           [domain]="domain"
@@ -25,6 +26,7 @@
   [ngClass]="
     buildForms === 'buildInfosetsScreen' ? 'infoset-content' : 'infoset-build'
   "
+  [ngStyle]="infosetStyle"
   *ngIf="buildForms !== 'table'"
 >
   <div class="row m-0">
@@ -881,7 +883,7 @@
                 />
                 <!-- </p-fieldset> -->
               </div>
-              <div class="col-sm-12 pl-4" *ngIf="showfile">
+              <div class="col-sm-12 pl-4" *ngIf="showFile === 'browse'">
                 <!-- <p-fileUpload></p-fileUpload> -->
                 <div class="d-flex">
                   <label class="upload-box d-block col-md-10 col-sm-12">
@@ -900,11 +902,11 @@
                     alt="Preview"
                   /> -->
                   <div
-                    *ngIf="selectedFileData.name"
+                    *ngIf="selectedFileData?.name"
                     class="ps-3 d-flex align-items-center"
                   >
                     <!-- <i class="pi pi-file"></i> -->
-                    <span class="ms-2">{{ selectedFileData.name }}</span>
+                    <span class="ms-2">{{ selectedFileData?.name }}</span>
                   </div>
                 </div>
               </div>

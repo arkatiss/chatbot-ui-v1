@@ -1,79 +1,114 @@
 .sidebar {
-    border-right: 1px solid #ddd;
-   }
-   .subheaders {     
-    
-    cursor: pointer;
-    padding-left: 25px;
+  border-right: 1px solid #ddd;
 }
-  .lefttopbar {
-    background: white !important;
-    color: rgba(0,0,0,.87);
+.subheaders {
+  cursor: pointer;
+  padding-left: 25px;
+}
+.lefttopbar {
+  background: white !important;
+  color: rgba(0, 0, 0, 0.87);
 }
 .active-list-item {
-    color: #7ea3e0 !important; /* Note: You could also use a custom theme */
-  }
-.text-infoo {
-  color: #727577!important;
+  color: #7ea3e0 !important; /* Note: You could also use a custom theme */
 }
-.sidenav{
+.text-infoo {
+  color: #727577 !important;
+}
+.sidenav {
   border: none;
   border-radius: 8px;
-   background-color: white;
+  background-color: white;
   height: calc(100vh - 100px);
 }
 .mainbodycard {
   border: none;
   border-radius: 8px;
   height: calc(100vh - 100px);
-   background-color: white;
-   overflow-y: auto;
-  
+  background-color: white;
+  overflow-y: auto;
 }
 
 .mainhidebodycard {
   border: none;
   border-radius: 8px;
   height: calc(100vh - 0px);
-   background-color: white;
-   overflow-y: auto;
-  
+  background-color: white;
+  overflow-y: auto;
 }
 .lefttopbar {
   padding: 2%;
   margin: 0px;
   padding: 35px !important;
-   height: 40px;
+  height: 40px;
 }
 .textFirst2 {
-  
-  display:inline-block;
-  font-size:1em;
-  width:1.5em;
-  height:1.5em;
-  line-height:1.5em;
-  text-align:center;
-  border-radius:50%;
-  background:#0073c0;
-  color:white;
-  }
-  .num2 {
-    position: absolute;
-    top: 17px;
-    right: -13px;
-  }
- 
-  .textFirst {
-  
-    display:inline-block;
-    font-size:1em;
-    width:2.5em;
-    height:2.5em;
-    line-height:2.5em;
-    text-align:center;
-    border-radius:50%;
-    background:#0073c0;
-    vertical-align:middle;
-    margin-right:1em;
-    color:white;
-    }
+  display: inline-block;
+  font-size: 1em;
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 1.5em;
+  text-align: center;
+  border-radius: 50%;
+  background: #0073c0;
+  color: white;
+}
+.num2 {
+  position: absolute;
+  top: 17px;
+  right: -13px;
+}
+
+.textFirst {
+  display: inline-block;
+  font-size: 1em;
+  width: 2.5em;
+  height: 2.5em;
+  line-height: 2.5em;
+  text-align: center;
+  border-radius: 50%;
+  background: #0073c0;
+  vertical-align: middle;
+  margin-right: 1em;
+  color: white;
+}
+
+//latest css
+
+.sidebar {
+  transition: width 0.3s;
+}
+
+.nav-link {
+  cursor: pointer;
+  padding: 10px 20px;
+  margin: 0px 5px;
+}
+
+.active-parent {
+  font-weight: bold;
+  background-color: #e9ecef;
+  padding: 10px 20px;
+  margin: 0px 5px;
+}
+
+.active-child {
+  font-weight: bold;
+  // background-color: #dee2e6;
+}
+
+.nav-link:hover {
+  background-color: #f8f9fa;
+}
+
+.close_icon {
+  //position: absolute;
+  margin-top: -1rem;
+  margin-right: -1.1rem;
+  cursor: pointer;
+  float: right;
+}
+.overlay-item {
+  cursor: pointer;
+  white-space: nowrap;
+}

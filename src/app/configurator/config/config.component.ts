@@ -7,6 +7,7 @@ import { CommonService } from '../../helper/common.service';
 import { PagesService } from '../../pages/pages.service';
 import { GeneralService } from '../../helper/general.service';
 import { ErrorService } from '../../helper/error.service';
+import { environment } from '../../../environments/environment';
 
 interface NavItem {
   label: string;
@@ -21,6 +22,7 @@ interface NavItem {
 })
 export class ConfigComponent implements OnInit {
   imgurl: any;
+  imageURL: any = environment.imageUrl;
   userName;
   flag: any;
   showuserstatus = false;
@@ -110,70 +112,10 @@ export class ConfigComponent implements OnInit {
     this.userStatus();
   }
 
-  imgUrl = '/assets/';
   collapsed = false;
   activeParent: NavItem | null = null;
   activeChild: NavItem | null = null;
 
-  // navItems: NavItem[] = [
-  //   {
-  //     label: 'Domain',
-  //     icon: 'fa fa-plus',
-  //     children: [
-  //       { label: 'Create', icon: 'fa fa-plus', route: '/config/createdomain' },
-  //       { label: 'View', icon: 'fa fa-plus', route: '/config/viewdomain' },
-  //     ],
-  //   },
-  //   {
-  //     label: 'Infoset',
-  //     icon: 'fa fa-plus',
-  //     children: [
-  //       { label: 'Create', icon: 'fa fa-plus', route: '/config/infoset' },
-  //       // { label: 'Create', icon: 'fa fa-plus', route: '/config/createinfoset' },
-  //       { label: 'View', icon: 'fa fa-plus', route: '/config/viewinfoset' },
-  //     ],
-  //   },
-  //   // {
-  //   //   label: 'Data Auth',
-  //   //   icon: 'fa fa-plus',
-  //   //   children: [
-  //   //     {
-  //   //       label: 'Create',
-  //   //       icon: 'fa fa-plus',
-  //   //       route: '/config/dataauthcreate',
-  //   //     },
-  //   //     { label: 'View', icon: 'fa fa-plus', route: '/config/viewdataauth' },
-  //   //   ],
-  //   // },
-  //   {
-  //     label: 'Training',
-  //     icon: 'fa fa-plus',
-  //     children: [
-  //       {
-  //         label: 'New App On Boarding',
-  //         icon: 'fa fa-plus',
-  //         route: '/config/createtraining',
-  //       },
-  //       {
-  //         label: 'Failed Utterances',
-  //         icon: 'fa fa-plus',
-  //         route: '/config/training',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     label: 'Configurations',
-  //     icon: 'fa fa-plus',
-  //     children: [
-  //       {
-  //         label: 'Create',
-  //         icon: 'fa fa-plus',
-  //         route: '/config/configurations',
-  //       },
-  //       { label: 'View', icon: 'fa fa-plus', route: '/config/training' },
-  //     ],
-  //   },
-  // ];
   navItems: NavItem[] = [
     {
       label: 'Domain',
@@ -277,7 +219,6 @@ export class ConfigComponent implements OnInit {
     }
   }
 
-
   showOverlay(event: Event, item: any, overlay: any) {
     if (!item.children) return;
 
@@ -289,7 +230,6 @@ export class ConfigComponent implements OnInit {
     this.currentOverlay = overlay;
     overlay.show(event);
   }
-
 
   onOverlayLeave(overlay: any) {
     overlay.hide();

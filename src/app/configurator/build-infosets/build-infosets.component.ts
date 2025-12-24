@@ -35,7 +35,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   private overlayRef!: OverlayRef;
   updatedTitle: any = '';
   updateIndex: any;
-pendingNodePoint: go.Point | null = null;
+  pendingNodePoint: go.Point | null = null;
   public diagramNodeData: Array<go.ObjectData> | any = [
     {
       key: 1,
@@ -215,7 +215,8 @@ pendingNodePoint: go.Point | null = null;
   opvalue = false;
   opinput = true;
   oplinktext: any;
-  showfile = false;
+  showFile: any = '';
+  // showfile = false;
   orderShow = false;
   operation = 'Operation';
   formvalue = false;
@@ -553,77 +554,76 @@ pendingNodePoint: go.Point | null = null;
       }
     );
   }
-@ViewChild('myDiagram', { static: false })
-diagramComponent!: any;
+  @ViewChild('myDiagram', { static: false })
+  diagramComponent!: any;
 
   ngOnChanges(changes: SimpleChanges): void {}
-   getChildLocation(parentKey: number): string {
-  const parent = this.diagramNodeData.find((n: { key: number; }) => n.key === parentKey);
-  if (!parent?.loc) return '0 0';
+  getChildLocation(parentKey: number): string {
+    const parent = this.diagramNodeData.find(
+      (n: { key: number }) => n.key === parentKey
+    );
+    if (!parent?.loc) return '0 0';
 
-  const siblings = this.diagramNodeData.filter(
-    (    n: { parent: number; }) => n.parent === parentKey
-  );
+    const siblings = this.diagramNodeData.filter(
+      (n: { parent: number }) => n.parent === parentKey
+    );
 
-  const p = go.Point.parse(parent.loc);
+    const p = go.Point.parse(parent.loc);
 
-  const spacing = 180;
-  const startX = p.x - ((siblings.length - 1) * spacing) / 2;
+    const spacing = 180;
+    const startX = p.x - ((siblings.length - 1) * spacing) / 2;
 
-  const x = startX + siblings.length * spacing;
-  const y = p.y + 140;
+    const x = startX + siblings.length * spacing;
+    const y = p.y + 140;
 
-  return `${x} ${y}`;
-}
+    return `${x} ${y}`;
+  }
 
-addNode(type: string): void {
-  debugger;
-  const diagram: go.Diagram = this.diagramComponent.diagram;
-  const model = diagram.model as go.GraphLinksModel;
+  addNode(type: string): void {
+    debugger;
+    const diagram: go.Diagram = this.diagramComponent.diagram;
+    const model = diagram.model as go.GraphLinksModel;
 
-  const parentKey = this.contextNodeData.key;
-  const newKey = ++this.nextKey;
+    const parentKey = this.contextNodeData.key;
+    const newKey = ++this.nextKey;
 
-  diagram.startTransaction('add node');
-  this.skipsDiagramUpdate = true;
-  // const loc = this.pendingNodePoint
-  //   ? go.Point.stringify(this.pendingNodePoint)
-  //   : undefined;
-const loc = this.getChildLocation(parentKey);
-  const newNode: any = {
-    key: newKey,
-    text: type,
-    parent: parentKey,
-    loc,
-    color: '#fff',
-    buttonColor: '#3EA3EC',
-    plusIconColor: '#fff',
-    isLayoutPositioned: false,
-    type,
-    master_data_id:'',
-    category:'',
-    description:'',
-  };
+    diagram.startTransaction('add node');
+    this.skipsDiagramUpdate = true;
+    // const loc = this.pendingNodePoint
+    //   ? go.Point.stringify(this.pendingNodePoint)
+    //   : undefined;
+    const loc = this.getChildLocation(parentKey);
+    const newNode: any = {
+      key: newKey,
+      text: type,
+      parent: parentKey,
+      loc,
+      color: '#fff',
+      buttonColor: '#3EA3EC',
+      plusIconColor: '#fff',
+      isLayoutPositioned: false,
+      type,
+      master_data_id: '',
+      category: '',
+      description: '',
+    };
 
+    model.addNodeData(newNode);
+    model.addLinkData({
+      key: -newKey,
+      from: parentKey,
+      to: newKey,
+    });
+    this.diagramNodeData.push(newNode);
+    this.diagramLinkData.push({ key: -newKey, from: parentKey, to: newKey });
+    this.diagramNodeData = [...this.diagramNodeData];
+    this.diagramLinkData = [...this.diagramLinkData];
+    console.log(this.diagramNodeData);
 
-  model.addNodeData(newNode);
-  model.addLinkData({
-    key: -newKey,
-    from: parentKey,
-    to: newKey
-  });
-this.diagramNodeData.push(newNode);
-this.diagramLinkData.push({ key: -newKey, from: parentKey, to: newKey });
-this.diagramNodeData = [...this.diagramNodeData];
-this.diagramLinkData = [...this.diagramLinkData];
-console.log(this.diagramNodeData);
+    diagram.commitTransaction('add node');
 
-  diagram.commitTransaction('add node');
-
-  this.pendingNodePoint = null;
-}
-
-
+    this.pendingNodePoint = null;
+  }
 
   public initDiagram(): go.Diagram {
     const $ = go.GraphObject.make;
@@ -634,167 +634,159 @@ console.log(this.diagramNodeData);
         linkKeyProperty: 'key',
       }),
       layout: $(go.TreeLayout, {
-  angle: 90,
-  layerSpacing: 50,
-  nodeSpacing: 60,
-  arrangement: go.TreeLayout.ArrangementFixedRoots,
-  setsPortSpot: false,
-  setsChildPortSpot: false // ✅ IMPORTANT
-})
-
+        angle: 90,
+        layerSpacing: 50,
+        nodeSpacing: 60,
+        arrangement: go.TreeLayout.ArrangementFixedRoots,
+        setsPortSpot: false,
+        setsChildPortSpot: false, // ✅ IMPORTANT
+      }),
     });
 
-  diagram.nodeTemplate = $(
-  go.Node,
-  'Auto',
-  {
-    locationSpot: go.Spot.Center,
-    isLayoutPositioned: true,// ✅ ADD
-    selectionAdornmentTemplate: $(
-      go.Adornment,
+    diagram.nodeTemplate = $(
+      go.Node,
       'Auto',
-      $(go.Shape, { fill: null, stroke: 'dodgerblue', strokeWidth: 2 }),
-      $(go.Placeholder)
-    ),
-  },
-  // ✅ ADD location binding HERE
-  new go.Binding('location', 'loc', go.Point.parse)
-    .makeTwoWay(go.Point.stringify),
+      {
+        locationSpot: go.Spot.Center,
+        isLayoutPositioned: true, // ✅ ADD
+        selectionAdornmentTemplate: $(
+          go.Adornment,
+          'Auto',
+          $(go.Shape, { fill: null, stroke: 'dodgerblue', strokeWidth: 2 }),
+          $(go.Placeholder)
+        ),
+      },
+      // ✅ ADD location binding HERE
+      new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(
+        go.Point.stringify
+      ),
 
-  $(
-    go.Shape,
-    'RoundedRectangle',
-    { strokeWidth: 1, stroke: '#3ea3ec' },
-    new go.Binding('fill', 'color'),
-    {
-      click: (e: any, obj: any) => {
-        const node = obj.part;
-        if (node) {
-          this.openConfigMenu(node, 'config');
+      $(
+        go.Shape,
+        'RoundedRectangle',
+        { strokeWidth: 1, stroke: '#3ea3ec' },
+        new go.Binding('fill', 'color'),
+        {
+          click: (e: any, obj: any) => {
+            const node = obj.part;
+            if (node) {
+              this.openConfigMenu(node, 'config');
+            }
+          },
         }
-      },
-    }
-  ),
-  $(
-    go.Panel,
-    'Vertical',
-    $(
-      go.TextBlock,
-      { margin: 8, editable: true },
-      new go.Binding('text', 'text'),
-      new go.Binding('font', 'font').makeTwoWay(),
-      {
-        click: (e: any, obj: any) => {
-          const node = obj.part;
-          if (node) {
-            this.openConfigMenu(node, 'config');
-          }
-        },
-      }
-    ),
-    $(
-      go.Panel,
-      'Auto',
-      {
-        alignment: go.Spot.Bottom,
-        alignmentFocus: go.Spot.Bottom,
-      },
+      ),
       $(
         go.Panel,
-        'Spot',
+        'Vertical',
         $(
-          go.Shape,
-          'Circle',
+          go.TextBlock,
+          { margin: 8, editable: true },
+          new go.Binding('text', 'text'),
+          new go.Binding('font', 'font').makeTwoWay(),
           {
-            width: 24,
-            height: 24,
-            stroke: null,
-            strokeWidth: 0,
-            click: (e: any, obj: any) =>
-              this.onAddNodeButtonClick(e, obj),
-          },
-          new go.Binding('fill', 'buttonColor')
+            click: (e: any, obj: any) => {
+              const node = obj.part;
+              if (node) {
+                this.openConfigMenu(node, 'config');
+              }
+            },
+          }
         ),
         $(
-          go.Shape,
-          'PlusLine',
-          { width: 12, height: 12, cursor: 'pointer' },
+          go.Panel,
+          'Auto',
           {
-            click: (e: any, obj: any) =>
-              this.onAddNodeButtonClick(e, obj),
+            alignment: go.Spot.Bottom,
+            alignmentFocus: go.Spot.Bottom,
           },
-          new go.Binding('stroke', 'plusIconColor')
-        ),
-
+          $(
+            go.Panel,
+            'Spot',
+            $(
+              go.Shape,
+              'Circle',
+              {
+                width: 24,
+                height: 24,
+                stroke: null,
+                strokeWidth: 0,
+                click: (e: any, obj: any) => this.onAddNodeButtonClick(e, obj),
+              },
+              new go.Binding('fill', 'buttonColor')
+            ),
+            $(
+              go.Shape,
+              'PlusLine',
+              { width: 12, height: 12, cursor: 'pointer' },
+              {
+                click: (e: any, obj: any) => this.onAddNodeButtonClick(e, obj),
+              },
+              new go.Binding('stroke', 'plusIconColor')
+            )
+          )
+        )
       )
-    )
-  )
-);
-diagram.addDiagramListener('SelectionMoved', e => {
-  const diagram = e.diagram;
+    );
+    diagram.addDiagramListener('SelectionMoved', (e) => {
+      const diagram = e.diagram;
 
-  e.subject.each((part: go.Part) => {
-    if (part instanceof go.Node) {
-      const data = part.data;
-      const loc = go.Point.stringify(part.location);
+      e.subject.each((part: go.Part) => {
+        if (part instanceof go.Node) {
+          const data = part.data;
+          const loc = go.Point.stringify(part.location);
 
-      // Update GoJS model
-      diagram.model.setDataProperty(data, 'loc', loc);
+          // Update GoJS model
+          diagram.model.setDataProperty(data, 'loc', loc);
 
-      // Update Angular data
-      const idx = this.diagramNodeData.findIndex(
-        (        n: { key: any; }) => n.key === data.key
-      );
-      if (idx > -1) {
-        this.diagramNodeData[idx].loc = loc;
-      }
-    }
-  });
+          // Update Angular data
+          const idx = this.diagramNodeData.findIndex(
+            (n: { key: any }) => n.key === data.key
+          );
+          if (idx > -1) {
+            this.diagramNodeData[idx].loc = loc;
+          }
+        }
+      });
 
-  // ✅ CONSOLE HERE
-  console.log('After drag, Angular node data:', this.diagramNodeData);
-});
-diagram.addDiagramListener('InitialLayoutCompleted', () => {
-  diagram.nodes.each(node => {
-    node.isLayoutPositioned = false;
-  });
-});
-diagram.linkTemplate = $(
-  go.Link,
-  {
-    routing: go.Link.Orthogonal,      // 🔑
-    corner: 6,
-    selectable: false
-  },
-  $(go.Shape, { strokeWidth: 1 }),
-  $(go.Shape, { toArrow: 'Standard' })
-);
-
-
-
+      // ✅ CONSOLE HERE
+      console.log('After drag, Angular node data:', this.diagramNodeData);
+    });
+    diagram.addDiagramListener('InitialLayoutCompleted', () => {
+      diagram.nodes.each((node) => {
+        node.isLayoutPositioned = false;
+      });
+    });
+    diagram.linkTemplate = $(
+      go.Link,
+      {
+        routing: go.Link.Orthogonal, // 🔑
+        corner: 6,
+        selectable: false,
+      },
+      $(go.Shape, { strokeWidth: 1 }),
+      $(go.Shape, { toArrow: 'Standard' })
+    );
 
     return diagram;
   }
 
+  private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
+    const clickedNode = obj.part;
 
-private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
-  const clickedNode = obj.part;
+    if (clickedNode instanceof go.Node) {
+      this.contextNodeData = clickedNode.data;
 
-  if (clickedNode instanceof go.Node) {
-    this.contextNodeData = clickedNode.data;
+      // ✅ Convert mouse to diagram coordinates
+      const docPt = e.diagram.lastInput.documentPoint;
 
-    // ✅ Convert mouse to diagram coordinates
-    const docPt = e.diagram.lastInput.documentPoint;
+      // ✅ Store for later use
+      this.pendingNodePoint = docPt.copy();
 
-    // ✅ Store for later use
-    this.pendingNodePoint = docPt.copy();
-
-    // Keep using view coords for menu positioning
-    const viewPt = e.viewPoint;
-    this.openMenuAt(viewPt.x, viewPt.y);
+      // Keep using view coords for menu positioning
+      const viewPt = e.viewPoint;
+      this.openMenuAt(viewPt.x, viewPt.y);
+    }
   }
-}
-
 
   private openMenuAt(x: number, y: number) {
     const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
@@ -986,10 +978,27 @@ private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
   addProps(m: any, i: any) {
     console.log(m);
     console.log(i);
+    console.log(this.diagramNodeData, this.sampleBotResponse);
     this.updateIndex = i;
+    this.bindValuesOnUpdate();
     //this.rowNodeIndex = i;
     console.log(this.diagramNodeData[this.rowNodeIndex]);
     this.dialogDetails = 'Buttons';
+  }
+
+  bindValuesOnUpdate() {
+    console.log(
+      'bindValuesOnUpdate',
+      this.diagramNodeData?.[this.rowNodeIndex],
+      this.updateIndex
+    );
+    this.sampleBotResponse = [this.diagramNodeData?.[this.rowNodeIndex]];
+    this.showFile = this.diagramNodeData?.[this.rowNodeIndex]?.operation_type;
+    if (this.diagramNodeData?.[this.rowNodeIndex]?.category) {
+      this.selectCategory({
+        value: this.diagramNodeData?.[this.rowNodeIndex]?.category,
+      });
+    }
   }
   addField() {
     this.diagramNodeData[this.rowNodeIndex]?.fields.push({
@@ -1167,12 +1176,13 @@ private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
         this.oplink = true;
         this.opinput = false;
         this.duration = false;
-        this.showfile = false;
+        // this.showfile = false;
       } else if (
         this.operationVal === 'browse' &&
         this.catName === 'data_entry'
       ) {
-        this.showfile = true;
+        this.showFile = this.operationVal;
+        // this.showfile = true;
         this.oplink = false;
         this.duration = false;
       } else if (
@@ -1183,8 +1193,9 @@ private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
         this.oplink = true;
         this.opinput = false;
       } else {
+        this.showFile = this.operationVal;
         this.opvalue = false;
-        this.showfile = false;
+        // this.showfile = false;
         this.oplink = false;
         this.opinput = false;
         this.duration = false;
@@ -1272,8 +1283,10 @@ private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
   dialogSubDomainForInfoset() {
     this.getDomainSubdomainBasedList(this.dialogDomain, this.dialogSubDomain);
   }
+  isLoading = false;
   getDomainSubdomainBasedList(domain: any, subDomain: any) {
     this.rowData = [];
+    this.isLoading = true;
     const body = {
       infoset_type: 'retrieve',
       domain: domain?.domain,
@@ -1291,6 +1304,7 @@ private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
             };
           });
           this.rowData = resultSet;
+          this.isLoading = false;
           this.filteredInfosetOptions = res.data.map((item: any) => {
             return {
               file: item?.file,
@@ -1303,12 +1317,15 @@ private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
           } else {
             this.infosetFlag = false;
           }
+        } else {
+          this.isLoading = false;
         }
 
         //this.onSuccessInfoView(res);
       },
       (err) => {
         //this.onErrorr(err);
+        this.isLoading = false;
       }
     );
   }
@@ -1515,6 +1532,7 @@ private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
         oper_value: this.getValidValue(item.oper_value),
         description: this.getValidValue(item.description),
         file: this.getValidValue(item.file),
+        fileName: this.getValidValue(item.fileName),
         type: this.getValidValue(item.type),
         key: item.key,
         childs: [],
@@ -1540,9 +1558,9 @@ private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
     console.log(evt);
     this.edit = true;
     this.infosetFlag = false;
-     this.skipsDiagramUpdate = false;
+    this.skipsDiagramUpdate = false;
 
-  //this.diagramNodeData = this.patchNodeLocations(evt.item.info_data?.draggedData?.nodeData);
+    //this.diagramNodeData = this.patchNodeLocations(evt.item.info_data?.draggedData?.nodeData);
     this.diagramNodeData = evt.item.info_data?.draggedData?.nodeData;
     this.diagramLinkData = evt.item.info_data?.draggedData?.linkData;
     this.appearanceConfig = evt.item.info_data?.appearance;
@@ -1600,6 +1618,7 @@ private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
     this.diagramNodeData[this.updateIndex].attr_name = this.updatedTitle;
     this.diagramNodeData[this.updateIndex].title = this.updatedTitle;
     this.diagramNodeData[this.updateIndex].description = this.updatedTitle;
+    this.dialogDetails = '';
     console.log(this.sampleBotResponse, this.diagramNodeData);
   }
   cancel() {
@@ -1620,25 +1639,23 @@ private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
         text: 'Build triggered ',
         color: '#fff',
         loc: '-750 -231',
-      parent: '',
-      font: '14px Manrope',
-      buttonColor: '#3EA3EC',
-      plusIconColor: '#fff',
-      type: 'label',
-      operation_type: 'NA',
-      category: 'data_entry',
-      attr_type: 'nav',
-      attr_name: 'Hi! I am Intellobot. How can I help you?',
-      attr_ref: '["NA"]',
-      oper_link: 'NA',
-      oper_output: 'NA',
-      oper_value: 'NA',
-      description: 'Hi! I am Intellobot. How can I help you?',
-      title: 'Hi! I am Intellobot. How can I help you?',
-    },
-  ];
-
-
+        parent: '',
+        font: '14px Manrope',
+        buttonColor: '#3EA3EC',
+        plusIconColor: '#fff',
+        type: 'label',
+        operation_type: 'NA',
+        category: 'data_entry',
+        attr_type: 'nav',
+        attr_name: 'Hi! I am Intellobot. How can I help you?',
+        attr_ref: '["NA"]',
+        oper_link: 'NA',
+        oper_output: 'NA',
+        oper_value: 'NA',
+        description: 'Hi! I am Intellobot. How can I help you?',
+        title: 'Hi! I am Intellobot. How can I help you?',
+      },
+    ];
 
     this.skipsDiagramUpdate = false;
 
@@ -1655,6 +1672,15 @@ private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
     };
   }
 
+  get infosetStyle() {
+    return this.buildForms === 'buildInfosetsScreen'
+      ? {
+          'background-image':
+            'url(' + this.imgUrl + 'infoset-icons/infoset_bg.svg)',
+        }
+      : {};
+  }
+
   onFileSelect(event: any, field: 'widgetIcon' | 'headerLogo' | 'botIcon') {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files) {
@@ -1665,6 +1691,8 @@ private onAddNodeButtonClick(e: go.InputEvent, obj: go.GraphObject) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.diagramNodeData[this.rowNodeIndex].file = e.target.result;
+        this.diagramNodeData[this.rowNodeIndex].fileName =
+          this.selectedFileData?.name;
       };
       reader.readAsDataURL(file);
     }

@@ -36,6 +36,7 @@ import { AppsComponent } from './apps/apps.component';
 import { MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 // import { MatDatepickerModule } from '@angular/material/datepicker';
 // import { MatNativeDateModule } from '@angular/material/core';
 // import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -80,6 +81,7 @@ import { AgGridAngular } from 'ag-grid-angular';
     // AgGridModule,
     MatTableModule,
     AgGridAngular,
+    OverlayPanelModule,
     // MatDatepickerModule,
     // MatNativeDateModule,
   ],

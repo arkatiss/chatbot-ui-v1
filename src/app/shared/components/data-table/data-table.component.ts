@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-shared-data-table',
@@ -26,6 +27,7 @@ import { OverlayPanel } from 'primeng/overlaypanel';
 export class DataTableComponent implements OnInit, OnChanges {
   @ViewChild('dt1') dt1!: Table;
   @Input() permissions: any;
+  @Input() loading: any;
   @Input() columns: any;
   @Input() rowData: any;
   @Input() compName: any;
@@ -64,7 +66,11 @@ export class DataTableComponent implements OnInit, OnChanges {
   subMenuList: any[] = [];
   userMapList: any[] = [];
 
-  constructor(private router: Router, private messageService: MessageService) {
+  constructor(
+    private router: Router,
+    private messageService: MessageService,
+    private spinner: NgxSpinnerService
+  ) {
     console.log('--menuName--', this.menuName);
     if (!this.menuName) {
       this.menuName = sessionStorage.getItem('activeListMenu');
@@ -86,6 +92,11 @@ export class DataTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('ngonchanges permissions:', this.permissions);
+    if (changes['loading'] && this.loading === true) {
+      this.spinner.show();
+    } else {
+      this.spinner.hide();
+    }
 
     this.filteredRowData = this.rowData;
     console.log('screenName:', this.screenName);
