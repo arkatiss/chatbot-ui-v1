@@ -580,7 +580,6 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   }
 
   addNode(type: string): void {
-
     const diagram: go.Diagram = this.diagramComponent.diagram;
     const model = diagram.model as go.GraphLinksModel;
 
@@ -648,7 +647,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       'Auto',
       {
         locationSpot: go.Spot.Center,
-         width: 130,          // ✅ FIXED WIDTH
+        width: 130, // ✅ FIXED WIDTH
         selectionAdorned: true,
         isLayoutPositioned: true, // ✅ ADD
         selectionAdornmentTemplate: $(
@@ -682,34 +681,43 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
         'Vertical',
         $(
           go.TextBlock,
-          { margin: 8, editable: true, width: 120, textAlign: 'center', textEdited: (
-  tb: go.TextBlock,
-  oldText: string,
-  newText: string
-) => {
-  const node = tb.part as go.Node;
-  if (!node) return;
+          {
+            margin: 8,
+            editable: true,
+            width: 120,
+            textAlign: 'center',
+            textEdited: (
+              tb: go.TextBlock,
+              oldText: string,
+              newText: string
+            ) => {
+              const node = tb.part as go.Node;
+              if (!node) return;
 
-  const key = node.data.key;
-  const index = this.diagramNodeData.findIndex(
-    (n: { key: any }) => n.key === key
-  );
+              const key = node.data.key;
+              const index = this.diagramNodeData.findIndex(
+                (n: { key: any }) => n.key === key
+              );
 
-  if (index !== -1) {
-    this.diagramNodeData[index].text = newText;
-  }
-},             // ✅ MUST be less than node width
-        maxLines: 1,             // single line
-        overflow: go.TextBlock.OverflowEllipsis,toolTip: $(
-      'ToolTip',
-      $(go.TextBlock,
-        {
-          margin: 6,
-          maxSize: new go.Size(300, NaN),
-          wrap: go.TextBlock.WrapFit
-        },
-        new go.Binding('text', 'text')
-      ) )},
+              if (index !== -1) {
+                this.diagramNodeData[index].text = newText;
+              }
+            }, // ✅ MUST be less than node width
+            maxLines: 1, // single line
+            overflow: go.TextBlock.OverflowEllipsis,
+            toolTip: $(
+              'ToolTip',
+              $(
+                go.TextBlock,
+                {
+                  margin: 6,
+                  maxSize: new go.Size(300, NaN),
+                  wrap: go.TextBlock.WrapFit,
+                },
+                new go.Binding('text', 'text')
+              )
+            ),
+          },
 
           new go.Binding('text', 'text').makeTwoWay(),
           new go.Binding('font', 'font').makeTwoWay(),
@@ -1010,6 +1018,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     console.log(m);
     console.log(i);
     console.log(this.diagramNodeData, this.sampleBotResponse);
+    this.cardDetail = m;
     this.updateIndex = i;
     this.bindValuesOnUpdate();
     //this.rowNodeIndex = i;
@@ -1023,6 +1032,13 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       this.diagramNodeData?.[this.rowNodeIndex],
       this.updateIndex
     );
+
+    const base64Data = this.diagramNodeData?.[this.rowNodeIndex]?.file;
+    const fileName = this.diagramNodeData?.[this.rowNodeIndex]?.fileName;
+    if (base64Data) {
+      this.selectedFileData = this.base64ToFile(base64Data, fileName);
+    }
+
     this.sampleBotResponse = [this.diagramNodeData?.[this.rowNodeIndex]];
     this.showFile = this.diagramNodeData?.[this.rowNodeIndex]?.operation_type;
     if (this.diagramNodeData?.[this.rowNodeIndex]?.category) {
@@ -1055,29 +1071,29 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   assignRequired(event: any) {
     console.log(event);
   }
-private removeSubtree(node: go.Node, diagram: go.Diagram) {
-  node.findTreeChildrenNodes().each((child: go.Node) => {
-    this.removeSubtree(child, diagram);
-  });
-  diagram.remove(node);
-}
+  private removeSubtree(node: go.Node, diagram: go.Diagram) {
+    node.findTreeChildrenNodes().each((child: go.Node) => {
+      this.removeSubtree(child, diagram);
+    });
+    diagram.remove(node);
+  }
 
-removeNodeData(i: number) {
-  const diagram = this.diagramComponent.diagram;
-  if (!diagram) return;
+  removeNodeData(i: number) {
+    const diagram = this.diagramComponent.diagram;
+    if (!diagram) return;
 
-  const model = diagram.model as go.GraphLinksModel;
-  const nodeKey = this.diagramNodeData[i].key;
-  const node = diagram.findNodeForKey(nodeKey);
-  if (!node) return;
+    const model = diagram.model as go.GraphLinksModel;
+    const nodeKey = this.diagramNodeData[i].key;
+    const node = diagram.findNodeForKey(nodeKey);
+    if (!node) return;
 
-  diagram.startTransaction('delete subtree');
-  this.removeSubtree(node, diagram);
-  diagram.commitTransaction('delete subtree');
+    diagram.startTransaction('delete subtree');
+    this.removeSubtree(node, diagram);
+    diagram.commitTransaction('delete subtree');
 
-  this.diagramNodeData = model.nodeDataArray.slice();
-  this.diagramLinkData = model.linkDataArray.slice();
-}
+    this.diagramNodeData = model.nodeDataArray.slice();
+    this.diagramLinkData = model.linkDataArray.slice();
+  }
 
   removeConnectedObjects(index: number, data: any[]) {
     const startObject = data[index];
@@ -1381,7 +1397,6 @@ removeNodeData(i: number) {
     return value && value !== '' ? value : 'NA';
   }
   saveRowData() {
-
     this.unique_id = Math.floor(100000 + Math.random() * 9000);
     let attrRef;
     if (
@@ -1434,22 +1449,18 @@ removeNodeData(i: number) {
       master_store_data: dataValues,
       master_data_type: 'insert',
     };
-     const diagram = this.diagramComponent.diagram;
-  if (!diagram) return;
+    const diagram = this.diagramComponent.diagram;
+    if (!diagram) return;
 
-  const nodeData = this.diagramNodeData[this.rowNodeIndex];
+    const nodeData = this.diagramNodeData[this.rowNodeIndex];
 
-  diagram.startTransaction('update node text');
+    diagram.startTransaction('update node text');
 
-  diagram.model.setDataProperty(
-    nodeData,
-    'text',
-    nodeData.attr_name
-  );
+    diagram.model.setDataProperty(nodeData, 'text', nodeData.attr_name);
 
-  diagram.commitTransaction('update node text');
+    diagram.commitTransaction('update node text');
 
-  this.dialogDetails = '';
+    this.dialogDetails = '';
     // Object.assign(this.diagramNodeData[this.rowNodeIndex], {
     //   text: this.diagramNodeData[this.rowNodeIndex].attr_name,
     // });
@@ -1752,5 +1763,40 @@ removeNodeData(i: number) {
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  base64ToFile(base64: string, fileName?: string): File {
+    // Extract MIME type
+    const mimeMatch = base64.match(/^data:(.*?);base64,/);
+    const mimeType = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
+
+    // Determine filename
+    if (!fileName) {
+      // Map MIME type to extension
+      const mimeMap: { [key: string]: string } = {
+        'application/pdf': 'pdf',
+        'image/jpeg': 'jpg',
+        'image/png': 'png',
+        'image/gif': 'gif',
+        'application/vnd.ms-excel': 'xls',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+          'xlsx',
+        'text/plain': 'txt',
+        'text/csv': 'csv',
+      };
+      const extension = mimeMap[mimeType] || 'bin';
+      fileName = `file.${extension}`;
+    }
+
+    // Decode base64
+    const byteString = atob(base64.split(',')[1]);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const uint8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      uint8Array[i] = byteString.charCodeAt(i);
+    }
+
+    // Return File object
+    return new File([uint8Array], fileName, { type: mimeType });
   }
 }
