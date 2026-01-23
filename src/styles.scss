@@ -1904,3 +1904,9 @@ ul {
 .custom-overlaypanel:after {
   display: none !important;
 }
+
+.joint-paper.joint-theme-default {
+  background-color: transparent;
+  // height: 736px !important;
+  // overflow-y: scroll !important;
+}

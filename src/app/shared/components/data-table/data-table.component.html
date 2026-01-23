@@ -6,10 +6,11 @@
         <div
           class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 mt-auto mb-auto d-flex align-items-center gap-3"
         >
-          <span class="grid-title">{{
+          <!-- <span class="grid-title">{{
             menuName.replaceAll("entityconfig/entityType", "entityType")
               | titlecase
-          }}</span>
+          }}</span> -->
+          <span class="grid-title">{{ safeMenuName | titlecase }}</span>
           <ng-container *ngIf="menuName === 'Infosets'">
             <div class="col-sm-2">
               <!-- <label>Select Domain</label> -->
@@ -156,9 +157,10 @@
               pReorderableColumn
               pResizableColumn
             >
-              <span>
-                {{ col.header.replaceAll("_", " ") | titlecase }}
-              </span>
+              <!-- <span>
+                {{ col?.header?.replaceAll("_", " ") | titlecase }}
+              </span> -->
+              <span>{{ getHeader(col) | titlecase }}</span>
 
               <p-sortIcon field="{{ col.field }}" class="d-sort">
                 <i class="pi-sort-down d-sort"></i>

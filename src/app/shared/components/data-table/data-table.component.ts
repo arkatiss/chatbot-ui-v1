@@ -101,6 +101,17 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.filteredRowData = this.rowData;
     console.log('screenName:', this.screenName);
   }
+
+  get safeMenuName(): string {
+    return (this.menuName ?? '').replaceAll(
+      'entityconfig/entityType',
+      'entityType'
+    );
+  }
+
+  getHeader(col: any): string {
+    return (col?.header ?? '').replaceAll('_', ' ');
+  }
   editRowData(data: any, type: any, event: any) {
     // if (type.header !== 'Action' && event === 'cell') {
     //   this.editEvnt.emit(data);

@@ -85,6 +85,8 @@ import { NgxOrgChartComponent } from '@ahmedaoui/ngx-org-chart';
 import { PopupMessagesComponent } from './build-infosets/popup-messages/popup-messages.component';
 import { MegaMenuModule } from 'primeng/megamenu';
 
+import { BuildInfosetsJointjsComponent } from './build-infosets/build-infosets-jointjs/build-infosets-jointjs.component';
+
 @NgModule({
   declarations: [
     DomaincreateComponent,
@@ -105,6 +107,8 @@ import { MegaMenuModule } from 'primeng/megamenu';
     GeneralSettingsComponent,
     TriggerConditionsComponent,
     PopupMessagesComponent,
+
+    BuildInfosetsJointjsComponent,
   ],
   imports: [
     CommonModule,

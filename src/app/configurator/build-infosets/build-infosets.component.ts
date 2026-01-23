@@ -9,6 +9,8 @@ import {
   ElementRef,
   ViewContainerRef,
   TemplateRef,
+  AfterViewInit,
+  HostListener,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import * as go from 'gojs';
@@ -22,6 +24,8 @@ import { ToastrService } from 'ngx-toastr';
 import { InfosetsService } from '../service/infosets.service';
 import { environment } from '../../../environments/environment';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import * as joint from 'jointjs';
+import { BuildInfosetsJointjsComponent } from './build-infosets-jointjs/build-infosets-jointjs.component';
 @Component({
   selector: 'app-build-infosets',
   templateUrl: './build-infosets.component.html',
@@ -31,6 +35,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 })
 export class BuildInfosetsComponent implements OnInit, OnChanges {
   @ViewChild(MatMenuTrigger) matMenuTrigger!: MatMenuTrigger;
+  @ViewChild(BuildInfosetsJointjsComponent)
+  jointComp!: BuildInfosetsJointjsComponent;
   @ViewChild('menuButton') menuButton!: ElementRef;
   private overlayRef!: OverlayRef;
   updatedTitle: any = '';
@@ -59,12 +65,12 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       title: 'Hi! I am Intellobot. How can I help you?',
     },
   ];
+  private nextKey = 2;
 
   public diagramLinkData: Array<go.ObjectData> = [{ key: -1 }];
 
   public diagramModelData = { prop: 'value' };
   public skipsDiagramUpdate = false;
-  private nextKey = 2;
 
   imgUrl = environment.imgUrl;
   buildForms = 'table';
@@ -517,13 +523,14 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   edit = false;
   appearanceConfig: any = {};
   infosetFlag: any = false;
+
   constructor(
     public dialogBox: MatDialog,
     private http: HttpClient,
     public api: InfosetsService,
     private toast: ToastrService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) {
     sessionStorage.setItem('activeListMenu', 'Infosets');
     this.screenName = sessionStorage.getItem('activeListMenu');
@@ -551,7 +558,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       },
       (err) => {
         //this.onErrorr(err);
-      }
+      },
     );
   }
   @ViewChild('myDiagram', { static: false })
@@ -560,12 +567,12 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {}
   getChildLocation(parentKey: number): string {
     const parent = this.diagramNodeData.find(
-      (n: { key: number }) => n.key === parentKey
+      (n: { key: number }) => n.key === parentKey,
     );
     if (!parent?.loc) return '0 0';
 
     const siblings = this.diagramNodeData.filter(
-      (n: { parent: number }) => n.parent === parentKey
+      (n: { parent: number }) => n.parent === parentKey,
     );
 
     const p = go.Point.parse(parent.loc);
@@ -654,12 +661,12 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
           go.Adornment,
           'Auto',
           $(go.Shape, { fill: null, stroke: 'dodgerblue', strokeWidth: 2 }),
-          $(go.Placeholder)
+          $(go.Placeholder),
         ),
       },
       // ✅ ADD location binding HERE
       new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(
-        go.Point.stringify
+        go.Point.stringify,
       ),
 
       $(
@@ -674,7 +681,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
               this.openConfigMenu(node, 'config');
             }
           },
-        }
+        },
       ),
       $(
         go.Panel,
@@ -689,14 +696,14 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
             textEdited: (
               tb: go.TextBlock,
               oldText: string,
-              newText: string
+              newText: string,
             ) => {
               const node = tb.part as go.Node;
               if (!node) return;
 
               const key = node.data.key;
               const index = this.diagramNodeData.findIndex(
-                (n: { key: any }) => n.key === key
+                (n: { key: any }) => n.key === key,
               );
 
               if (index !== -1) {
@@ -714,8 +721,8 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
                   maxSize: new go.Size(300, NaN),
                   wrap: go.TextBlock.WrapFit,
                 },
-                new go.Binding('text', 'text')
-              )
+                new go.Binding('text', 'text'),
+              ),
             ),
           },
 
@@ -728,7 +735,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
                 this.openConfigMenu(node, 'config');
               }
             },
-          }
+          },
         ),
         $(
           go.Panel,
@@ -750,7 +757,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
                 strokeWidth: 0,
                 click: (e: any, obj: any) => this.onAddNodeButtonClick(e, obj),
               },
-              new go.Binding('fill', 'buttonColor')
+              new go.Binding('fill', 'buttonColor'),
             ),
             $(
               go.Shape,
@@ -759,11 +766,11 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
               {
                 click: (e: any, obj: any) => this.onAddNodeButtonClick(e, obj),
               },
-              new go.Binding('stroke', 'plusIconColor')
-            )
-          )
-        )
-      )
+              new go.Binding('stroke', 'plusIconColor'),
+            ),
+          ),
+        ),
+      ),
     );
     diagram.addDiagramListener('SelectionMoved', (e) => {
       const diagram = e.diagram;
@@ -778,7 +785,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
 
           // Update Angular data
           const idx = this.diagramNodeData.findIndex(
-            (n: { key: any }) => n.key === data.key
+            (n: { key: any }) => n.key === data.key,
           );
           if (idx > -1) {
             this.diagramNodeData[idx].loc = loc;
@@ -803,7 +810,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
         selectable: false,
       },
       $(go.Shape, { strokeWidth: 1 }),
-      $(go.Shape, { toArrow: 'Standard' })
+      $(go.Shape, { toArrow: 'Standard' }),
     );
 
     return diagram;
@@ -833,7 +840,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     this.matMenuTrigger.openMenu();
     setTimeout(() => {
       const overlayPane = document.querySelector(
-        '.cdk-overlay-pane'
+        '.cdk-overlay-pane',
       ) as HTMLElement;
       if (overlayPane) {
         const viewportWidth = window.innerWidth;
@@ -850,9 +857,10 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
 
   public handleMenuAction(action: string) {
     console.log(this.contextNodeData);
-    if (this.contextNodeData) {
-      this.addNode(action);
-    }
+    // if (this.contextNodeData) {
+    //   this.addNode(action);
+    // }
+    this.jointComp.addChild(action);
   }
   saveInfoset(saveDialogBox: any) {
     this.dialogBox?.open(saveDialogBox as any, {
@@ -877,11 +885,11 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
 
   openConfigMenu(e: any, b: any) {
     this.dialogDetails = '';
-    console.log(e, b);
+    console.log('$$$$$$$', e, b);
     //this.rowNodeIndex = e?.zb.key;
     console.log(this.rowNodeIndex);
     this.rowNodeIndex = this.diagramNodeData.findIndex(
-      (res: any) => res.key === e?.zb.key
+      (res: any) => res.key === e?.zb.key,
     );
     console.log(this.nodeIndex);
     console.log(this.diagramModelData);
@@ -891,6 +899,26 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       this.showConfigMenu = true;
       this.cardDetail = e?.zb;
     }
+  }
+
+  onNodeSelected(node: any) {
+    // this.selectedNode = event.node;
+    console.log('onNodeSelected', node);
+    this.dialogDetails = '';
+    console.log(this.rowNodeIndex);
+    this.rowNodeIndex = this.diagramNodeData.findIndex(
+      (res: any) => res?.key === node?.key,
+    );
+    console.log(this.rowNodeIndex);
+    console.log(this.diagramModelData);
+    console.log(this.diagramLinkData);
+    console.log(this.diagramNodeData);
+    this.showConfigMenu = true;
+    this.cardDetail = node;
+
+    // clone to avoid direct mutation
+    // this.cardDetail = JSON.parse(JSON.stringify(event.data));
+    // this.showConfigMenu = true;
   }
 
   selectValue(v: any) {
@@ -1030,7 +1058,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     console.log(
       'bindValuesOnUpdate',
       this.diagramNodeData?.[this.rowNodeIndex],
-      this.updateIndex
+      this.updateIndex,
     );
 
     const base64Data = this.diagramNodeData?.[this.rowNodeIndex]?.file;
@@ -1065,7 +1093,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     this.diagramNodeData[this.rowNodeIndex]?.fields.splice(index, 1);
     console.log(
       'deleteFormDetails',
-      this.diagramNodeData[this.rowNodeIndex]?.fields
+      this.diagramNodeData[this.rowNodeIndex]?.fields,
     );
   }
   assignRequired(event: any) {
@@ -1079,20 +1107,33 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
   }
 
   removeNodeData(i: number) {
-    const diagram = this.diagramComponent.diagram;
-    if (!diagram) return;
+    // const diagram = this.diagramComponent.diagram;
+    // if (!diagram) return;
 
-    const model = diagram.model as go.GraphLinksModel;
+    // const model = diagram.model as go.GraphLinksModel;
+    // const nodeKey = this.diagramNodeData[i].key;
+    // const node = diagram.findNodeForKey(nodeKey);
+    // if (!node) return;
+
+    // diagram.startTransaction('delete subtree');
+    // this.removeSubtree(node, diagram);
+    // diagram.commitTransaction('delete subtree');
+
+    // this.diagramNodeData = model.nodeDataArray.slice();
+    // this.diagramLinkData = model.linkDataArray.slice();
     const nodeKey = this.diagramNodeData[i].key;
-    const node = diagram.findNodeForKey(nodeKey);
-    if (!node) return;
 
-    diagram.startTransaction('delete subtree');
-    this.removeSubtree(node, diagram);
-    diagram.commitTransaction('delete subtree');
-
-    this.diagramNodeData = model.nodeDataArray.slice();
-    this.diagramLinkData = model.linkDataArray.slice();
+    const element: any = this.jointComp?.graph?.getElements();
+    console.log('---nodeKey---', nodeKey, '---element---', element);
+    element.forEach((ele: any, idx: number) => {
+      console.log('--idx--', idx, '--ele--', ele);
+    });
+    const selectedElementNode = element.filter(
+      (ele: any) => ele?.attributes?.nodeData?.key === nodeKey,
+    );
+    console.log('selectedElementNode', selectedElementNode);
+    this.jointComp.selectedNode = selectedElementNode[0];
+    this.jointComp?.deleteSelectedNode();
   }
 
   removeConnectedObjects(index: number, data: any[]) {
@@ -1329,7 +1370,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     this.infosetFlag = true;
     if (data?.domain && data?.subDomain) {
       this.domain = this.filteredDomainOptions.find(
-        (item: any) => item.domain === data?.domain
+        (item: any) => item.domain === data?.domain,
       );
       this.subDomain = data?.subDomain;
     }
@@ -1381,7 +1422,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       (err) => {
         //this.onErrorr(err);
         this.isLoading = false;
-      }
+      },
     );
   }
   operationType: any = undefined;
@@ -1412,7 +1453,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     const dataValues: any = {
       operation_type: [
         this.getValidValue(
-          this.diagramNodeData[this.rowNodeIndex].operation_type
+          this.diagramNodeData[this.rowNodeIndex].operation_type,
         ),
       ],
       description: [
@@ -1445,28 +1486,56 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     };
 
     console.log(dataValues);
+    console.log(this.diagramNodeData);
     const body = {
       master_store_data: dataValues,
       master_data_type: 'insert',
     };
-    const diagram = this.diagramComponent.diagram;
-    if (!diagram) return;
 
-    const nodeData = this.diagramNodeData[this.rowNodeIndex];
+    const nodeKey = this.diagramNodeData[this.rowNodeIndex].key;
 
-    diagram.startTransaction('update node text');
+    const elements = this.jointComp?.graph?.getElements() || [];
 
-    diagram.model.setDataProperty(nodeData, 'text', nodeData.attr_name);
+    const cell: any = elements.find(
+      (ele: any) => ele.get('nodeData')?.key === nodeKey,
+    );
 
-    diagram.commitTransaction('update node text');
+    if (!cell) return;
+    const newText = this.diagramNodeData[this.rowNodeIndex].attr_name;
+    // ---- Update nodeData safely ----
+    const oldNodeData = cell.get('nodeData');
 
+    const newNodeData = {
+      ...oldNodeData,
+      text: newText,
+    };
+
+    cell.unset('nodeData', { silent: true });
+    cell.set('nodeData', newNodeData);
+
+    // ---- Update visible label ----
+    cell.attr('label/text', newText);
+    this.jointComp?.emitDiagramData();
     this.dialogDetails = '';
-    // Object.assign(this.diagramNodeData[this.rowNodeIndex], {
-    //   text: this.diagramNodeData[this.rowNodeIndex].attr_name,
-    // });
-    // this.diagramNodeData = [...this.diagramNodeData];
-    // this.dialogDetails = '';
     console.log(this.diagramNodeData);
+    // const diagram = this.diagramComponent?.diagram;
+    // if (!diagram) return;
+
+    // const nodeData = this.diagramNodeData[this.rowNodeIndex];
+
+    // diagram.startTransaction('update node text');
+
+    // diagram.model.setDataProperty(nodeData, 'text', nodeData.attr_name);
+
+    // diagram.commitTransaction('update node text');
+
+    // this.dialogDetails = '';
+    // // Object.assign(this.diagramNodeData[this.rowNodeIndex], {
+    // //   text: this.diagramNodeData[this.rowNodeIndex].attr_name,
+    // // });
+    // // this.diagramNodeData = [...this.diagramNodeData];
+    // // this.dialogDetails = '';
+    // console.log(this.diagramNodeData);
     return;
     this.api.chatbotMasterData(body).subscribe(
       (res: any) => {
@@ -1475,7 +1544,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       },
       (err) => {
         //this.onErrorrNewHierachy(err);
-      }
+      },
     );
     console.log(body);
   }
@@ -1489,7 +1558,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     this.infoset
       ? this.infoset
       : (this.infoset =
-          this.dialogDomain.domain +
+          this.dialogDomain?.domain +
           '_' +
           this.dialogSubDomain +
           '_' +
@@ -1500,7 +1569,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     const transformedArray = [...firstObjectChilds, ...data.slice(1)];
 
     const domainData = {
-      domain: this.dialogDomain.domain,
+      domain: this.dialogDomain?.domain,
       sub_domain: this.dialogSubDomain,
     };
     body = {
@@ -1531,7 +1600,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       this.infosetFlag === true
     ) {
       this.toast.warning(
-        'This infoset already exists. You are not allowed to save it. Please update the existing infoset instead.'
+        'This infoset already exists. You are not allowed to save it. Please update the existing infoset instead.',
       );
     } else if (this.infosetFlag === false) {
       this.api.saveInfoset(body).subscribe(
@@ -1550,7 +1619,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
         },
         (err) => {
           //this.onErrorr(err);
-        }
+        },
       );
     }
   }
@@ -1569,7 +1638,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
       },
       (err) => {
         //this.onErrorr(err);
-      }
+      },
     );
   }
   transformArray(input: any[]): any[] {
@@ -1621,28 +1690,60 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
 
     return result;
   }
+  // editRow(evt: any) {
+  //   console.log(evt);
+  //   this.edit = true;
+  //   this.infosetFlag = false;
+  //   this.skipsDiagramUpdate = false;
+
+  //   //this.diagramNodeData = this.patchNodeLocations(evt.item.info_data?.draggedData?.nodeData);
+  //   this.diagramNodeData = evt.item.info_data?.draggedData?.nodeData;
+  //   this.diagramLinkData = evt.item.info_data?.draggedData?.linkData;
+  //   this.appearanceConfig = evt.item.info_data?.appearance;
+  //   this.buildForms = 'buildInfosetsScreen';
+  //   const domainObj = this.filteredDomainOptions.find(
+  //     (item: any) => item.domain === evt.item.info_data.domain_data.domain
+  //   );
+  //   const infosetObj = this.filteredInfosetOptions.find(
+  //     (item: any) => item.file === evt.item.file
+  //   );
+  //   this.dialogDomain = domainObj;
+  //   this.infoset = infosetObj?.file;
+  //   this.dialogSubDomain = evt.item.info_data.domain_data.sub_domain;
+  //   this.nextKey = this.diagramNodeData[this.diagramNodeData.length - 1].key;
+  // }
+
   editRow(evt: any) {
-    console.log(evt);
+    console.log('edit diagram:', evt);
     this.edit = true;
     this.infosetFlag = false;
     this.skipsDiagramUpdate = false;
-
-    //this.diagramNodeData = this.patchNodeLocations(evt.item.info_data?.draggedData?.nodeData);
+    // this.diagramNodeData = evt.item.info_data?.draggedData?.nodeData;
     this.diagramNodeData = evt.item.info_data?.draggedData?.nodeData;
-    this.diagramLinkData = evt.item.info_data?.draggedData?.linkData;
-    this.appearanceConfig = evt.item.info_data?.appearance;
+    this.diagramLinkData = evt.item.info_data.draggedData.linkData;
+    this.appearanceConfig = evt.item.info_data.appearance;
+
     this.buildForms = 'buildInfosetsScreen';
-    const domainObj = this.filteredDomainOptions.find(
-      (item: any) => item.domain === evt.item.info_data.domain_data.domain
-    );
+
+    sessionStorage.setItem('diagramData', JSON.stringify(this.diagramNodeData));
+
+    setTimeout(() => {
+      this.jointComp.loadDiagram(this.diagramNodeData);
+    }, 0);
+
     const infosetObj = this.filteredInfosetOptions.find(
-      (item: any) => item.file === evt.item.file
+      (item: any) => item.file === evt.item.file,
     );
+    const domainObj = this.filteredDomainOptions.find(
+      (item: any) => item.domain === evt.item.info_data.domain_data.domain,
+    );
+
     this.dialogDomain = domainObj;
     this.infoset = infosetObj?.file;
     this.dialogSubDomain = evt.item.info_data.domain_data.sub_domain;
-    this.nextKey = this.diagramNodeData[this.diagramNodeData.length - 1].key;
+    this.nextKey = Math.max(...this.diagramNodeData.map((n: any) => n.key)) + 1;
   }
+
   deleteRow(event: any) {
     console.log(event);
     const body = {
@@ -1695,6 +1796,7 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
     this.initBot();
   }
   showForm() {
+    sessionStorage.removeItem('diagramData');
     this.buildForms = 'buildInfosetsScreen';
     this.edit = false;
 
@@ -1798,5 +1900,11 @@ export class BuildInfosetsComponent implements OnInit, OnChanges {
 
     // Return File object
     return new File([uint8Array], fileName, { type: mimeType });
+  }
+
+  onDiagramChange(event: any) {
+    console.log('onDiagramChanges:', event);
+    this.diagramNodeData = event.nodeData;
+    this.diagramLinkData = event.linkData;
   }
 }
