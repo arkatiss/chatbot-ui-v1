@@ -87,7 +87,8 @@
 
 .active-parent {
   font-weight: bold;
-  background-color: #e9ecef;
+  // background-color: #e9ecef;
+  color: #d3222a !important;
   padding: 10px 20px;
   margin: 0px 5px;
 }
@@ -111,4 +112,7 @@
 .overlay-item {
   cursor: pointer;
   white-space: nowrap;
+}
+.child-nav-link {
+  padding-left: 7.5rem;
 }
