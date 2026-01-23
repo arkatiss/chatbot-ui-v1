@@ -1,0 +1,38 @@
+<p-toast />
+<p-confirmDialog />
+
+<div>
+  <div #paper class="paper"></div>
+  <!-- <input
+    *ngIf="editingNode"
+    class="inline-editor"
+    [style.left.px]="editorX"
+    [style.top.px]="editorY"
+    [style.width.px]="editorWidth"
+    [(ngModel)]="editingText"
+    (keydown.enter)="commitEdit()"
+    (blur)="commitEdit()"
+  /> -->
+  <div
+    class="node-menu"
+    *ngIf="menuVisible"
+    [style.left.px]="menuX"
+    [style.top.px]="menuY"
+  >
+    <div class="menu-search">
+      <input type="text" placeholder="Search" [(ngModel)]="searchText" />
+    </div>
+
+    <div class="menu-list">
+      <div
+        class="menu-item"
+        *ngFor="let item of filteredMenuItems"
+        (click)="addChild(item)"
+      >
+        {{ item }}
+      </div>
+    </div>
+  </div>
+
+  <!-- <button (click)="saveDiagram()">Save</button> -->
+</div>

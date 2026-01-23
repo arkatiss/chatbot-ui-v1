@@ -538,7 +538,7 @@
     </mat-menu>
 
     <div class="flowchart-container">
-      <gojs-diagram
+      <!-- <gojs-diagram
         #myDiagram
         [initDiagram]="initDiagram"
         [nodeDataArray]="diagramNodeData"
@@ -546,7 +546,13 @@
         [modelData]="diagramModelData"
         [skipsDiagramUpdate]="skipsDiagramUpdate"
         [divClassName]="diagramDivClassName"
-      ></gojs-diagram>
+      ></gojs-diagram> -->
+      <app-build-infosets-jointjs
+        (nodeSelected)="onNodeSelected($event)"
+        (diagramChanged)="onDiagramChange($event)"
+      >
+        ></app-build-infosets-jointjs
+      >
     </div>
 
     <p-dialog
@@ -560,18 +566,6 @@
         <div
           class="inline-flex align-items-center justify-content-center gap-2"
         >
-          <!-- <img
-            *ngIf="this.dialogDetails === ''"
-            [src]="
-              imgUrl +
-              'infoset-icons/' +
-              (diagramNodeData[this.rowNodeIndex]?.text | lowercase) +
-              '.svg'
-            "
-            alt=""
-            height="24"
-            width="24"
-          /> -->
           <img
             *ngIf="this.dialogDetails !== ''"
             [src]="imgUrl + 'infoset-icons/back-button.svg'"

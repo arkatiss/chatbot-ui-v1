@@ -55,6 +55,7 @@
               "node_modules/prismjs/themes/prism-okaidia.css",
               "node_modules/prismjs/themes/prism-tomorrow.css",
               "node_modules/@ahmedaoui/ngx-org-chart/_theming.scss",
+              "node_modules/jointjs/dist/joint.css",
               "src/styles.scss"
             ],
             "scripts": [

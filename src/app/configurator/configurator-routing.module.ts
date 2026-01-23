@@ -13,6 +13,7 @@ import { AuthenticationGuard } from '../auth/authentication.guard';
 import { AnnotatorComponent } from '../annotator/annotator.component';
 import { ConfiguratiosComponent } from './configuratios/configuratios.component';
 import { BuildInfosetsComponent } from './build-infosets/build-infosets.component';
+import { BuildInfosetsJointjsComponent } from './build-infosets/build-infosets-jointjs/build-infosets-jointjs.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,7 @@ const routes: Routes = [
       { path: 'viewdomain', component: DomainviewComponent },
       { path: 'createinfoset', component: InfosetcreateComponent },
       { path: 'infoset', component: BuildInfosetsComponent },
+      // { path: 'infoset', component: BuildInfosetsJointjsComponent },
       { path: 'viewinfoset', component: InfosetviewComponent },
       { path: 'dataauthcreate', component: DataauthcreateComponent },
       { path: 'viewdataauth', component: DataauthviewComponent },
