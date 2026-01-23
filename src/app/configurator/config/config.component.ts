@@ -34,7 +34,7 @@ export class ConfigComponent implements OnInit {
     private router: Router,
     private gs: GeneralService,
     private cs: ConfigService,
-    private error: ErrorService
+    private error: ErrorService,
   ) {
     this.userRole = this.gs.getUserRoleData();
     const data = this.gs.getUserToken();
@@ -76,7 +76,7 @@ export class ConfigComponent implements OnInit {
       },
       (err: any) => {
         this.onErrorr(err);
-      }
+      },
     );
   }
   onSuccessStatus(data: any): any {
@@ -100,7 +100,7 @@ export class ConfigComponent implements OnInit {
       },
       (err: any) => {
         this.onErrorr(err);
-      }
+      },
     );
   }
   onSuccesssUpdatesupport(data: any): any {
@@ -119,7 +119,7 @@ export class ConfigComponent implements OnInit {
   navItems: NavItem[] = [
     {
       label: 'Domain',
-      icon: 'fa-solid fa-diagram-project',
+      icon: 'sidenav-Icons/Domain',
       children: [
         {
           label: 'Create',
@@ -131,7 +131,7 @@ export class ConfigComponent implements OnInit {
     },
     {
       label: 'Infoset',
-      icon: 'fa-solid fa-folder',
+      icon: 'sidenav-Icons/Infoset',
       children: [
         {
           label: 'Create',
@@ -168,7 +168,7 @@ export class ConfigComponent implements OnInit {
     // },
     {
       label: 'Training',
-      icon: 'fa-solid fa-book-journal-whills',
+      icon: 'sidenav-Icons/Training',
       children: [
         {
           label: 'New App On Boarding',
@@ -184,7 +184,7 @@ export class ConfigComponent implements OnInit {
     },
     {
       label: 'Configurations',
-      icon: 'fa-solid fa-gear',
+      icon: 'sidenav-Icons/Configuration',
       children: [
         {
           label: 'Create',

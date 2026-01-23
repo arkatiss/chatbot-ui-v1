@@ -37,7 +37,7 @@ export class MainComponent implements OnInit {
     private router: Router,
     private gs: GeneralService,
     private ss: SecurityService,
-    private error: ErrorService
+    private error: ErrorService,
   ) {
     this.getuserNames();
     this.retrieveDomain();
@@ -87,7 +87,7 @@ export class MainComponent implements OnInit {
       },
       (err: any) => {
         this.onErrorr(err);
-      }
+      },
     );
   }
   onSuccessStatus(data: any): any {
@@ -111,7 +111,7 @@ export class MainComponent implements OnInit {
       },
       (err: any) => {
         this.onErrorr(err);
-      }
+      },
     );
   }
   onSuccesssUpdatesupport(data: any): any {
@@ -131,7 +131,7 @@ export class MainComponent implements OnInit {
       },
       (err: any) => {
         this.onErrorr(err);
-      }
+      },
     );
   }
   onSuccessuserNames(data: any): any {
@@ -177,7 +177,7 @@ export class MainComponent implements OnInit {
       },
       (err: any) => {
         this.onErrorr(err);
-      }
+      },
     );
   }
 
@@ -201,7 +201,7 @@ export class MainComponent implements OnInit {
   navItems: NavItem[] = [
     {
       label: 'Roles',
-      icon: 'fa-solid fa-user-shield',
+      icon: 'sidenav-Icons/roles',
       children: [
         {
           label: 'Create',
@@ -217,7 +217,7 @@ export class MainComponent implements OnInit {
     },
     {
       label: 'Support Group',
-      icon: 'fa-solid fa-headset',
+      icon: 'sidenav-Icons/Suport Group',
       children: [
         {
           label: 'Create',
@@ -233,7 +233,7 @@ export class MainComponent implements OnInit {
     },
     {
       label: 'Domain Mapping',
-      icon: 'fa-solid fa-diagram-project',
+      icon: 'sidenav-Icons/Domain Mapping',
       children: [
         {
           label: 'Create',

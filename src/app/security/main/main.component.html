@@ -7,7 +7,7 @@
     *ngIf="hideDashBoard === true"
     [ngClass]="{
       'col-sm-2': !collapsed,
-      'col-sm-auto': collapsed
+      'col-sm-auto': collapsed,
     }"
   >
     <div class="sidenav card m-0 p-0">
@@ -44,7 +44,19 @@
             (mouseenter)="collapsed && showOverlay($event, item, op)"
             [title]="collapsed ? item.label : ''"
           >
-            <i class="me-2" [ngClass]="item.icon"></i>
+            <!-- <i class="me-2" [ngClass]="item.icon"></i> -->
+            <img
+              class="m-3"
+              [src]="
+                imageURL +
+                item.icon +
+                (activeParent === item ? '-1.svg' : '.svg')
+              "
+              style="font-size: 2.5rem"
+              width="28"
+              height="28"
+              alt=""
+            />
 
             <span *ngIf="!collapsed">
               {{ item.label }}
@@ -82,11 +94,11 @@
           <!-- Expanded Children (UNCHANGED BEHAVIOR) -->
           <ul
             *ngIf="item.children && activeParent === item && !collapsed"
-            class="nav flex-column ms-5"
+            class="nav flex-column"
           >
             <li *ngFor="let child of item.children">
               <a
-                class="nav-link"
+                class="nav-link child-nav-link"
                 [ngClass]="{ 'active-child': activeChild === child }"
                 (click)="selectChild(item, child)"
               >
