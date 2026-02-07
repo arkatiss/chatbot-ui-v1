@@ -1,0 +1,21 @@
+{
+  "imgPath": "assets/cs/",
+  "serverHost": "${BASE_URL}",
+  "cssUrl": "assets/styles/css/",
+  "filesurl": "assets/files/",
+  "dplUrl": "${DPL_BASE_URL}",
+  "genAIBotUrl": "${BASE_URL}",
+
+
+  "firebase": {
+    "apiKey": "${BOT_FIREBASE_API_KEY}",
+    "authDomain": "${BOT_FIREBASE_AUTH_DOMAIN}",
+    "projectId": "${BOT_FIREBASE_PROJECT_ID}",
+    "storageBucket": "${BOT_FIREBASE_STORAGE_BUCKET}",
+    "messagingSenderId": "${BOT_FIREBASE_MESSAGING_SENDER_ID}",
+    "appId": "${BOT_FIREBASE_APP_ID}",
+    "measurementId": "${BOT_FIREBASE_MEASUREMENT_ID}"
+  },
+
+  "vapidKey": "${BOT_FIREBASE_VAPID_KEY}"
+}
