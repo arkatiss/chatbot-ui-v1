@@ -65,7 +65,7 @@ export class ConfigheaderComponent implements OnInit {
     this.timestamp = inputtime;
 
     const imgUrl = this.gs.getPropertiesUrl();
-  
+
     this.imgurl = imgUrl.imgPath;
 
     if (this.imgurl.includes('cs') === true ){
@@ -176,7 +176,7 @@ export class ConfigheaderComponent implements OnInit {
           this.hideGrid = true;
         }
        }
-        
+
       }
   });
     //this.userRole =  this.gs.getUserRoleData();
@@ -202,7 +202,7 @@ export class ConfigheaderComponent implements OnInit {
     this.userStatus();
   }
   getNotifications(): any {
-    const body = { peer_type: 'count'};
+    const body = { peer_type: 'count',input:''};
     this.api.sendMessage(body).subscribe(
       (res) => {
         this.onSuccesNotification(res);
@@ -230,7 +230,7 @@ export class ConfigheaderComponent implements OnInit {
 
 
          for (let j = 0; j < notifyData[0][b]['count']; j++){
-            this.notarray.push({peer_chat_type: notifyData[0][b]['type'], sender_name: notifyData[0][b]['user_name']}) 
+            this.notarray.push({peer_chat_type: notifyData[0][b]['type'], sender_name: notifyData[0][b]['user_name']})
               }
         }
          this.getNotificationsData();
@@ -241,8 +241,8 @@ export class ConfigheaderComponent implements OnInit {
     else {
       this.notificationClass = '';
     }
-  
-  
+
+
   }
   getNotificationsData(): any {
     let normalchatarray = [];
@@ -474,7 +474,7 @@ export class ConfigheaderComponent implements OnInit {
     this.pageservice.setDocsData(obj);
     this.spinner.hide();
   }
- 
+
   openChat(val, i): any {
     if (val.type === 'agent') {
       this.agentchatenabled = true;

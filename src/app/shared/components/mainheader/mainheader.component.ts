@@ -165,7 +165,7 @@ export class MainheaderComponent implements OnInit {
     this.UserFirstLtr = matches.join('').toUpperCase();
   }
   getNotifications(): any {
-    const body = { peer_type: 'count' };
+    const body = { peer_type: 'count' ,input: ''};
     this.api.sendMessage(body).subscribe(
       (res: any) => {
         this.onSuccesNotification(res);

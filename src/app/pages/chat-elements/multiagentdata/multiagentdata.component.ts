@@ -202,7 +202,9 @@ export class MultiagentdataComponent implements OnInit, OnChanges {
       sender_name: this.loggedUser,
       receiver_name: this.chatUserName,
       peer_chat_type: this.chatType,
+      input: ''
     };
+
     this.cs.sendMessage(body).subscribe(
       (res) => {
         this.onSuccessUserUpdate(res);
@@ -261,6 +263,7 @@ export class MultiagentdataComponent implements OnInit, OnChanges {
         sender_name: this.loggedUser,
         receiver_name: this.chatUserName,
         peer_chat_type: this.chatType,
+        input: ''
       };
       this.cs.sendMessage(body).subscribe(
         (res) => {
@@ -278,6 +281,7 @@ export class MultiagentdataComponent implements OnInit, OnChanges {
         sender_name: this.loggedUser,
         receiver_name: this.chatUserName,
         peer_chat_type: this.chatType,
+        input: ''
       };
       this.cs.sendMessage(body).subscribe(
         (res) => {
