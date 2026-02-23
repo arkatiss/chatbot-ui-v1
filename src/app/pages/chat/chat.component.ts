@@ -1042,6 +1042,7 @@ export class ChatComponent implements OnInit, OnChanges {
       sender_name: this.loginuserName,
       receiver_name: this.chatname,
       peer_chat_type: 'agent',
+      input:''
     };
     this.cs.sendMessage(body).subscribe(
       (res) => {

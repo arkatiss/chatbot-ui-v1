@@ -217,6 +217,7 @@ export class MultiagentListComponent implements OnInit, OnChanges {
       sender_name: this.loggedUser,
       receiver_name: val.username,
       peer_chat_type: val.typeofUser,
+      input: '',
     };
     this.cs.sendMessage(body).subscribe(
       (res) => {

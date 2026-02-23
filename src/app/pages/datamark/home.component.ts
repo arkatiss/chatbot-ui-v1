@@ -978,6 +978,7 @@ export class HomeComponent implements OnInit {
       sender_name: userName,
       receiver_name: this.chatname,
       peer_chat_type: 'normal',
+      input: ''
     };
     this.ds.sendMessage(body).subscribe(
       (res: any) => {
@@ -1006,6 +1007,7 @@ export class HomeComponent implements OnInit {
       sender_name: userName,
       receiver_name: this.chatname,
       peer_chat_type: 'agent',
+      input: ''
     };
     this.ds.sendMessage(body).subscribe(
       (res: any) => {
@@ -1035,6 +1037,7 @@ export class HomeComponent implements OnInit {
       sender_name: userName,
       receiver_name: this.chatname,
       peer_chat_type: this.peerChatType,
+        input: ''
     };
     this.ds.sendMessage(body).subscribe(
       (res: any) => {
@@ -1276,6 +1279,7 @@ export class HomeComponent implements OnInit {
           sender_name: this.loginuserName,
           receiver_name: this.chatname,
           peer_chat_type: this.peerChatType,
+          input: ''
         };
         this.ds.sendMessage(body).subscribe(
           (res: any) => {
@@ -1293,6 +1297,7 @@ export class HomeComponent implements OnInit {
           sender_name: this.loginuserName,
           receiver_name: this.chatname,
           peer_chat_type: this.peerChatType,
+          input: ''
         };
         this.ds.sendMessage(body).subscribe(
           (res: any) => {
