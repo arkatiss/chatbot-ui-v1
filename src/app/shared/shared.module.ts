@@ -19,6 +19,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { InputTextModule } from 'primeng/inputtext';
 @NgModule({
   declarations: [
     //  FilterPipe,
@@ -47,6 +48,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     TooltipModule,
     ButtonModule,
     NgxSpinnerModule,
+    InputTextModule,
   ],
   providers: [WebSocketService, MessageService],
 })

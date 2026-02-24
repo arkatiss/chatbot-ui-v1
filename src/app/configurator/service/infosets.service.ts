@@ -38,4 +38,25 @@ export class InfosetsService {
       body
     );
   }
+
+  insertScrape(body: any): Observable<any> {
+    return this.http.post(
+      this.general.getHttpUrl('genAIWebSiteBotUrl') + 'wb/website_scrape',
+      body
+    );
+  }
+
+  getScrapList(): Observable<any> {
+    return this.http.post(
+      this.general.getHttpUrl('genAIWebSiteBotUrl') + 'wb/retrieve_distinct_data',
+      {}
+    );
+  }
+
+  deleteScrape(body: any): Observable<any> {
+    return this.http.post(
+      this.general.getHttpUrl('genAIWebSiteBotUrl') + 'wb/delete_records',
+      body
+    );
+  }
 }

@@ -194,6 +194,11 @@ export class ConfigComponent implements OnInit {
         { label: 'View', route: '/config/training', icon: 'fa-solid fa-eye' },
       ],
     },
+     {
+      label: 'Scrape',
+      icon: 'sidenav-Icons/Training',
+      route: '/config/scrape',
+    },
   ];
   currentOverlay: any;
 
@@ -202,6 +207,7 @@ export class ConfigComponent implements OnInit {
   }
 
   selectParent(item: NavItem) {
+    debugger
     if (item.children) {
       this.activeParent = this.activeParent === item ? null : item;
     } else if (item.route) {
