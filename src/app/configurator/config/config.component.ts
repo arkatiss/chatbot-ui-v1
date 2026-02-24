@@ -207,7 +207,6 @@ export class ConfigComponent implements OnInit {
   }
 
   selectParent(item: NavItem) {
-    debugger
     if (item.children) {
       this.activeParent = this.activeParent === item ? null : item;
     } else if (item.route) {
