@@ -86,6 +86,7 @@ import { PopupMessagesComponent } from './build-infosets/popup-messages/popup-me
 import { MegaMenuModule } from 'primeng/megamenu';
 
 import { BuildInfosetsJointjsComponent } from './build-infosets/build-infosets-jointjs/build-infosets-jointjs.component';
+import { ScrapeComponent } from './scrape/scrape.component';
 
 @NgModule({
   declarations: [
@@ -109,6 +110,7 @@ import { BuildInfosetsJointjsComponent } from './build-infosets/build-infosets-j
     PopupMessagesComponent,
 
     BuildInfosetsJointjsComponent,
+      ScrapeComponent,
   ],
   imports: [
     CommonModule,

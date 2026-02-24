@@ -14,6 +14,7 @@ import { AnnotatorComponent } from '../annotator/annotator.component';
 import { ConfiguratiosComponent } from './configuratios/configuratios.component';
 import { BuildInfosetsComponent } from './build-infosets/build-infosets.component';
 import { BuildInfosetsJointjsComponent } from './build-infosets/build-infosets-jointjs/build-infosets-jointjs.component';
+import { ScrapeComponent } from './scrape/scrape.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,7 @@ const routes: Routes = [
       { path: 'training', component: TrainingbotComponent },
       { path: 'createtraining', component: AnnotatorComponent },
       { path: 'configurations', component: ConfiguratiosComponent },
+       { path: 'scrape', component: ScrapeComponent },
     ],
   },
 ];

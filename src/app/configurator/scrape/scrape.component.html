@@ -1,0 +1,50 @@
+<p-confirmDialog />
+<p-toast />
+
+<div class="container-fluid p-3">
+  <div class="row m-0" style="height: 87vh">
+    <div class="col-12 ps-0">
+      <div class="">
+        <app-shared-data-table [columns]="colData" [rowData]="rowData" [loading]="isLoading" [screenName]="screenName"
+          [domain]="domain" [subDomain]="subDomain" (showFormPage)="showForm()"
+          [filteredDomainOptions]="filteredDomainOptions" (deleteEvnt)="deleteRow($event)"></app-shared-data-table>
+      </div>
+    </div>
+  </div>
+</div>
+<p-dialog header="Scrape Create" [(visible)]="showScrapePopup" [modal]="true" [closable]="true"
+  [style]="{ width: '20%' }" [draggable]="false" [resizable]="false">
+
+  <div class="grid">
+
+    <!-- Domain -->
+    <div class="col-12 mb-3">
+      <p-dropdown class="w-full" [options]="filteredDomainOptions" (change)="changeDomain($event)"
+        [(ngModel)]="scrape_domain" optionLabel="domain" placeholder="Select Domain" [filter]="true"
+        filterPlaceholder="Search..." [showClear]="true" appendTo="body">
+      </p-dropdown>
+    </div>
+
+    <!-- Sub Domain -->
+    <div class="col-12 mb-3">
+      <p-dropdown class="w-full" [options]="scrape_domain?.sub_domain" [(ngModel)]="scrape_subDomain"
+        placeholder="Select Sub Domain" [filter]="true" filterPlaceholder="Search..." [showClear]="true"
+        appendTo="body">
+      </p-dropdown>
+    </div>
+
+    <!-- URL Input -->
+    <div class="col-12 mb-3">
+      <input type="text" pInputText class="w-full" placeholder="Enter URL" [(ngModel)]="scrapeUrl" />
+    </div>
+
+  </div>
+
+  <!-- Footer Buttons -->
+  <ng-template pTemplate="footer">
+    <button pButton type="button" label="Close" class="p-button-text" (click)="closePopup()"></button>
+
+    <button pButton type="button" label="Submit" class="p-button-primary save-btn" (click)="submitScrape()"></button>
+  </ng-template>
+
+</p-dialog>

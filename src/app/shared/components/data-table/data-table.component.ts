@@ -50,7 +50,9 @@ export class DataTableComponent implements OnInit, OnChanges {
   @Input() filteredDomainOptions: any;
   @Input() domain: any;
   @Output() changeSubDomainForInfoset = new EventEmitter<any>();
+  @Output() scrapeSubmit = new EventEmitter<any>();
   @Input() subDomain: any;
+  @Input() scrapeUrl: any;
   imagePath = environment.imgUrl;
   imgUrl = environment.imageUrl;
   selectedRows: any = [];
@@ -249,5 +251,10 @@ export class DataTableComponent implements OnInit, OnChanges {
   changeSubDomain() {
     const obj = { domain: this.domain.domain, subDomain: this.subDomain };
     this.changeSubDomainForInfoset.emit(obj);
+  }
+
+  SubmitScrap() {
+    const obj = { domain: this.domain.domain, subDomain: this.subDomain, scrapeUrl: this.scrapeUrl };
+    this.scrapeSubmit.emit(obj);
   }
 }

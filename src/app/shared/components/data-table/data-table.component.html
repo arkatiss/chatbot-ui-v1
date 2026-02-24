@@ -56,13 +56,13 @@
         <div
           class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 p-0 d-flex justify-content-end"
         >
-          <div class="d-flex gap-3">
+          <div class="d-flex gap-3 search-form">
             <span class="p-input-icon-right search-inputbox">
               <i class="pi pi-search"></i>
               <input
                 type="text"
                 pInputText
-                placeholder="search"
+                placeholder="Search"
                 class="input-text"
                 [(ngModel)]="searchTerm"
                 (input)="filterData()"
@@ -96,6 +96,13 @@
               (click)="addNewRecord()"
             >
               Build Infosets
+            </button>
+            <button
+              class="save-btn"
+              *ngIf="menuName === 'Scrape'"
+              (click)="addNewRecord()"
+            >
+              New
             </button>
             <button
               class="save-btn"
@@ -378,7 +385,7 @@
                   />
                 </ng-container>
 
-                <img
+                <img *ngIf="safeMenuName !== 'Scrape'"
                   (click)="editRowData(rowData, col, 'edit')"
                   class="img action pointer me-2"
                   src="assets/images/repository-imgs/edit.svg"
