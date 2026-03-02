@@ -27,6 +27,16 @@ export class AppearanceComponent {
     chatPosition: 'right',
   };
 
+ modeTypes = [
+  { label: 'Expand', value: 'Expand' },
+  { label: 'Ultra Expand', value: 'UltraExpand' },
+];
+
+applicationTypes= [
+  { label: 'Application Bot', value: 'ApplicationBot' },
+  { label: 'Web Bot', value: 'WebBot' },
+];
+
   constructor(private cd: ChangeDetectorRef, private ngZone: NgZone) {}
 
   onFileSelect(event: any, field: 'widgetIcon' | 'headerLogo' | 'botIcon') {
