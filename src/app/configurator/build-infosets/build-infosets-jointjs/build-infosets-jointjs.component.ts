@@ -417,7 +417,12 @@ export class BuildInfosetsJointjsComponent implements OnInit, AfterViewInit {
 
     // 1️⃣ CREATE ALL NODES FIRST
     dataArray.forEach((d) => {
-      const [x, y] = d.loc.split(' ').map(Number);
+      let x, y;
+
+if (d?.loc) {
+  [x, y] = d.loc.split(' ').map(Number);
+}
+
 
       const node = this.createNode(x, y, d.text, d.key);
       (node as any).attributes.nodeData = d;
